@@ -1,0 +1,6 @@
+@IntelligentDiagnostics.API_HostAddress = http://localhost:5167
+
+GET {{IntelligentDiagnostics.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
