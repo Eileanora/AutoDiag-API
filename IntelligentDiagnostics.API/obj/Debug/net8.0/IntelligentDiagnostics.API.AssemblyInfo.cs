@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IntelligentDiagnostics.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1a7722625ad39e538058ce35f767cd74327552d9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2338b117c1844952e8e9b295c7488268da92a64b")]
 [assembly: System.Reflection.AssemblyProductAttribute("IntelligentDiagnostics.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IntelligentDiagnostics.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IntelligentDiagnostics.EFCore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2338b117c1844952e8e9b295c7488268da92a64b")]
 [assembly: System.Reflection.AssemblyProductAttribute("IntelligentDiagnostics.EFCore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IntelligentDiagnostics.EFCore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

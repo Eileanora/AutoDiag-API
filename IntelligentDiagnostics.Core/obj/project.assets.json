@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\magek\\.nuget\\packages\\": {}
+    "C:\\Users\\yasmeen\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\magek\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\IntelligentDiagnostics.Core.csproj",
+      "projectUniqueName": "C:\\Users\\yasmeen\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\IntelligentDiagnostics.Core.csproj",
       "projectName": "IntelligentDiagnostics.Core",
-      "projectPath": "C:\\Users\\magek\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\IntelligentDiagnostics.Core.csproj",
-      "packagesPath": "C:\\Users\\magek\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\magek\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\obj\\",
+      "projectPath": "C:\\Users\\yasmeen\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\IntelligentDiagnostics.Core.csproj",
+      "packagesPath": "C:\\Users\\yasmeen\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\yasmeen\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\magek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\yasmeen\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

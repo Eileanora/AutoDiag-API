@@ -10,3 +10,15 @@ C:\Users\magek\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnosti
 C:\Users\magek\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\refint\IntelligentDiagnostics.Core.dll
 C:\Users\magek\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\IntelligentDiagnostics.Core.pdb
 C:\Users\magek\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\ref\IntelligentDiagnostics.Core.dll
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\bin\Debug\net8.0\IntelligentDiagnostics.Core.deps.json
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\bin\Debug\net8.0\IntelligentDiagnostics.Core.dll
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\bin\Debug\net8.0\IntelligentDiagnostics.Core.pdb
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\IntelligentDiagnostics.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\IntelligentDiagnostics.Core.AssemblyInfoInputs.cache
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\IntelligentDiagnostics.Core.AssemblyInfo.cs
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\IntelligentDiagnostics.Core.csproj.CoreCompileInputs.cache
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\IntelligentDiagnostics.Core.sourcelink.json
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\IntelligentDiagnostics.Core.dll
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\refint\IntelligentDiagnostics.Core.dll
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\IntelligentDiagnostics.Core.pdb
+C:\Users\yasmeen\Documents\GitHub\Intelligent-Diagnostics-API\IntelligentDiagnostics.Core\obj\Debug\net8.0\ref\IntelligentDiagnostics.Core.dll
