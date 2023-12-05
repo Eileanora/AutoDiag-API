@@ -4032,19 +4032,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\yasmeen\\.nuget\\packages\\": {}
+    "C:\\Users\\magek\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\yasmeen\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.EFCore\\IntelligentDiagnostics.EFCore.csproj",
+      "projectUniqueName": "C:\\Users\\magek\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.EFCore\\IntelligentDiagnostics.EFCore.csproj",
       "projectName": "IntelligentDiagnostics.EFCore",
-      "projectPath": "C:\\Users\\yasmeen\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.EFCore\\IntelligentDiagnostics.EFCore.csproj",
-      "packagesPath": "C:\\Users\\yasmeen\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\yasmeen\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.EFCore\\obj\\",
+      "projectPath": "C:\\Users\\magek\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.EFCore\\IntelligentDiagnostics.EFCore.csproj",
+      "packagesPath": "C:\\Users\\magek\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\magek\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.EFCore\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\yasmeen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\magek\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4058,8 +4058,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\yasmeen\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\IntelligentDiagnostics.Core.csproj": {
-              "projectPath": "C:\\Users\\yasmeen\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\IntelligentDiagnostics.Core.csproj"
+            "C:\\Users\\magek\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\IntelligentDiagnostics.Core.csproj": {
+              "projectPath": "C:\\Users\\magek\\Documents\\GitHub\\Intelligent-Diagnostics-API\\IntelligentDiagnostics.Core\\IntelligentDiagnostics.Core.csproj"
             }
           }
         }
