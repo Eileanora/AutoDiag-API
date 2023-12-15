@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\IntelligentDiagnostics.API.props" />
-</Project>
