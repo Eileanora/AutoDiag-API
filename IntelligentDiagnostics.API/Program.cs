@@ -13,12 +13,12 @@ namespace IntelligentDiagnostics.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var configuration = new ConfigurationBuilder()
-             .AddJsonFile("appsettings.json") 
-             .Build();
+
             //add connectionString 
-            builder.Services.AddDbContext<AppDbContext>(builder => builder.UseSqlServer(configuration.GetConnectionString("DefaultConnectionStrings"),
-                        b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
+            builder.Services.AddDbContext<AppDbContext>(option => option
+                    .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
+            builder.Services.AddControllers();
+
 
             builder.Services.AddControllers();
             
