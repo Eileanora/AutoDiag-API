@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IntelligentDiagnostics.EFCore\IntelligentDiagnostics.EFCore.csproj" />
+    <ProjectReference Include="..\IntelligentDiagnostics.DAL\IntelligentDiagnostics.DAL.csproj" />
   </ItemGroup>
 
 </Project>

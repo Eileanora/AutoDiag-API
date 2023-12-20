@@ -1,8 +1,8 @@
-﻿using IntelligentDiagnostics.Core.Models;
+﻿using IntelligentDiagnostics.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace IntelligentDiagnostics.EFCore.Configuration
+namespace IntelligentDiagnostics.DAL.Configuration
 {
     public class ReadingConfiguration : IEntityTypeConfiguration<Reading>
     {

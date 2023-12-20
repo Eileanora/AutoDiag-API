@@ -1,8 +1,10 @@
-
-using IntelligentDiagnostics.EFCore;
+using IntelligentDiagnostics.DAL;
+using IntelligentDiagnostics.DAL.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using MQTTnet;
+using MQTTnet.Client;
 
 namespace IntelligentDiagnostics.API
 {
@@ -13,19 +15,22 @@ namespace IntelligentDiagnostics.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-            //add connectionString 
             builder.Services.AddDbContext<AppDbContext>(option => option
-                    .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
+                .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
             builder.Services.AddControllers();
 
+            builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
+            builder.Services.AddSingleton<IMqttService, MqttService>();
+            builder.Services.AddSingleton<IMessageProcessor, MessageProcessor>();
 
-            builder.Services.AddControllers();
-            
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
+
+            var mqttService = app.Services.GetRequiredService<IMqttService>();
+            mqttService.ConnectAsync().GetAwaiter().GetResult();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -35,10 +40,7 @@ namespace IntelligentDiagnostics.API
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
 
             app.Run();

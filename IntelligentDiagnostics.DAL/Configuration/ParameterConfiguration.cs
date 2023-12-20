@@ -1,4 +1,4 @@
-﻿using IntelligentDiagnostics.Core.Models;
+﻿using IntelligentDiagnostics.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntelligentDiagnostics.EFCore.Configuration
+namespace IntelligentDiagnostics.DAL.Configuration
 {
     public class ParameterConfiguration : IEntityTypeConfiguration<Parameter>
     {

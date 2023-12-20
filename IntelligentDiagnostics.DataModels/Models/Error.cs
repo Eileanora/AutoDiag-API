@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntelligentDiagnostics.Core.Models
+namespace IntelligentDiagnostics.DataModels.Models
 {
     public class Error
     {

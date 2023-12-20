@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace IntelligentDiagnostics.EFCore.Migrations
+namespace IntelligentDiagnostics.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class adduserreadingparametertables : Migration

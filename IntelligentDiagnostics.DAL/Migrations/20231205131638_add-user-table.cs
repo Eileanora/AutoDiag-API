@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace IntelligentDiagnostics.EFCore.Migrations
+namespace IntelligentDiagnostics.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class addusertable : Migration

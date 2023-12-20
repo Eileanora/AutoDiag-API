@@ -5,9 +5,9 @@ VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntelligentDiagnostics.API", "IntelligentDiagnostics.API\IntelligentDiagnostics.API.csproj", "{2CE35C3D-9164-4E5A-A641-E8754A754CBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelligentDiagnostics.Core", "IntelligentDiagnostics.Core\IntelligentDiagnostics.Core.csproj", "{520DA9CC-BD71-4DB7-BB89-DE958ED51A69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelligentDiagnostics.DataModels", "IntelligentDiagnostics.DataModels\IntelligentDiagnostics.DataModels.csproj", "{520DA9CC-BD71-4DB7-BB89-DE958ED51A69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelligentDiagnostics.EFCore", "IntelligentDiagnostics.EFCore\IntelligentDiagnostics.EFCore.csproj", "{2F698DFD-8D7C-4867-AE91-62F8B3BC76B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelligentDiagnostics.DAL", "IntelligentDiagnostics.DAL\IntelligentDiagnostics.DAL.csproj", "{2F698DFD-8D7C-4867-AE91-62F8B3BC76B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

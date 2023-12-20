@@ -1,19 +1,24 @@
-﻿using IntelligentDiagnostics.Core.Models;
-using IntelligentDiagnostics.EFCore.Configuration;
+﻿using IntelligentDiagnostics.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntelligentDiagnostics.DAL.Configuration;
 
-namespace IntelligentDiagnostics.EFCore
+namespace IntelligentDiagnostics.DAL
 {
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options):base(options) 
         {
         }
+
+        public AppDbContext()
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); 
