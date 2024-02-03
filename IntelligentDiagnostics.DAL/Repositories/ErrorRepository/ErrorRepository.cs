@@ -2,12 +2,12 @@
 using IntelligentDiagnostics.DAL.Repositories.BaseRepository;
 using IntelligentDiagnostics.DataModels.Models;
 
-namespace IntelligentDiagnostics.DAL.Repositories.UserRepository;
+namespace IntelligentDiagnostics.DAL.Repositories.ErrorRepository;
 
-public class UserRepository : BaseRepository<User>, IUserRepository
+public class ErrorRepository : BaseRepository<Error>, IErrorRepository
 {
     private readonly AppDbContext _context;
-    public UserRepository(AppDbContext context) : base(context)
+    public ErrorRepository(AppDbContext context) : base(context)
     {
         _context = context;
     }

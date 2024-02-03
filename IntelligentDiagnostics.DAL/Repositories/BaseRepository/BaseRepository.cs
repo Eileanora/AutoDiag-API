@@ -1,10 +1,11 @@
 ﻿using IntelligentDiagnostics.DAL.Context;
 using IntelligentDiagnostics.DAL.Repositories.GenereicRepository;
 using IntelligentDiagnostics.DataModels.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntelligentDiagnostics.DAL.Repositories.BaseRepository;
 
-abstract class BaseRepository<T> : IBaseRepository<T>
+public class BaseRepository<T> : IBaseRepository<T>
     where T : BaseEntity
 {
     private readonly AppDbContext _context;
@@ -12,33 +13,36 @@ abstract class BaseRepository<T> : IBaseRepository<T>
     {
         _context = context;
     }
-    public Task AddAsync(T entity)
+    public async Task AddAsync(T entity)
     {
-        throw new NotImplementedException();
+        await _context.Set<T>().AddAsync(entity);
+        await SaveChangesAsync();
     }
 
-    public Task UpdateAsync(T entity)
+    public async Task UpdateAsync(T entity)
     {
-        throw new NotImplementedException();
+        _context.Set<T>().Update(entity);
+        await SaveChangesAsync();
     }
 
     public Task DeleteAsync(T entity)
     {
-        throw new NotImplementedException();
+        _context.Set<T>().Remove(entity);
+        return SaveChangesAsync();
     }
 
-    public Task GetByIdAsync(int id)
+    public async Task GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        await _context.Set<T>().FindAsync(id);
     }
 
-    public Task GetAllAsync()
+    public async Task GetAllAsync()
     {
-        throw new NotImplementedException();
+        await _context.Set<T>().ToListAsync();
     }
 
     public async Task SaveChangesAsync()
     {
-        // await context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 }

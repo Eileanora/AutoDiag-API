@@ -1,5 +1,6 @@
 ﻿using IntelligentDiagnostics.DAL.Context;
 using IntelligentDiagnostics.DataModels.Models;
+using IntelligentDiagnostics.DAL.Repositories.BaseRepository;
 
 namespace IntelligentDiagnostics.DAL.Repositories.SystemRepository;
 
