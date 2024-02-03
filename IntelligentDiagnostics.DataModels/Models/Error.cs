@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace IntelligentDiagnostics.DataModels.Models;
 
-namespace IntelligentDiagnostics.DataModels.Models
+public class Error : BaseEntity
 {
-    public class Error
-    {
-        public int ErrorId { get; set; }
-        public string Description { get; set; }
-        public DateTime ErrorDateTime { get; set; }
-        public int  UserId {  get; set; }   
-        public User User { get; set; }  
-
-
-    }
+    public string Description { get; set; }
+    public int  UserId {  get; set; }   
+    public User User { get; set; }  
 }

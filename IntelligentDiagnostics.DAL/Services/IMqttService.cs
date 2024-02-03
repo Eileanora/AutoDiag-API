@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntelligentDiagnostics.DAL.Services
+namespace IntelligentDiagnostics.DAL.Services;
+
+public interface IMqttService
 {
-    public interface IMqttService
-    {
-        Task ConnectAsync();
-        Task DisconnectAsync();
-    }
+    Task ConnectAsync();
+    Task DisconnectAsync();
 }

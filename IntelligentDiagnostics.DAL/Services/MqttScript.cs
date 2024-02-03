@@ -6,84 +6,84 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntelligentDiagnostics.DAL.Context;
 using MQTTnet.Client;
 using IntelligentDiagnostics.DataModels.Models;
 
-namespace IntelligentDiagnostics.DAL.Services
+namespace IntelligentDiagnostics.DAL.Services;
+
+public class MqttScript
 {
-    public class MqttScript
+    public static async Task Mqtt()
     {
-        public static async Task Mqtt()
+        var factory = new MqttFactory();
+        var client = factory.CreateMqttClient();
+
+        var options = new MqttClientOptionsBuilder()
+            .WithClientId("Client1")
+            .WithTcpServer("ba56550c63b34369a905b1bf7dfcb61f.s2.eu.hivemq.cloud", 8883)
+            .WithTls()
+            .WithCredentials("ahmedsamir4299", "01060402354aA")
+            .Build();
+
+        var dbContext = new AppDbContext();
+
+        client.UseConnectedHandler(async e =>
         {
-            var factory = new MqttFactory();
-            var client = factory.CreateMqttClient();
+            Console.WriteLine("Connected to HiveMQ Cloud.");
+            await client.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic("1").Build());
+        });
 
-            var options = new MqttClientOptionsBuilder()
-                .WithClientId("Client1")
-                .WithTcpServer("ba56550c63b34369a905b1bf7dfcb61f.s2.eu.hivemq.cloud", 8883)
-                .WithTls()
-                .WithCredentials("ahmedsamir4299", "01060402354aA")
-                .Build();
-
-            var dbContext = new AppDbContext();
-
-            client.UseConnectedHandler(async e =>
+        client.UseApplicationMessageReceivedHandler(async e =>
+        {
+            var message = JsonConvert.DeserializeObject<Dictionary<string, string>>(Encoding.UTF8.GetString(e.ApplicationMessage.Payload));
+            Console.WriteLine("payload recieved");
+            if (message != null && message.ContainsKey("system"))
             {
-                Console.WriteLine("Connected to HiveMQ Cloud.");
-                await client.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic("1").Build());
-            });
-
-            client.UseApplicationMessageReceivedHandler(async e =>
-            {
-                var message = JsonConvert.DeserializeObject<Dictionary<string, string>>(Encoding.UTF8.GetString(e.ApplicationMessage.Payload));
-                Console.WriteLine("payload recieved");
-                if (message != null && message.ContainsKey("system"))
+                // add a check to check if message contents are valid here
+                foreach (var parameter in message.Keys)
                 {
-                    // add a check to check if message contents are valid here
-                    foreach (var parameter in message.Keys)
+                    // Create a new Record
+                    var record = new Reading
                     {
-                        // Create a new Record
-                        var record = new Reading
-                        {
-                            ReadingValue = int.Parse(message[parameter]),
-                            UserId = int.Parse(e.ApplicationMessage.Topic),
-                            SystemCarId = int.Parse(message["system"]),
-                            ParameterId = int.Parse(parameter),
-                            ReadingDateTime = DateTime.UtcNow
-                        };
-                        dbContext.Add(record);
-                    }
-                }
-                else if (message != null && message.ContainsKey("error"))
-                {
-                    // Create a new Error
-                    var error = new Error
-                    {
-                        Description = message["value"],
+                        ReadingValue = int.Parse(message[parameter]),
                         UserId = int.Parse(e.ApplicationMessage.Topic),
-                        ErrorDateTime = DateTime.UtcNow
+                        CarSystemId = int.Parse(message["system"]),
+                        ParameterId = int.Parse(parameter),
+                        CreatedDate = DateTime.UtcNow
                     };
-
-                    dbContext.Add(error);
+                    dbContext.Add(record);
                 }
-                await dbContext.SaveChangesAsync();
-            });
+            }
+            else if (message != null && message.ContainsKey("error"))
+            {
+                // Create a new Error
+                var error = new Error
+                {
+                    Description = message["value"],
+                    UserId = int.Parse(e.ApplicationMessage.Topic),
+                    CreatedDate = DateTime.UtcNow
+                };
 
-            await client.ConnectAsync(options);
+                dbContext.Add(error);
+            }
+            await dbContext.SaveChangesAsync();
+        });
 
-            // Console.ReadLine();
+        await client.ConnectAsync(options);
 
-            await client.DisconnectAsync();
-        }
-        //static SystemCar xDSerializationJsonSring(string  JsonContent) 
-        //{
-        //    SystemCar systemCar = null;
-        //    systemCar = JsonConvert.DeserializeObject<SystemCar>(JsonContent);
-        //    return systemCar; 
-        //}
-        static T DeserializeJsonString<T>(string jsonContent)
-        {
-            return JsonConvert.DeserializeObject<T>(jsonContent);
-        }
+        // Console.ReadLine();
+
+        await client.DisconnectAsync();
+    }
+    //static CarSystem xDSerializationJsonSring(string  JsonContent) 
+    //{
+    //    CarSystem systemCar = null;
+    //    systemCar = JsonConvert.DeserializeObject<CarSystem>(JsonContent);
+    //    return systemCar; 
+    //}
+    static T DeserializeJsonString<T>(string jsonContent)
+    {
+        return JsonConvert.DeserializeObject<T>(jsonContent);
     }
 }

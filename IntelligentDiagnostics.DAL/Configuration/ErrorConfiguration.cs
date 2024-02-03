@@ -2,26 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace IntelligentDiagnostics.DAL.Configuration
+namespace IntelligentDiagnostics.DAL.Configuration;
+
+public class ErrorConfiguration : IEntityTypeConfiguration<Error>
 {
-    public class ErrorConfiguration : IEntityTypeConfiguration<Error>
+    public void Configure(EntityTypeBuilder<Error> builder)
     {
-        public void Configure(EntityTypeBuilder<Error> builder)
-        {
-            builder.HasKey(x => x.ErrorId);
+        builder.Property(x => x.Description)
+            .HasColumnType("varchar")
+            .IsRequired();
 
-            builder.Property(x => x.Description)
-                .HasColumnType("varchar")
-                .IsRequired();
+        builder.HasOne(x => x.User)
+            .WithMany(x => x.Errors)
+            .HasForeignKey(x => x.UserId).IsRequired();
 
-            builder.HasOne(x => x.User)
-               .WithMany(x => x.errors)
-               .HasForeignKey(x => x.UserId).IsRequired();
-
-        }
     }
-
-
 }
-
-

@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\PredictionsDTOs\" />
+    <Folder Include="Dtos\RegisterationDTOs\" />
+    <Folder Include="Dtos\UserDTOs\" />
+    <Folder Include="Mapper\FaultMapper\" />
+    <Folder Include="Mapper\PredictionMapper\" />
+    <Folder Include="Mapper\UserMapper\" />
+    <Folder Include="Services\MqttService\MqttRecieve\" />
+    <Folder Include="Services\MqttService\MqttSend\" />
+    <Folder Include="Services\PredictionsService\" />
+    <Folder Include="Services\RemoteOBDService\" />
+  </ItemGroup>
+
 </Project>

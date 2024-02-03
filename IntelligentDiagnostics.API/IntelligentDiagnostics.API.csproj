@@ -20,7 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IntelligentDiagnostics.BL\IntelligentDiagnostics.BL.csproj" />
     <ProjectReference Include="..\IntelligentDiagnostics.DAL\IntelligentDiagnostics.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\PredictionsController\" />
+    <Folder Include="Controllers\UsersController\" />
   </ItemGroup>
 
 </Project>

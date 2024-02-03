@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IntelligentDiagnostics.DataModels.Models.Roles;
 
-namespace IntelligentDiagnostics.DataModels.Models
+namespace IntelligentDiagnostics.DataModels.Models;
+public class User : PrimaryKeyBaseEntity
 {
-    public class User
-    {
-        public int UserId { get; set; }
-        public string Fname { get; set; }
-        public string Lname { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public ICollection<Reading> Readings { get; set; } = new List<Reading>();
-        public ICollection<Error> errors { get; set; } = new List<Error>();
-
-        
-    }
+    public string Fname { get; set; } = string.Empty;
+    public string Lname { get; set; } 
+    public string Email { get; set; } 
+    public string Password { get; set; }
+    public Role Role { get; set; }
+    public int RoleId { get; set; }
+    public ICollection<Reading> Readings { get; set; } = new List<Reading>();
+    public ICollection<Error> Errors { get; set; } = new List<Error>();
 }

@@ -7,21 +7,21 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
 
-namespace IntelligentDiagnostics.DAL.Services
-{
-    public class MqttService : IMqttService
-    {
-        private readonly IMqttClient _mqttClient;
-        private readonly IMessageProcessor _messageProcessor;
+namespace IntelligentDiagnostics.DAL.Services;
 
-        public MqttService(IMqttClient mqttClient, IMessageProcessor messageProcessor)
-        {
+public class MqttService : IMqttService
+{
+    private readonly IMqttClient _mqttClient;
+    private readonly IMessageProcessor _messageProcessor;
+
+    public MqttService(IMqttClient mqttClient, IMessageProcessor messageProcessor)
+    {
             _mqttClient = mqttClient;
             _messageProcessor = messageProcessor;
         }
 
-        public async Task ConnectAsync()
-        {
+    public async Task ConnectAsync()
+    {
             var options = new MqttClientOptionsBuilder()
                 .WithClientId("Client1")
                 .WithTcpServer("ba56550c63b34369a905b1bf7dfcb61f.s2.eu.hivemq.cloud", 8883)
@@ -58,10 +58,8 @@ namespace IntelligentDiagnostics.DAL.Services
             await _mqttClient.ConnectAsync(options);
         }
 
-        public async Task DisconnectAsync()
-        {
+    public async Task DisconnectAsync()
+    {
             await _mqttClient.DisconnectAsync();
         }
-    }
-
 }

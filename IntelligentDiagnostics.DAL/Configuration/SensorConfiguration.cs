@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IntelligentDiagnostics.DAL.Configuration;
 
-public class SystemCarConfiguration : IEntityTypeConfiguration<CarSystem>
+public class SensorConfiguration : IEntityTypeConfiguration<Sensor>
 {
-    public void Configure(EntityTypeBuilder<CarSystem> builder)
+    public void Configure(EntityTypeBuilder<Sensor> builder)
     {
-        builder.Property(x=> x.CarSystemName)
+        builder.Property(x => x.SensorName)
             .IsRequired()
             .HasMaxLength(50)
             .HasColumnType("varchar");
     }
+
 }
