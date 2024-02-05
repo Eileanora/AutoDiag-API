@@ -1,6 +1,6 @@
 ﻿using IntelligentDiagnostics.BL.Dtos.UserDTOs;
 using IntelligentDiagnostics.DAL.Repositories.UserRepository;
-namespace IntelligentDiagnostics.BL.Mapper.UsersManager;
+namespace IntelligentDiagnostics.BL.Manager.UsersManager;
 
 public class UsersManager : IUsersManager
 {

@@ -1,5 +1,5 @@
 ﻿using IntelligentDiagnostics.BL.Dtos.SensorDTOs;
-namespace IntelligentDiagnostics.BL.Mapper.SensorsManager;
+namespace IntelligentDiagnostics.BL.Manager.SensorsManager;
 
 public interface ISensorsManager
 {

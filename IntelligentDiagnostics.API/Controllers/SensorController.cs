@@ -1,5 +1,5 @@
 ﻿using IntelligentDiagnostics.BL.Dtos.SensorDTOs;
-using IntelligentDiagnostics.BL.Mapper.SensorsManager;
+using IntelligentDiagnostics.BL.Manager.SensorsManager;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -32,11 +32,11 @@ public class SensorController : ControllerBase
         }
         return Ok(sensor);
     }
-    // post, patch, delete
-    [HttpPost]
-    public async Task<ActionResult<SensorDto> CreateSensor(
-        SensorCreateDto sensor)
-    {
-        
-    }
+//     // post, patch, delete
+//     [HttpPost]
+//     public async Task<ActionResult<SensorDto> CreateSensor(
+//         SensorCreateDto sensor)
+//     {
+//         
+//     }
 }

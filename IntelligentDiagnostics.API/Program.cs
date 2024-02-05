@@ -1,5 +1,5 @@
-using IntelligentDiagnostics.BL.Mapper.SensorsManager;
-using IntelligentDiagnostics.BL.Mapper.UsersManager;
+using IntelligentDiagnostics.BL.Manager.SensorsManager;
+using IntelligentDiagnostics.BL.Manager.UsersManager;
 using IntelligentDiagnostics.DAL.Repositories.UserRepository;
 using IntelligentDiagnostics.DAL.Context;
 using IntelligentDiagnostics.DAL.Repositories.SensorRepository;

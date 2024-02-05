@@ -1,6 +1,6 @@
 ﻿using IntelligentDiagnostics.BL.Dtos.UserDTOs;
 
-namespace IntelligentDiagnostics.BL.Mapper.UsersManager;
+namespace IntelligentDiagnostics.BL.Manager.UsersManager;
 
 public interface IUsersManager
 {

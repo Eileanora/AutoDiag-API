@@ -1,9 +1,9 @@
 ﻿using IntelligentDiagnostics.BL.Dtos.SensorDTOs;
-using IntelligentDiagnostics.BL.Mapper.UsersManager;
+using IntelligentDiagnostics.BL.Manager.UsersManager;
 using IntelligentDiagnostics.DAL.Repositories.SensorRepository;
 using IntelligentDiagnostics.DAL.Repositories.UserRepository;
 
-namespace IntelligentDiagnostics.BL.Mapper.SensorsManager;
+namespace IntelligentDiagnostics.BL.Manager.SensorsManager;
 
 public class SensorsManager : ISensorsManager
 {
