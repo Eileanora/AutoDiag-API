@@ -12,20 +12,22 @@ public class ReadingConfiguration : IEntityTypeConfiguration<Reading>
         // builder.HasKey(x => x.CarSystemId);
         // builder.HasKey(x => x.ParameterId);
         // builder.HasKey(x => x.CreatedDate);
-
         builder.Property(x => x.ReadingValue)
                .IsRequired();
 
        builder.HasOne(x => x.CarSystem)
            .WithMany(x => x.Readings)
-           .HasForeignKey(x => x.CarSystemId).IsRequired();
+           .HasForeignKey(x => x.CarSystemId).IsRequired()
+           .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Sensor)
            .WithMany(x => x.Readings)
-           .HasForeignKey(x => x.ParameterId).IsRequired();
-
+           .HasForeignKey(x => x.ParameterId).IsRequired()
+           .OnDelete(DeleteBehavior.Cascade);
+        
         builder.HasOne(x => x.User)
            .WithMany(x => x.Readings)
-           .HasForeignKey(x => x.UserId).IsRequired();
+           .HasForeignKey(x => x.UserId).IsRequired()
+           .OnDelete(DeleteBehavior.Cascade);
     }
 }

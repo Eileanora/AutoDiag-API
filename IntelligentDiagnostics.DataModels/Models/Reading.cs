@@ -1,5 +1,5 @@
 ﻿namespace IntelligentDiagnostics.DataModels.Models;
-public class Reading : BaseEntity
+public class Reading : PrimaryKeyBaseEntity
 {
     public int ReadingValue { get; set;}
     public int CarSystemId { get; set; }

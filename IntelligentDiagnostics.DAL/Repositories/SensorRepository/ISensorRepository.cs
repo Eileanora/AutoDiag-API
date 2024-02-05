@@ -3,6 +3,6 @@ using IntelligentDiagnostics.DataModels.Models;
 
 namespace IntelligentDiagnostics.DAL.Repositories.SensorRepository;
 
-public interface ISensorRepository
+public interface ISensorRepository : IBaseRepository<Sensor>
 {
 }

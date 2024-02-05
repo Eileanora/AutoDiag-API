@@ -6,11 +6,16 @@ namespace IntelligentDiagnostics.API.Controllers.LoginController;
 [ApiController]
 public class LoginController : ControllerBase
 {
-    [HttpPost("login")]
-    public ActionResult Login(
-        [FromBody] string username, [FromBody] string password)
+    public class LoginModel
     {
-        if (username == "admin" && password == "admin")
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+
+    [HttpPost("login")]
+    public ActionResult Login([FromBody] LoginModel login)
+    {
+        if (login.Username == "admin" && login.Password == "admin")
         {
             return Ok("Login successful");
         }
@@ -19,5 +24,4 @@ public class LoginController : ControllerBase
             return Unauthorized();
         }
     }
-    
 }

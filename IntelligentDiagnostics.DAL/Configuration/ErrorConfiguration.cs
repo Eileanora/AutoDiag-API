@@ -14,7 +14,7 @@ public class ErrorConfiguration : IEntityTypeConfiguration<Error>
 
         builder.HasOne(x => x.User)
             .WithMany(x => x.Errors)
-            .HasForeignKey(x => x.UserId).IsRequired();
-
+            .HasForeignKey(x => x.UserId).IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

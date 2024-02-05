@@ -1,6 +1,10 @@
-using IntelligentDiagnostics.DAL;
+using IntelligentDiagnostics.BL.Mapper.SensorsManager;
+using IntelligentDiagnostics.BL.Mapper.UsersManager;
+using IntelligentDiagnostics.DAL.Repositories.UserRepository;
 using IntelligentDiagnostics.DAL.Context;
+using IntelligentDiagnostics.DAL.Repositories.SensorRepository;
 using IntelligentDiagnostics.DAL.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -20,16 +24,30 @@ public class Program
             .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
         builder.Services.AddControllers();
 
+
+        #region MQTT Configuration
+
         builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
         builder.Services.AddSingleton<IMqttService, MqttService>();
         builder.Services.AddSingleton<IMessageProcessor, MessageProcessor>();
 
+        #endregion
+
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
+        
+        #region Services
+        builder.Services.AddScoped<IUsersManager, UsersManager>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<ISensorsManager, SensorsManager>();
+        builder.Services.AddScoped<ISensorRepository, SensorRepository>();
+        #endregion
         var app = builder.Build();
 
+
+        
         var mqttService = app.Services.GetRequiredService<IMqttService>();
         mqttService.ConnectAsync().GetAwaiter().GetResult();
 

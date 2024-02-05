@@ -1,4 +1,4 @@
-﻿using IntelligentDiagnostics.DataModels.Models.Roles;
+﻿using IntelligentDiagnostics.DataModels.Models;
 
 namespace IntelligentDiagnostics.DataModels.Models;
 public class User : PrimaryKeyBaseEntity

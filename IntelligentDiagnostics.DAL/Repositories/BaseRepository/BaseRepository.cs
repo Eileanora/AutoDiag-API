@@ -31,14 +31,14 @@ public class BaseRepository<T> : IBaseRepository<T>
         return SaveChangesAsync();
     }
 
-    public async Task GetByIdAsync(int id)
+    public async Task<T?> GetByIdAsync(int id)
     {
-        await _context.Set<T>().FindAsync(id);
+        return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
-        await _context.Set<T>().ToListAsync();
+        return await _context.Set<T>().ToListAsync();
     }
 
     public async Task SaveChangesAsync()

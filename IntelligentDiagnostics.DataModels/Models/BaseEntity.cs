@@ -1,6 +1,6 @@
 ﻿namespace IntelligentDiagnostics.DataModels.Models;
 
-public class BaseEntity
+public abstract class BaseEntity
 {
     public int CreatedBy { get; init; }
     public DateTime CreatedDate { get; init; } = DateTime.UtcNow;
