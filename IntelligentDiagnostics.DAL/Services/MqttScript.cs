@@ -48,8 +48,7 @@ public class MqttScript
                     {
                         ReadingValue = int.Parse(message[parameter]),
                         UserId = int.Parse(e.ApplicationMessage.Topic),
-                        CarSystemId = int.Parse(message["system"]),
-                        ParameterId = int.Parse(parameter),
+                        SensorId = int.Parse(parameter),
                         CreatedDate = DateTime.UtcNow
                     };
                     dbContext.Add(record);

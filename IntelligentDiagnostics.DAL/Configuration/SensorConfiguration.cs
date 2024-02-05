@@ -12,6 +12,9 @@ public class SensorConfiguration : IEntityTypeConfiguration<Sensor>
             .IsRequired()
             .HasMaxLength(50)
             .HasColumnType("varchar");
+        builder.HasOne(x => x.CarSystem)
+            .WithMany(x => x.Sensors)
+            .HasForeignKey(x => x.CarSystemId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
-
 }

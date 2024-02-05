@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IntelligentDiagnostics.DAL.Configuration;
 
-public class SystemCarConfiguration : IEntityTypeConfiguration<CarSystem>
+public class CarSystemConfiguration : IEntityTypeConfiguration<CarSystem>
 {
     public void Configure(EntityTypeBuilder<CarSystem> builder)
     {

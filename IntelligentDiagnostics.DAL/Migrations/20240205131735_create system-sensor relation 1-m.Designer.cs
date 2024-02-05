@@ -4,6 +4,7 @@ using IntelligentDiagnostics.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelligentDiagnostics.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240205131735_create system-sensor relation 1-m")]
+    partial class createsystemsensorrelation1m
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,13 +91,13 @@ namespace IntelligentDiagnostics.DAL.Migrations
                 {
                     b.HasBaseType("IntelligentDiagnostics.DataModels.Models.PrimaryKeyBaseEntity");
 
-                    b.Property<int?>("CarSystemId")
+                    b.Property<int>("CarSystemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParameterId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReadingValue")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SensorId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -102,7 +105,7 @@ namespace IntelligentDiagnostics.DAL.Migrations
 
                     b.HasIndex("CarSystemId");
 
-                    b.HasIndex("SensorId");
+                    b.HasIndex("ParameterId");
 
                     b.HasIndex("UserId");
 
@@ -190,13 +193,15 @@ namespace IntelligentDiagnostics.DAL.Migrations
 
             modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.Reading", b =>
                 {
-                    b.HasOne("IntelligentDiagnostics.DataModels.Models.CarSystem", null)
+                    b.HasOne("IntelligentDiagnostics.DataModels.Models.CarSystem", "CarSystem")
                         .WithMany("Readings")
-                        .HasForeignKey("CarSystemId");
+                        .HasForeignKey("CarSystemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("IntelligentDiagnostics.DataModels.Models.Sensor", "Sensor")
                         .WithMany("Readings")
-                        .HasForeignKey("SensorId")
+                        .HasForeignKey("ParameterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -205,6 +210,8 @@ namespace IntelligentDiagnostics.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CarSystem");
 
                     b.Navigation("Sensor");
 

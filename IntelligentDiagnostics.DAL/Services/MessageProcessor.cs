@@ -43,8 +43,7 @@ public class MessageProcessor : IMessageProcessor
                     {
                         ReadingValue = int.Parse(message[parameter]),
                         UserId = int.Parse(topic),
-                        CarSystemId = int.Parse(message["system"]),
-                        ParameterId = int.Parse(parameter),
+                        SensorId = int.Parse(parameter),
                         CreatedDate = DateTime.UtcNow
                     };
                     dbContext.Add(record);

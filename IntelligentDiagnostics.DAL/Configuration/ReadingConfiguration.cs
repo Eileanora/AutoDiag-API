@@ -15,14 +15,9 @@ public class ReadingConfiguration : IEntityTypeConfiguration<Reading>
         builder.Property(x => x.ReadingValue)
                .IsRequired();
 
-       builder.HasOne(x => x.CarSystem)
-           .WithMany(x => x.Readings)
-           .HasForeignKey(x => x.CarSystemId).IsRequired()
-           .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasOne(x => x.Sensor)
            .WithMany(x => x.Readings)
-           .HasForeignKey(x => x.ParameterId).IsRequired()
+           .HasForeignKey(x => x.SensorId).IsRequired()
            .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasOne(x => x.User)
