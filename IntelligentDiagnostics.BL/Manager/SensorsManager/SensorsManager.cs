@@ -1,18 +1,14 @@
 ﻿using IntelligentDiagnostics.BL.Dtos.SensorDTOs;
-using IntelligentDiagnostics.BL.Manager.UsersManager;
 using IntelligentDiagnostics.DAL.Repositories.SensorRepository;
-using IntelligentDiagnostics.DAL.Repositories.UserRepository;
 
 namespace IntelligentDiagnostics.BL.Manager.SensorsManager;
 
 public class SensorsManager : ISensorsManager
 {
     private readonly ISensorRepository _sensorRepository;
-    private readonly IUsersManager _usersManager;
-    public SensorsManager(ISensorRepository sensorRepository, IUsersManager usersManager)
+    public SensorsManager(ISensorRepository sensorRepository)
     {
         _sensorRepository = sensorRepository;
-        _usersManager = usersManager;
     }
     
     public async Task<IEnumerable<SensorDto>> GetAllAsync()
@@ -23,9 +19,9 @@ public class SensorsManager : ISensorsManager
         {
             Id = s.Id,
             Name = s.SensorName,
-            CreatedBy = _usersManager.GetUserById(s.CreatedBy).Result.Name,
+            CreatedBy = 1,
             CreatedDate = s.CreatedDate,
-            ModifiedBy = _usersManager.GetUserById(s.ModifiedBy).Result.Name,
+            ModifiedBy = 1,
             ModifiedDate = s.ModifiedDate
         });
     }
@@ -40,9 +36,9 @@ public class SensorsManager : ISensorsManager
         {
             Id = sensor.Id,
             Name = sensor.SensorName,
-            CreatedBy = _usersManager.GetUserById(sensor.CreatedBy).Result.Name,
+            CreatedBy =1,
             CreatedDate = sensor.CreatedDate,
-            ModifiedBy = _usersManager.GetUserById(sensor.ModifiedBy).Result.Name,
+            ModifiedBy = 1,
             ModifiedDate = sensor.ModifiedDate
         };
     }

@@ -9,8 +9,6 @@
   <ItemGroup>
     <Folder Include="Services\MqttService\MqttRecieve\" />
     <Folder Include="Services\MqttService\MqttSend\" />
-    <Folder Include="Services\PredictionsService\" />
-    <Folder Include="Services\RemoteOBDService\" />
   </ItemGroup>
     <ItemGroup>
     <ProjectReference Include="..\IntelligentDiagnostics.DAL\IntelligentDiagnostics.DAL.csproj" />

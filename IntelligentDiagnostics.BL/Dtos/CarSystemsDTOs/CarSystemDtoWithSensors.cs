@@ -1,6 +1,8 @@
-﻿namespace IntelligentDiagnostics.BL.Dtos.CarSystemsDTOs;
+﻿using IntelligentDiagnostics.BL.Dtos.SensorDTOs;
 
-public class CarSystemDto
+namespace IntelligentDiagnostics.BL.Dtos.CarSystemsDTOs;
+
+public class CarSystemDtoWithSensors
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -8,4 +10,5 @@ public class CarSystemDto
     public DateTime CreatedDate { get; set; }
     public int ModifiedBy { get; set; }
     public DateTime ModifiedDate { get; set; }
+    public ICollection<SensorWithOnlyNameDto> Sensors { get; set; } = new List<SensorWithOnlyNameDto>();
 }
