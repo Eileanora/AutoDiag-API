@@ -16,12 +16,15 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder); 
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ErrorConfiguration).Assembly);
+        // modelBuilder.Ignore<BaseEntity>();
+        // modelBuilder.Ignore<PrimaryKeyBaseEntity>();
     }
     DbSet<CarSystem> SystemCars {  get; set; }    
     DbSet<User> Users { get; set; }
     DbSet<Reading> Readings { get; set; } 
-    DbSet<Sensor> Parameters { get; set; }
+    DbSet<Sensor> Sensors { get; set; }
     DbSet<Error> Errors { get; set; }
+    DbSet<Role> Roles { get; set; }
 }

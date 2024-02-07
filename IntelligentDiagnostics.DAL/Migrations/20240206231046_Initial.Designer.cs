@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelligentDiagnostics.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240205131735_create system-sensor relation 1-m")]
-    partial class createsystemsensorrelation1m
+    [Migration("20240206231046_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,37 @@ namespace IntelligentDiagnostics.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.PrimaryKeyBaseEntity", b =>
+            modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.CarSystem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CarSystemName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemCars");
+                });
+
+            modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.Error", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,10 +69,9 @@ namespace IntelligentDiagnostics.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Discriminator")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("varchar");
 
                     b.Property<int>("ModifiedBy")
                         .HasColumnType("int");
@@ -50,111 +79,136 @@ namespace IntelligentDiagnostics.DAL.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("PrimaryKeyBaseEntity");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("PrimaryKeyBaseEntity");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.CarSystem", b =>
-                {
-                    b.HasBaseType("IntelligentDiagnostics.DataModels.Models.PrimaryKeyBaseEntity");
-
-                    b.Property<string>("CarSystemName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar");
-
-                    b.HasDiscriminator().HasValue("CarSystem");
-                });
-
-            modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.Error", b =>
-                {
-                    b.HasBaseType("IntelligentDiagnostics.DataModels.Models.PrimaryKeyBaseEntity");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("UserId");
 
-                    b.HasDiscriminator().HasValue("Error");
+                    b.ToTable("Errors");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.Reading", b =>
                 {
-                    b.HasBaseType("IntelligentDiagnostics.DataModels.Models.PrimaryKeyBaseEntity");
-
-                    b.Property<int>("CarSystemId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ParameterId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CarSystemId")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ReadingValue")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SensorId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("CarSystemId");
 
-                    b.HasIndex("ParameterId");
+                    b.HasIndex("SensorId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PrimaryKeyBaseEntity", t =>
-                        {
-                            t.Property("UserId")
-                                .HasColumnName("Reading_UserId");
-                        });
-
-                    b.HasDiscriminator().HasValue("Reading");
+                    b.ToTable("Readings");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.Role", b =>
                 {
-                    b.HasBaseType("IntelligentDiagnostics.DataModels.Models.PrimaryKeyBaseEntity");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("Role");
+                    b.HasKey("Id");
+
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.Sensor", b =>
                 {
-                    b.HasBaseType("IntelligentDiagnostics.DataModels.Models.PrimaryKeyBaseEntity");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CarSystemId")
                         .HasColumnType("int");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SensorName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("CarSystemId");
 
-                    b.ToTable("PrimaryKeyBaseEntity", t =>
-                        {
-                            t.Property("CarSystemId")
-                                .HasColumnName("Sensor_CarSystemId");
-                        });
-
-                    b.HasDiscriminator().HasValue("Sensor");
+                    b.ToTable("Parameters");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.User", b =>
                 {
-                    b.HasBaseType("IntelligentDiagnostics.DataModels.Models.PrimaryKeyBaseEntity");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -168,6 +222,12 @@ namespace IntelligentDiagnostics.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -175,9 +235,11 @@ namespace IntelligentDiagnostics.DAL.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("RoleId");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.Error", b =>
@@ -193,15 +255,13 @@ namespace IntelligentDiagnostics.DAL.Migrations
 
             modelBuilder.Entity("IntelligentDiagnostics.DataModels.Models.Reading", b =>
                 {
-                    b.HasOne("IntelligentDiagnostics.DataModels.Models.CarSystem", "CarSystem")
+                    b.HasOne("IntelligentDiagnostics.DataModels.Models.CarSystem", null)
                         .WithMany("Readings")
-                        .HasForeignKey("CarSystemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CarSystemId");
 
                     b.HasOne("IntelligentDiagnostics.DataModels.Models.Sensor", "Sensor")
                         .WithMany("Readings")
-                        .HasForeignKey("ParameterId")
+                        .HasForeignKey("SensorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -210,8 +270,6 @@ namespace IntelligentDiagnostics.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CarSystem");
 
                     b.Navigation("Sensor");
 

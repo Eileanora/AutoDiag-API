@@ -1,4 +1,4 @@
-﻿using IntelligentDiagnostics.DAL.Repositories.GenereicRepository;
+﻿using IntelligentDiagnostics.DAL.Repositories.BaseRepository;
 using IntelligentDiagnostics.DataModels.Models;
 
 namespace IntelligentDiagnostics.DAL.Repositories.SensorRepository;

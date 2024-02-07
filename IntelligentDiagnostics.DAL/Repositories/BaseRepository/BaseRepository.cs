@@ -1,5 +1,5 @@
 ﻿using IntelligentDiagnostics.DAL.Context;
-using IntelligentDiagnostics.DAL.Repositories.GenereicRepository;
+using IntelligentDiagnostics.DAL.Repositories.BaseRepository;
 using IntelligentDiagnostics.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 

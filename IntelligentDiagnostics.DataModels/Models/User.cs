@@ -1,11 +1,13 @@
-﻿using IntelligentDiagnostics.DataModels.Models;
+﻿using System.Collections;
+using IntelligentDiagnostics.DataModels.Models;
 
 namespace IntelligentDiagnostics.DataModels.Models;
+
 public class User : PrimaryKeyBaseEntity
 {
     public string Fname { get; set; } = string.Empty;
-    public string Lname { get; set; } 
-    public string Email { get; set; } 
+    public string Lname { get; set; }
+    public string Email { get; set; }
     public string Password { get; set; }
     public Role Role { get; set; }
     public int RoleId { get; set; }

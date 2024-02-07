@@ -1,6 +1,6 @@
 ﻿using IntelligentDiagnostics.DataModels.Models;
 
-namespace IntelligentDiagnostics.DAL.Repositories.GenereicRepository;
+namespace IntelligentDiagnostics.DAL.Repositories.BaseRepository;
 
 public interface IBaseRepository <T> where T : BaseEntity
 {
