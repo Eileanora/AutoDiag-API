@@ -14,14 +14,14 @@ public class SensorController : ControllerBase
     {
         _sensorsManager = sensorsManager;
     }
-    
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors()
     {
         var sensors = await _sensorsManager.GetAllAsync();
         return Ok(sensors);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<ActionResult<SensorDto>> GetByIdAsync(int id)
     {

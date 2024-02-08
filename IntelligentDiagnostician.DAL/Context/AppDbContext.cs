@@ -21,10 +21,10 @@ public class AppDbContext : DbContext
         // modelBuilder.Ignore<BaseEntity>();
         // modelBuilder.Ignore<PrimaryKeyBaseEntity>();
     }
-    DbSet<CarSystem> SystemCars {  get; set; }    
-    DbSet<User> Users { get; set; }
-    DbSet<Reading> Readings { get; set; } 
-    DbSet<Sensor> Sensors { get; set; }
-    DbSet<Error> Errors { get; set; }
-    DbSet<Role> Roles { get; set; }
+    public DbSet<CarSystem> CarSystems {  get; set; }    
+    public DbSet<User> Users { get; set; }
+    public DbSet<Reading> Readings { get; set; } 
+    public DbSet<Sensor> Sensors { get; set; }
+    public DbSet<Error> Errors { get; set; }
+    public DbSet<Role> Roles { get; set; }
 }

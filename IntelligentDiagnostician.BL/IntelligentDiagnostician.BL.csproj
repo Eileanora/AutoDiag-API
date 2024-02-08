@@ -5,11 +5,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\MqttService\MqttRecieve\" />
-    <Folder Include="Services\MqttService\MqttSend\" />
-  </ItemGroup>
     <ItemGroup>
     <ProjectReference Include="..\IntelligentDiagnostician.DAL\IntelligentDiagnostician.DAL.csproj" />
   </ItemGroup>

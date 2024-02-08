@@ -19,10 +19,7 @@ public class SensorsManager : ISensorsManager
         {
             Id = s.Id,
             Name = s.SensorName,
-            CreatedBy = 1,
-            CreatedDate = s.CreatedDate,
-            ModifiedBy = 1,
-            ModifiedDate = s.ModifiedDate
+            CarSystemName = s.CarSystem.CarSystemName
         });
     }
     
@@ -36,10 +33,7 @@ public class SensorsManager : ISensorsManager
         {
             Id = sensor.Id,
             Name = sensor.SensorName,
-            CreatedBy =1,
-            CreatedDate = sensor.CreatedDate,
-            ModifiedBy = 1,
-            ModifiedDate = sensor.ModifiedDate
+            CarSystemName = sensor.CarSystem.CarSystemName
         };
     }
 }

@@ -1,8 +1,10 @@
+using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using IntelligentDiagnostician.BL.Manager.UsersManager;
 using IntelligentDiagnostician.DAL.Repositories.UserRepository;
 using IntelligentDiagnostician.DAL.Context;
 using IntelligentDiagnostician.DAL.Repositories.SensorRepository;
+using IntelligentDiagnostician.DAL.Repositories.SystemRepository;
 using IntelligentDiagnostician.DAL.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +45,8 @@ public class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<ISensorsManager, SensorsManager>();
         builder.Services.AddScoped<ISensorRepository, SensorRepository>();
+        builder.Services.AddScoped<ICarSystemManager, CarSystemManager>();
+        builder.Services.AddScoped<ICarSystemRepository, CarSystemRepository>();
         #endregion
         var app = builder.Build();
 
