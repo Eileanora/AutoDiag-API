@@ -1,4 +1,4 @@
-﻿namespace IntelligentDiagnostician.BL.Dtos.CarSystemsDTOs;
+﻿namespace IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 
 public class CarSystemDto
 {

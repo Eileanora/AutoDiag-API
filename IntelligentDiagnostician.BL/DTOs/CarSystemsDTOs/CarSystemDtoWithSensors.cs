@@ -1,6 +1,6 @@
-﻿using IntelligentDiagnostician.BL.Dtos.SensorDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 
-namespace IntelligentDiagnostician.BL.Dtos.CarSystemsDTOs;
+namespace IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 
 public class CarSystemDtoWithSensors
 {

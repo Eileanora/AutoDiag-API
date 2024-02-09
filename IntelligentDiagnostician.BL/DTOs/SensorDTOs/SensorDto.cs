@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-
-namespace IntelligentDiagnostician.BL.Dtos.SensorDTOs;
+﻿namespace IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 
 public class SensorDto
 {

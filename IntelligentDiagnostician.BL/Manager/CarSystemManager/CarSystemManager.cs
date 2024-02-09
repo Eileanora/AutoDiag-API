@@ -1,8 +1,6 @@
-﻿using IntelligentDiagnostician.BL.Dtos.CarSystemsDTOs;
-using IntelligentDiagnostician.BL.Dtos.SensorDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.DAL.Repositories.SystemRepository;
 using IntelligentDiagnostician.DAL.Repositories.UserRepository;
-using IntelligentDiagnostician.DataModels.Models;
 
 namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 

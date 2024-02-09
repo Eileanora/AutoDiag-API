@@ -1,4 +1,4 @@
-﻿namespace IntelligentDiagnostician.BL.Dtos.UserDTOs;
+﻿namespace IntelligentDiagnostician.BL.DTOs.UserDTOs;
 
 public class UserDto
 {

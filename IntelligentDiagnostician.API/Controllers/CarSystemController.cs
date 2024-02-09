@@ -1,4 +1,4 @@
-﻿using IntelligentDiagnostician.BL.Dtos.CarSystemsDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,4 +34,5 @@ public class CarSystemController : ControllerBase
         }
         return Ok(system);
     }
+
 }

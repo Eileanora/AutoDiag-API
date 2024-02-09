@@ -1,4 +1,4 @@
-﻿using IntelligentDiagnostician.BL.Dtos.SensorDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 
 namespace IntelligentDiagnostician.BL.Manager.SensorsManager;
 

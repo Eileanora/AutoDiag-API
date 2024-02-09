@@ -1,5 +1,4 @@
-﻿using IntelligentDiagnostician.BL.Dtos.CarSystemsDTOs;
-using IntelligentDiagnostician.DataModels.Models;
+﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 
 namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 

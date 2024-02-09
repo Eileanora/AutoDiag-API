@@ -1,7 +1,6 @@
-﻿using IntelligentDiagnostician.BL.Dtos.SensorDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace IntelligentDiagnostician.API.Controllers;
 

@@ -1,4 +1,4 @@
-﻿using IntelligentDiagnostician.BL.Dtos.UserDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.UserDTOs;
 using IntelligentDiagnostician.DAL.Repositories.UserRepository;
 namespace IntelligentDiagnostician.BL.Manager.UsersManager;
 

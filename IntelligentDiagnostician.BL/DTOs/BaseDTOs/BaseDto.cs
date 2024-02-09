@@ -1,4 +1,4 @@
-﻿namespace IntelligentDiagnostician.BL.Dtos;
+﻿namespace IntelligentDiagnostician.BL.DTOs.BaseDTOs;
 
 public class BaseDto
 {
