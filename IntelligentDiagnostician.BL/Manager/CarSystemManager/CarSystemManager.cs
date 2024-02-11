@@ -1,13 +1,12 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.DAL.Repositories.SystemRepository;
-using IntelligentDiagnostician.DAL.Repositories.UserRepository;
+using IntelligentDiagnostician.DataModels.Models;
 
 namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
 public class CarSystemManager : ICarSystemManager
 {
     private readonly ICarSystemRepository _carSystemRepository;
-    private readonly IUserRepository _userRepository;
     public CarSystemManager(ICarSystemRepository carSystemRepository)
     {
         _carSystemRepository = carSystemRepository;
@@ -22,7 +21,7 @@ public class CarSystemManager : ICarSystemManager
                     Name = s.CarSystemName,
                 });
     }
-    
+
     public async Task<CarSystemDto?> GetByIdAsync(int id)
     {
         var system = await _carSystemRepository.GetByIdAsync(id);
@@ -33,20 +32,41 @@ public class CarSystemManager : ICarSystemManager
         {
             Id = system.Id,
             Name = system.CarSystemName,
+            // include only all sensors names in a list
+            Sensors = system.Sensors.Select(s => s.SensorName).ToList(),
+            CreatedBy = 1,
+            CreatedDate = system.CreatedDate,
+            ModifiedBy = 1,
+            ModifiedDate = system.ModifiedDate
         };
     }
-    public async Task<CarSystemDtoWithSensors?> GetByIdWithSensorsAsync(int id)
+
+    public async Task<CarSystemDto?>? CreateAsync(CarSystemForCreationDto systemFor)
+    {
+        var createdSystem = await _carSystemRepository.CreateAsync(new CarSystem
+        {
+            CarSystemName = systemFor.Name
+        });
+        if (createdSystem == null)
+            return null;
+        return new CarSystemDto
+        {
+            Id = createdSystem.Id,
+            Name = createdSystem.CarSystemName,
+            CreatedBy = 1,
+            CreatedDate = createdSystem.CreatedDate
+        };
+    }
+    public async Task<bool> DeleteAsync(int id)
     {
         var system = await _carSystemRepository.GetByIdAsync(id);
-        if(system == null)
-            return null;
-        
-        return new CarSystemDtoWithSensors
-        {
-            Id = system.Id,
-            Name = system.CarSystemName,
-            // include only all sensors names in a list
-            SensorsNames = system.Sensors.Select(s => s.SensorName).ToList(),
-        };
+        if (system == null)
+            return false;
+        await _carSystemRepository.DeleteAsync(system);
+        return true;
+    }
+    public async Task<bool> CarSystemExistsAsync(int id)
+    {
+        return await _carSystemRepository.CarSystemExistsAsync(id);
     }
 }

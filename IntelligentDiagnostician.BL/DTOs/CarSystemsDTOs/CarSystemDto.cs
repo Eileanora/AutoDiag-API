@@ -1,8 +1,11 @@
-﻿namespace IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.BaseDTOs;
+using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 
-public class CarSystemDto
+namespace IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+
+public class CarSystemDto : BaseDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
-    
+    public IEnumerable<string>? Sensors { get; set; }
 }

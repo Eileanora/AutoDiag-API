@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using IntelligentDiagnostician.BL.Manager.UsersManager;
@@ -24,8 +25,11 @@ public class Program
         // Add services to the container.
         builder.Services.AddDbContext<AppDbContext>(option => option
             .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
-        builder.Services.AddControllers();
-
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.IgnoreNullValues = true;
+            });
 
         #region MQTT Configuration
 
@@ -35,7 +39,7 @@ public class Program
 
         #endregion
 
-
+    
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -49,8 +53,7 @@ public class Program
         builder.Services.AddScoped<ICarSystemRepository, CarSystemRepository>();
         #endregion
         var app = builder.Build();
-
-
+        
         
         var mqttService = app.Services.GetRequiredService<IMqttService>();
         mqttService.ConnectAsync().GetAwaiter().GetResult();

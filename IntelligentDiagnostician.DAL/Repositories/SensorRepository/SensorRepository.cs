@@ -13,9 +13,10 @@ public  class SensorRepository : BaseRepository<Sensor>, ISensorRepository
     {
         _context = context;
     }
-    public new async Task<IEnumerable<Sensor>> GetAllAsync()
+    public new async Task<IEnumerable<Sensor>> GetAllAsync(int systemId)
     {
         return await _context.Sensors
+            .Where(s => s.CarSystemId == systemId)
             .Include(s => s.CarSystem)
             .ToListAsync();
     }

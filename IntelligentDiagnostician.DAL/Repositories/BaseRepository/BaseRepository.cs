@@ -1,5 +1,4 @@
 ﻿using IntelligentDiagnostician.DAL.Context;
-using IntelligentDiagnostician.DAL.Repositories.BaseRepository;
 using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +12,20 @@ public class BaseRepository<T> : IBaseRepository<T>
     {
         _context = context;
     }
-    public async Task AddAsync(T entity)
+    public async Task<T?> CreateAsync(T entity)
     {
-        await _context.Set<T>().AddAsync(entity);
-        await SaveChangesAsync();
+        try
+        {
+            var newEntry = await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return newEntry.Entity;
+        }
+        catch (Exception ex)
+        {
+            // Log the exception details
+            Console.WriteLine(ex.Message);
+            return null;
+        }
     }
 
     public async Task UpdateAsync(T entity)

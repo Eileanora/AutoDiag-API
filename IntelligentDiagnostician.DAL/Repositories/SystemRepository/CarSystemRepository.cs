@@ -19,4 +19,8 @@ public class CarSystemRepository : BaseRepository<CarSystem>, ICarSystemReposito
             .Include(cs => cs.Sensors)
             .FirstOrDefaultAsync(cs => cs.Id == id);
     }
+    public async Task<bool> CarSystemExistsAsync(int id)
+    {
+        return await _context.CarSystems.AnyAsync(cs => cs.Id == id);
+    }
 }

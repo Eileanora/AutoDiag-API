@@ -1,41 +1,68 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntelligentDiagnostician.API.Controllers;
 
-[Route("api/v1/sensors")]
+[Route("api/v1/car-systems/{systemId}/sensors")]
 [ApiController]
 public class SensorController : ControllerBase
 {
     private readonly ISensorsManager _sensorsManager;
-    public SensorController(ISensorsManager sensorsManager)
+    private readonly ICarSystemManager _carSystemManager;
+    public SensorController(ISensorsManager sensorsManager, ICarSystemManager carSystemManager)
     {
         _sensorsManager = sensorsManager;
+        _carSystemManager = carSystemManager;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors()
+    public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors(int systemId)
     {
-        var sensors = await _sensorsManager.GetAllAsync();
+        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
+            return NotFound();
+        
+        var sensors = await _sensorsManager.GetAllAsync(systemId);
         return Ok(sensors);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<SensorDto>> GetByIdAsync(int id)
+    [HttpGet("{sensorId}", Name = "GetSensorById")]
+    public async Task<ActionResult<SensorDto>> GetByIdAsync(int systemId, int sensorId)
     {
-        var sensor = await _sensorsManager.GetByIdAsync(id);
-        if (sensor == null)
-        {
+        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
-        }
+        
+        var sensor = await _sensorsManager.GetByIdAsync(sensorId);
+        if (sensor == null)
+            return NotFound();
         return Ok(sensor);
     }
-//     // post, patch, delete
-//     [HttpPost]
-//     public async Task<ActionResult<SensorDto> CreateSensor(
-//         SensorCreateDto sensor)
-//     {
-//         
-//     }
+    [HttpPost]
+    public async Task<ActionResult<SensorDto>> CreateSensor(int systemId, SensorForCreationDto sensor)
+    {
+        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
+            return NotFound();
+        
+        var newSensor = await _sensorsManager.CreateAsync(systemId, sensor);
+        if (newSensor == null)
+            return BadRequest();
+        
+        return CreatedAtRoute(
+            routeName: "GetSensorById",
+            routeValues: new { systemId = systemId, sensorId = newSensor.Id},
+            value: newSensor);
+    }
+    
+    [HttpDelete("{sensorId}")]
+    public async Task<ActionResult> DeleteSensor(int systemId, int sensorId)
+    {
+        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
+            return NotFound();
+        
+        var deleted = await _sensorsManager.DeleteAsync(sensorId);
+        if (!deleted)
+            return NotFound();
+        return NoContent();
+    }
 }
