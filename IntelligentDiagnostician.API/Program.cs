@@ -2,15 +2,14 @@ using System.Text.Json.Serialization;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using IntelligentDiagnostician.BL.Manager.UsersManager;
+using IntelligentDiagnostician.API.Helpers;
 using IntelligentDiagnostician.DAL.Repositories.UserRepository;
 using IntelligentDiagnostician.DAL.Context;
 using IntelligentDiagnostician.DAL.Repositories.SensorRepository;
 using IntelligentDiagnostician.DAL.Repositories.SystemRepository;
 using IntelligentDiagnostician.DAL.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+
 using MQTTnet;
 using MQTTnet.Client;
 
@@ -25,10 +24,14 @@ public class Program
         // Add services to the container.
         builder.Services.AddDbContext<AppDbContext>(option => option
             .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
-        builder.Services.AddControllers()
+        builder.Services.AddControllers(options =>
+            { 
+                options.InputFormatters.Insert(0, JsonPatchInputFormatter.GetJsonPatchInputFormatter());
+            })
             .AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.IgnoreNullValues = true;
+                options.JsonSerializerOptions
+                    .DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
 
         #region MQTT Configuration
@@ -55,8 +58,8 @@ public class Program
         var app = builder.Build();
         
         
-        var mqttService = app.Services.GetRequiredService<IMqttService>();
-        mqttService.ConnectAsync().GetAwaiter().GetResult();
+        // var mqttService = app.Services.GetRequiredService<IMqttService>();
+        // mqttService.ConnectAsync().GetAwaiter().GetResult();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

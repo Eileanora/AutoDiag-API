@@ -6,5 +6,6 @@ namespace IntelligentDiagnostician.DAL.Repositories.SensorRepository;
 public interface ISensorRepository : IBaseRepository<Sensor>
 {
     Task<IEnumerable<Sensor>> GetAllAsync(int systemId);
-    new Task<Sensor?> GetByIdAsync(int id);
+    Task<Sensor?> GetByIdAsync(int systemId, int sensorId);
+    Task<bool> SensorExistsAsync(int id);
 }

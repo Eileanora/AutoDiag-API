@@ -2,6 +2,7 @@
 using IntelligentDiagnostician.DAL.Repositories.SensorRepository;
 using IntelligentDiagnostician.DataModels.Models;
 
+
 namespace IntelligentDiagnostician.BL.Manager.SensorsManager;
 
 public class SensorsManager : ISensorsManager
@@ -23,9 +24,9 @@ public class SensorsManager : ISensorsManager
         });
     }
     
-    public async Task<SensorDto> GetByIdAsync(int id)
+    public async Task<SensorDto?> GetByIdAsync(int systemId, int sensorId)
     {
-        var sensor = await _sensorRepository.GetByIdAsync(id);
+        var sensor = await _sensorRepository.GetByIdAsync(systemId, sensorId);
         if (sensor == null)
             return null;
         
@@ -41,7 +42,7 @@ public class SensorsManager : ISensorsManager
         };
     }
 
-    public async Task<SensorDto> CreateAsync(int systemId, SensorForCreationDto sensor)
+    public async Task<SensorDto?> CreateAsync(int systemId, SensorForCreationDto sensor)
     {
         var newSensor = await _sensorRepository.CreateAsync(new Sensor
         {
@@ -68,5 +69,18 @@ public class SensorsManager : ISensorsManager
             return false;
         await _sensorRepository.DeleteAsync(toDelete);
         return true;
+    }
+    
+    public async Task<bool> SensorExistsAsync(int id)
+    {
+        return await _sensorRepository.SensorExistsAsync(id);
+    }
+    
+    public async Task UpdateAsync(int sensorId, SensorForUpdateDto sensorForUpdate)
+    {
+        var sensor = await _sensorRepository.GetByIdAsync(sensorId);
+        sensor!.SensorName = sensorForUpdate.Name;
+        sensor.CarSystemId = sensorForUpdate.CarSystemId;
+        await _sensorRepository.UpdateAsync(sensor);
     }
 }

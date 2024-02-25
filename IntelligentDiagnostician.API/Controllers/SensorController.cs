@@ -1,6 +1,7 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntelligentDiagnostician.API.Controllers;
@@ -33,7 +34,7 @@ public class SensorController : ControllerBase
         if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensor = await _sensorsManager.GetByIdAsync(sensorId);
+        var sensor = await _sensorsManager.GetByIdAsync(systemId, sensorId);
         if (sensor == null)
             return NotFound();
         return Ok(sensor);
@@ -52,6 +53,29 @@ public class SensorController : ControllerBase
             routeName: "GetSensorById",
             routeValues: new { systemId = systemId, sensorId = newSensor.Id},
             value: newSensor);
+    }
+    
+    [HttpPatch("{sensorId}")]
+    public async Task<ActionResult> UpdateSensor(int systemId, int sensorId, JsonPatchDocument<SensorForUpdateDto> patchDocument)
+    {
+        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
+            return NotFound();
+        
+        var sensor = await _sensorsManager.GetByIdAsync(systemId, sensorId);
+        if (sensor == null)
+            return NotFound();
+        
+        var sensorToPatch = new SensorForUpdateDto
+        {
+            Name = sensor.Name,
+            CarSystemId = systemId
+        };
+        patchDocument.ApplyTo(sensorToPatch, ModelState);
+        if (!TryValidateModel(sensorToPatch))
+            return ValidationProblem(ModelState);
+        
+        await _sensorsManager.UpdateAsync(sensorId, sensorToPatch);
+        return NoContent();
     }
     
     [HttpDelete("{sensorId}")]

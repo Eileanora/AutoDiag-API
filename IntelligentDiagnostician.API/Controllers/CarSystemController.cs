@@ -1,6 +1,10 @@
-﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+﻿using System.Text.Json.Nodes;
+using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 
 
 namespace IntelligentDiagnostician.API.Controllers;
@@ -15,11 +19,7 @@ public class CarSystemController(ICarSystemManager carSystemManager) : Controlle
         var systems = await carSystemManager.GetAllAsync();
         return Ok(systems);
     }
-    // [HttpGet("{id}")]
-    // public async Task<ActionResult> GetByIdAsync(int id, bool includeSensors = false)
-    // {
-    //     
-    // }
+
     [HttpGet("{systemId}", Name = "GetSystemById")]
     public async Task<ActionResult<CarSystemDto>> GetSystemByIdAsync(int systemId)
     {
@@ -42,6 +42,27 @@ public class CarSystemController(ICarSystemManager carSystemManager) : Controlle
             routeName: "GetSystemById",
             routeValues: new { systemId = createdSystem.Id },
             value: createdSystem);
+    }
+    
+    [HttpPatch("{systemId}")]
+    public async Task<ActionResult> UpdateSystem(
+        int systemId, JsonPatchDocument<CarSystemForUpdateDto> patchDocument)
+    {
+        var system = await carSystemManager.GetByIdAsync(systemId);
+        if (system == null)
+            return NotFound();
+        
+        var systemToPatch = new CarSystemForUpdateDto
+        {
+            Name = system.Name
+        };
+        patchDocument.ApplyTo(systemToPatch, ModelState);
+        // check if the patch was successful
+        if (!TryValidateModel(systemToPatch))
+            return ValidationProblem(ModelState);
+        // if the patch was successful, update the system
+        await carSystemManager.UpdateAsync(systemId, systemToPatch);
+        return NoContent();
     }
     
     [HttpDelete("{systemId}")]

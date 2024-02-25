@@ -20,10 +20,14 @@ public  class SensorRepository : BaseRepository<Sensor>, ISensorRepository
             .Include(s => s.CarSystem)
             .ToListAsync();
     }
-    public new async Task<Sensor?> GetByIdAsync(int id)
+    public async Task<Sensor?> GetByIdAsync(int systemId, int id)
     {
         return await _context.Sensors
             .Include(s => s.CarSystem)
-            .FirstOrDefaultAsync(s => s.Id == id);
+            .FirstOrDefaultAsync(s => s.Id == id && s.CarSystemId == systemId);
+    }
+    public async Task<bool> SensorExistsAsync(int id)
+    {
+        return await _context.Sensors.AnyAsync(s => s.Id == id);
     }
 }

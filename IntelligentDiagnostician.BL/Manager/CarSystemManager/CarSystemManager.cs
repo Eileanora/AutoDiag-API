@@ -41,7 +41,7 @@ public class CarSystemManager : ICarSystemManager
         };
     }
 
-    public async Task<CarSystemDto?>? CreateAsync(CarSystemForCreationDto systemFor)
+    public async Task<CarSystemDto?> CreateAsync(CarSystemForCreationDto systemFor)
     {
         var createdSystem = await _carSystemRepository.CreateAsync(new CarSystem
         {
@@ -68,5 +68,11 @@ public class CarSystemManager : ICarSystemManager
     public async Task<bool> CarSystemExistsAsync(int id)
     {
         return await _carSystemRepository.CarSystemExistsAsync(id);
+    }
+    public async Task UpdateAsync(int systemId, CarSystemForUpdateDto systemForUpdate)
+    {
+        var system = await _carSystemRepository.GetByIdAsync(systemId);
+        system!.CarSystemName = systemForUpdate.Name;
+        await _carSystemRepository.UpdateAsync(system);
     }
 }
