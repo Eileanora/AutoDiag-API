@@ -1,17 +1,22 @@
 using System.Text.Json.Serialization;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
-using IntelligentDiagnostician.BL.Manager.UsersManager;
 using IntelligentDiagnostician.API.Helpers;
-using IntelligentDiagnostician.DAL.Repositories.UserRepository;
 using IntelligentDiagnostician.DAL.Context;
 using IntelligentDiagnostician.DAL.Repositories.SensorRepository;
 using IntelligentDiagnostician.DAL.Repositories.SystemRepository;
-using IntelligentDiagnostician.DAL.Services;
 using Microsoft.EntityFrameworkCore;
 
 using MQTTnet;
 using MQTTnet.Client;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using IntelligentDiagnostician.DataModels.Models;
+using Microsoft.AspNetCore.Identity;
+using IntelligentDiagnostician.DAL.Services.MqttServices;
+using IntelligentDiagnostician.BL.AuthServices;
 
 namespace IntelligentDiagnostician.API;
 
@@ -24,6 +29,8 @@ public class Program
         // Add services to the container.
         builder.Services.AddDbContext<AppDbContext>(option => option
             .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
+
+        #region  JsonPatch 
         builder.Services.AddControllers(options =>
             { 
                 options.InputFormatters.Insert(0, JsonPatchInputFormatter.GetJsonPatchInputFormatter());
@@ -33,6 +40,34 @@ public class Program
                 options.JsonSerializerOptions
                     .DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
+        #endregion
+
+        #region Jwt Options  And Identity
+        
+        builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+
+        var JwtOptions =    builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
+
+        builder.Services.AddSingleton(JwtOptions);
+
+        builder.Services.AddAuthentication()
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, Options =>
+            {
+                Options.SaveToken = true;
+
+                Options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,  
+                    ValidIssuer = JwtOptions.Issuer , 
+                    ValidateAudience = true,    
+                    ValidAudience = JwtOptions.Audience ,   
+                    ValidateLifetime = true , 
+                    ValidateIssuerSigningKey = true ,   
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.SigningKey))
+                };
+            }); 
+        #endregion
+
 
         #region MQTT Configuration
 
@@ -48,12 +83,11 @@ public class Program
         builder.Services.AddSwaggerGen();
         
         #region Services
-        builder.Services.AddScoped<IUsersManager, UsersManager>();
-        builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<ISensorsManager, SensorsManager>();
         builder.Services.AddScoped<ISensorRepository, SensorRepository>();
         builder.Services.AddScoped<ICarSystemManager, CarSystemManager>();
         builder.Services.AddScoped<ICarSystemRepository, CarSystemRepository>();
+        builder.Services.AddScoped<IAuthService , AuthService>();       
         #endregion
         var app = builder.Build();
         
@@ -68,6 +102,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+      //  app.UseAuthentication();    
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();

@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Nodes;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -13,7 +14,9 @@ namespace IntelligentDiagnostician.API.Controllers;
 [ApiController]
 public class CarSystemController(ICarSystemManager carSystemManager) : ControllerBase
 {
+
     [HttpGet]
+    [Authorize(AuthenticationSchemes = "Bearer",Roles ="admin")]
     public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync()
     {
         var systems = await carSystemManager.GetAllAsync();
