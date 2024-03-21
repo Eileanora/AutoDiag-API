@@ -54,7 +54,7 @@ public class CarSystemController(ICarSystemManager carSystemManager) : Controlle
         
         var systemToPatch = new CarSystemForUpdateDto
         {
-            Name = system.Name
+            CarSystemName = system.CarSystemName
         };
         patchDocument.ApplyTo(systemToPatch, ModelState);
         // check if the patch was successful

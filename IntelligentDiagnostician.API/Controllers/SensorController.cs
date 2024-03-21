@@ -67,7 +67,7 @@ public class SensorController : ControllerBase
         
         var sensorToPatch = new SensorForUpdateDto
         {
-            Name = sensor.Name,
+            SensorName = sensor.SensorName,
             CarSystemId = systemId
         };
         patchDocument.ApplyTo(sensorToPatch, ModelState);

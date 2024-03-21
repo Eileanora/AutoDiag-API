@@ -1,4 +1,5 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+using IntelligentDiagnostician.BL.Utils.Mapper.ConverterFactory;
 using IntelligentDiagnostician.DAL.Repositories.SensorRepository;
 using IntelligentDiagnostician.DataModels.Models;
 
@@ -8,6 +9,7 @@ namespace IntelligentDiagnostician.BL.Manager.SensorsManager;
 public class SensorsManager : ISensorsManager
 {
     private readonly ISensorRepository _sensorRepository;
+
     public SensorsManager(ISensorRepository sensorRepository)
     {
         _sensorRepository = sensorRepository;
@@ -16,11 +18,10 @@ public class SensorsManager : ISensorsManager
     public async Task<IEnumerable<SensorDto>> GetAllAsync(int systemId)
     {
         var sensors = await _sensorRepository.GetAllAsync(systemId);
-
         return sensors.Select(s => new SensorDto
         {
             Id = s.Id,
-            Name = s.SensorName,
+            SensorName = s.SensorName,
         });
     }
     
@@ -33,7 +34,7 @@ public class SensorsManager : ISensorsManager
         return new SensorDto
         {
             Id = sensor.Id,
-            Name = sensor.SensorName,
+            SensorName = sensor.SensorName,
             CarSystemName = sensor.CarSystem.CarSystemName,
             CreatedBy = 1,
             CreatedDate = sensor.CreatedDate,
@@ -55,7 +56,7 @@ public class SensorsManager : ISensorsManager
         return new SensorDto
         {
             Id = newSensor.Id,
-            Name = newSensor.SensorName,
+            SensorName = newSensor.SensorName,
             CarSystemId = systemId,
             CreatedBy = 1,
             CreatedDate = newSensor.CreatedDate,
@@ -79,7 +80,7 @@ public class SensorsManager : ISensorsManager
     public async Task UpdateAsync(int sensorId, SensorForUpdateDto sensorForUpdate)
     {
         var sensor = await _sensorRepository.GetByIdAsync(sensorId);
-        sensor!.SensorName = sensorForUpdate.Name;
+        sensor!.SensorName = sensorForUpdate.SensorName;
         sensor.CarSystemId = sensorForUpdate.CarSystemId;
         await _sensorRepository.UpdateAsync(sensor);
     }

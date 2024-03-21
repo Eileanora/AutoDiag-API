@@ -2,9 +2,6 @@
 
 namespace IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 
-public class CarSystemForCreationDto
+public class CarSystemForCreationDto : CarSystemBaseDto
 {
-    [Required(ErrorMessage = "Name should be filled in")]
-    [MaxLength(4)]
-    public string Name { get; set; } = string.Empty;
 }

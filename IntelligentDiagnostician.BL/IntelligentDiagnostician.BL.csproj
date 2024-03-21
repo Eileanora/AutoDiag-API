@@ -8,5 +8,8 @@
     <ItemGroup>
     <ProjectReference Include="..\IntelligentDiagnostician.DAL\IntelligentDiagnostician.DAL.csproj" />
   </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
+    </ItemGroup>
 
 </Project>

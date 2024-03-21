@@ -3,11 +3,15 @@ using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using IntelligentDiagnostician.BL.Manager.UsersManager;
 using IntelligentDiagnostician.API.Helpers;
+using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
+using IntelligentDiagnostician.BL.Utils.Mapper.ConverterFactory;
 using IntelligentDiagnostician.DAL.Repositories.UserRepository;
 using IntelligentDiagnostician.DAL.Context;
 using IntelligentDiagnostician.DAL.Repositories.SensorRepository;
 using IntelligentDiagnostician.DAL.Repositories.SystemRepository;
 using IntelligentDiagnostician.DAL.Services;
+using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 
 using MQTTnet;
@@ -47,6 +51,11 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         
+        // #region AutoMapper
+        // builder.Services.AddScoped<IConverterFactory, ConverterFactory>();
+        // builder.Services.AddSingleton<IConverter<Sensor, SensorDto>, SensorConvertor>();
+        // #endregion
+        
         #region Services
         builder.Services.AddScoped<IUsersManager, UsersManager>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -55,9 +64,14 @@ public class Program
         builder.Services.AddScoped<ICarSystemManager, CarSystemManager>();
         builder.Services.AddScoped<ICarSystemRepository, CarSystemRepository>();
         #endregion
+
+
+
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        
         var app = builder.Build();
         
-        
+
         // var mqttService = app.Services.GetRequiredService<IMqttService>();
         // mqttService.ConnectAsync().GetAwaiter().GetResult();
 

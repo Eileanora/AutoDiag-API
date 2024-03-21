@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+﻿using AutoMapper;
+using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.DAL.Repositories.SystemRepository;
 using IntelligentDiagnostician.DataModels.Models;
 
@@ -7,9 +8,11 @@ namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 public class CarSystemManager : ICarSystemManager
 {
     private readonly ICarSystemRepository _carSystemRepository;
-    public CarSystemManager(ICarSystemRepository carSystemRepository)
+    private readonly IMapper _mapper;
+    public CarSystemManager(ICarSystemRepository carSystemRepository, IMapper mapper)
     {
         _carSystemRepository = carSystemRepository;
+        _mapper = mapper;
     }
     
     public async Task<IEnumerable<CarSystemDto>?> GetAllAsync()
@@ -18,7 +21,7 @@ public class CarSystemManager : ICarSystemManager
         return systems.Select(s => new CarSystemDto
                 {
                     Id = s.Id,
-                    Name = s.CarSystemName,
+                    CarSystemName = s.CarSystemName,
                 });
     }
 
@@ -31,7 +34,7 @@ public class CarSystemManager : ICarSystemManager
         return new CarSystemDto
         {
             Id = system.Id,
-            Name = system.CarSystemName,
+            CarSystemName = system.CarSystemName,
             // include only all sensors names in a list
             Sensors = system.Sensors.Select(s => s.SensorName).ToList(),
             CreatedBy = 1,
@@ -45,14 +48,14 @@ public class CarSystemManager : ICarSystemManager
     {
         var createdSystem = await _carSystemRepository.CreateAsync(new CarSystem
         {
-            CarSystemName = systemFor.Name
+            CarSystemName = systemFor.CarSystemName
         });
         if (createdSystem == null)
             return null;
         return new CarSystemDto
         {
             Id = createdSystem.Id,
-            Name = createdSystem.CarSystemName,
+            CarSystemName = createdSystem.CarSystemName,
             CreatedBy = 1,
             CreatedDate = createdSystem.CreatedDate
         };
@@ -72,7 +75,7 @@ public class CarSystemManager : ICarSystemManager
     public async Task UpdateAsync(int systemId, CarSystemForUpdateDto systemForUpdate)
     {
         var system = await _carSystemRepository.GetByIdAsync(systemId);
-        system!.CarSystemName = systemForUpdate.Name;
+        system!.CarSystemName = systemForUpdate.CarSystemName;
         await _carSystemRepository.UpdateAsync(system);
     }
 }

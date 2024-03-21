@@ -2,10 +2,6 @@
 
 namespace IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 
-public class SensorForUpdateDto
+public class SensorForUpdateDto : SensorBaseDto
 {
-    [Required]
-    [MinLength(3), MaxLength(20)]
-    public string Name { get; set; } = string.Empty;
-    public int CarSystemId { get; set; }
 }
