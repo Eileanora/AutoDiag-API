@@ -17,7 +17,8 @@ public class SensorController : ControllerBase
         _sensorsManager = sensorsManager;
         _carSystemManager = carSystemManager;
     }
-
+    
+    [HttpHead]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors(int systemId)
     {
@@ -88,5 +89,12 @@ public class SensorController : ControllerBase
         if (!deleted)
             return NotFound();
         return NoContent();
+    }
+    [Route("/api/v1/car-systems/sensors")]
+    [HttpOptions]
+    public IActionResult GetSensorsOptions()
+    {
+        Response.Headers.Append("Allow", "GET,POST,PATCH,DELETE,OPTIONS");
+        return Ok();
     }
 }

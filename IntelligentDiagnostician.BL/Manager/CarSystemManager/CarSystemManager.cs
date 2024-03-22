@@ -46,16 +46,22 @@ public class CarSystemManager : ICarSystemManager
 
     public async Task<CarSystemDto?> CreateAsync(CarSystemForCreationDto systemFor)
     {
-        var createdSystem = await _carSystemRepository.CreateAsync(new CarSystem
+        var systemToCreate = new CarSystem
         {
-            CarSystemName = systemFor.CarSystemName
-        });
+            CarSystemName = systemFor.CarSystemName,
+            Sensors = systemFor.Sensors != null
+                ? systemFor.Sensors
+                    .Select(s => new Sensor { SensorName = s.SensorName }).ToList()
+                : null
+        };
+        var createdSystem = await _carSystemRepository.CreateAsync(systemToCreate);
         if (createdSystem == null)
             return null;
         return new CarSystemDto
         {
             Id = createdSystem.Id,
             CarSystemName = createdSystem.CarSystemName,
+            Sensors = createdSystem.Sensors != null ? createdSystem.Sensors.Select(s => s.SensorName).ToList() : null,
             CreatedBy = 1,
             CreatedDate = createdSystem.CreatedDate
         };

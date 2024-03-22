@@ -13,6 +13,7 @@ namespace IntelligentDiagnostician.API.Controllers;
 [ApiController]
 public class CarSystemController(ICarSystemManager carSystemManager) : ControllerBase
 {
+    [HttpHead]
     [HttpGet]
     public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync()
     {
@@ -72,5 +73,12 @@ public class CarSystemController(ICarSystemManager carSystemManager) : Controlle
         if (!deleted)
             return NotFound();
         return NoContent();
+    }
+    
+    [HttpOptions]
+    public IActionResult GetSystemsOptions()
+    {
+        Response.Headers.Append("Allow", "GET,POST,PATCH,DELETE,OPTIONS");
+        return Ok();
     }
 }
