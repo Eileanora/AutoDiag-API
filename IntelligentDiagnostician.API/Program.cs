@@ -1,21 +1,7 @@
 using System.Text.Json.Serialization;
-using IntelligentDiagnostician.BL.Manager.CarSystemManager;
-using IntelligentDiagnostician.BL.Manager.SensorsManager;
-using IntelligentDiagnostician.BL.Manager.UsersManager;
 using IntelligentDiagnostician.API.Helpers;
-using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
-using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
-using IntelligentDiagnostician.BL.Utils.Mapper.ConverterFactory;
-using IntelligentDiagnostician.DAL.Repositories.UserRepository;
-using IntelligentDiagnostician.DAL.Context;
-using IntelligentDiagnostician.DAL.Repositories.SensorRepository;
-using IntelligentDiagnostician.DAL.Repositories.SystemRepository;
-using IntelligentDiagnostician.DAL.Services;
-using IntelligentDiagnostician.DataModels.Models;
-using Microsoft.EntityFrameworkCore;
-
-using MQTTnet;
-using MQTTnet.Client;
+using IntelligentDiagnostician.BL;
+using IntelligentDiagnostician.DAL;
 
 namespace IntelligentDiagnostician.API;
 
@@ -26,8 +12,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddDbContext<AppDbContext>(option => option
-            .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
+        // builder.Services.AddDbContext<AppDbContext>(option => option
+        //     .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
         builder.Services.AddControllers(options =>
             { 
                 options.InputFormatters.Insert(0, JsonPatchInputFormatter.GetJsonPatchInputFormatter());
@@ -40,12 +26,16 @@ public class Program
 
         #region MQTT Configuration
 
-        builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
-        builder.Services.AddSingleton<IMqttService, MqttService>();
-        builder.Services.AddSingleton<IMessageProcessor, MessageProcessor>();
+        // builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
+        // builder.Services.AddSingleton<IMqttService, MqttService>();
+        // builder.Services.AddSingleton<IMessageProcessor, MessageProcessor>();
 
         #endregion
 
+        // register services of the DAL and BL
+        builder.Services.AddDalServices(builder.Configuration);
+        builder.Services.AddBlServices();
+            
     
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -56,16 +46,6 @@ public class Program
         // builder.Services.AddSingleton<IConverter<Sensor, SensorDto>, SensorConvertor>();
         // #endregion
         
-        #region Services
-        builder.Services.AddScoped<IUsersManager, UsersManager>();
-        builder.Services.AddScoped<IUserRepository, UserRepository>();
-        builder.Services.AddScoped<ISensorsManager, SensorsManager>();
-        builder.Services.AddScoped<ISensorRepository, SensorRepository>();
-        builder.Services.AddScoped<ICarSystemManager, CarSystemManager>();
-        builder.Services.AddScoped<ICarSystemRepository, CarSystemRepository>();
-        #endregion
-
-
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         
@@ -85,6 +65,8 @@ public class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        
+
 
         app.Run();
     }

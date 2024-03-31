@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IntelligentDiagnostician.BL\IntelligentDiagnostician.BL.csproj" />
     <ProjectReference Include="..\IntelligentDiagnostician.DataModels\IntelligentDiagnostician.DataModels.csproj" />
   </ItemGroup>
 

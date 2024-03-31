@@ -20,6 +20,8 @@ public class SensorController : ControllerBase
     
     [HttpHead]
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors(int systemId)
     {
         if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
@@ -30,17 +32,22 @@ public class SensorController : ControllerBase
     }
 
     [HttpGet("{sensorId}", Name = "GetSensorById")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<SensorDto>> GetByIdAsync(int systemId, int sensorId)
     {
         if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensor = await _sensorsManager.GetByIdAsync(systemId, sensorId);
+        var sensor = await _sensorsManager.GetByIdAsync(sensorId);
         if (sensor == null)
             return NotFound();
         return Ok(sensor);
     }
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<SensorDto>> CreateSensor(int systemId, SensorForCreationDto sensor)
     {
         if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
@@ -57,12 +64,14 @@ public class SensorController : ControllerBase
     }
     
     [HttpPatch("{sensorId}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateSensor(int systemId, int sensorId, JsonPatchDocument<SensorForUpdateDto> patchDocument)
     {
         if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensor = await _sensorsManager.GetByIdAsync(systemId, sensorId);
+        var sensor = await _sensorsManager.GetByIdAsync(sensorId);
         if (sensor == null)
             return NotFound();
         
@@ -80,18 +89,24 @@ public class SensorController : ControllerBase
     }
     
     [HttpDelete("{sensorId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> DeleteSensor(int systemId, int sensorId)
     {
         if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
+        var sensorToDelete = await _sensorsManager.GetByIdAsync(sensorId);
         
-        var deleted = await _sensorsManager.DeleteAsync(sensorId);
-        if (!deleted)
+        if (sensorToDelete == null)
             return NotFound();
+        
+        await _sensorsManager.DeleteAsync(sensorToDelete);
+        
         return NoContent();
     }
     [Route("/api/v1/car-systems/sensors")]
     [HttpOptions]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetSensorsOptions()
     {
         Response.Headers.Append("Allow", "GET,POST,PATCH,DELETE,OPTIONS");

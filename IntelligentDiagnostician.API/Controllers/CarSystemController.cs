@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Nodes;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
+using IntelligentDiagnostician.BL.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -15,7 +16,8 @@ public class CarSystemController(ICarSystemManager carSystemManager) : Controlle
 {
     [HttpHead]
     [HttpGet]
-    public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync()
+    public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync(
+        [FromQuery] CarSystemsResourceParameters resourceParameters)
     {
         var systems = await carSystemManager.GetAllAsync();
         return Ok(systems);

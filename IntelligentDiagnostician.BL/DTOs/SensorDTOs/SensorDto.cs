@@ -1,6 +1,10 @@
-﻿using IntelligentDiagnostician.BL.DTOs.Auditable;
+﻿using System.Text.Json.Serialization;
+using IntelligentDiagnostician.BL.DTOs.Auditable;
+using IntelligentDiagnostician.BL.Utils.OrderedPropertiesJson;
+
 namespace IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 
+// [JsonConverter(typeof(MicrosoftOrderedPropertiesConverter<SensorDto>))]
 public class SensorDto : SensorBaseDto , IAuditable
 {
     public int Id { get; set; }

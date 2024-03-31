@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
-using IntelligentDiagnostician.DAL.Repositories.SystemRepository;
+using IntelligentDiagnostician.BL.Repositories;
 using IntelligentDiagnostician.DataModels.Models;
-
 namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
 public class CarSystemManager : ICarSystemManager

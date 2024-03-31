@@ -1,6 +1,5 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
-using IntelligentDiagnostician.BL.Utils.Mapper.ConverterFactory;
-using IntelligentDiagnostician.DAL.Repositories.SensorRepository;
+using IntelligentDiagnostician.BL.Repositories;
 using IntelligentDiagnostician.DataModels.Models;
 
 
@@ -25,9 +24,9 @@ public class SensorsManager : ISensorsManager
         });
     }
     
-    public async Task<SensorDto?> GetByIdAsync(int systemId, int sensorId)
+    public async Task<SensorDto?> GetByIdAsync(int sensorId)
     {
-        var sensor = await _sensorRepository.GetByIdAsync(systemId, sensorId);
+        var sensor = await _sensorRepository.GetByIdAsync(sensorId);
         if (sensor == null)
             return null;
         
@@ -63,19 +62,12 @@ public class SensorsManager : ISensorsManager
         };
     }
 
-    public async  Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(SensorDto sensorToDelete)
     {
-        var toDelete = await _sensorRepository.GetByIdAsync(id);
-        if (toDelete == null)
-            return false;
-        await _sensorRepository.DeleteAsync(toDelete);
-        return true;
+        var sensor = await _sensorRepository.GetByIdAsync(sensorToDelete.Id);
+        await _sensorRepository.DeleteAsync(sensor);
     }
     
-    public async Task<bool> SensorExistsAsync(int id)
-    {
-        return await _sensorRepository.SensorExistsAsync(id);
-    }
     
     public async Task UpdateAsync(int sensorId, SensorForUpdateDto sensorForUpdate)
     {
