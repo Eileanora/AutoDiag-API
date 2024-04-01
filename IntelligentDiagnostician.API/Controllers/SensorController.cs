@@ -1,6 +1,7 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
+using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +58,7 @@ public class SensorController : ControllerBase
         if (newSensor == null)
             return BadRequest();
         
+        // TODO: Review mapping and return value for routeValue
         return CreatedAtRoute(
             routeName: "GetSensorById",
             routeValues: new { systemId = systemId, sensorId = newSensor.Id},
@@ -75,11 +77,7 @@ public class SensorController : ControllerBase
         if (sensor == null)
             return NotFound();
         
-        var sensorToPatch = new SensorForUpdateDto
-        {
-            SensorName = sensor.SensorName,
-            CarSystemId = systemId
-        };
+        var sensorToPatch = sensor.ToUpdateDto();
         patchDocument.ApplyTo(sensorToPatch, ModelState);
         if (!TryValidateModel(sensorToPatch))
             return ValidationProblem(ModelState);

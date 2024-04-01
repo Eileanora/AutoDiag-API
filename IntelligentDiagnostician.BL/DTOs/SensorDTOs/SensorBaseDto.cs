@@ -7,5 +7,5 @@ public abstract class SensorBaseDto
     [Required(ErrorMessage = "Name should be filled in")]
     // [MaxLength(10, ErrorMessage = "btats ") ]
     public string SensorName { get; set; } = string.Empty;
-    public int CarSystemId { get; set; }
+    public int? CarSystemId { get; set; }
 }

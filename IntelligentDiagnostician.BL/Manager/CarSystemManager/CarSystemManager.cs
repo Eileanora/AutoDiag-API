@@ -1,27 +1,21 @@
-﻿using AutoMapper;
-using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.Repositories;
+using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 using IntelligentDiagnostician.DataModels.Models;
 namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
 public class CarSystemManager : ICarSystemManager
 {
     private readonly ICarSystemRepository _carSystemRepository;
-    private readonly IMapper _mapper;
-    public CarSystemManager(ICarSystemRepository carSystemRepository, IMapper mapper)
+    public CarSystemManager(ICarSystemRepository carSystemRepository)
     {
         _carSystemRepository = carSystemRepository;
-        _mapper = mapper;
     }
     
     public async Task<IEnumerable<CarSystemDto>?> GetAllAsync()
     {
         var systems = await _carSystemRepository.GetAllAsync();
-        return systems.Select(s => new CarSystemDto
-                {
-                    Id = s.Id,
-                    CarSystemName = s.CarSystemName,
-                });
+        return systems.Select(s => s.ToListDto());
     }
 
     public async Task<CarSystemDto?> GetByIdAsync(int id)
@@ -29,18 +23,8 @@ public class CarSystemManager : ICarSystemManager
         var system = await _carSystemRepository.GetByIdAsync(id);
         if(system == null)
             return null;
-        
-        return new CarSystemDto
-        {
-            Id = system.Id,
-            CarSystemName = system.CarSystemName,
-            // include only all sensors names in a list
-            Sensors = system.Sensors.Select(s => s.SensorName).ToList(),
-            CreatedBy = 1,
-            CreatedDate = system.CreatedDate,
-            ModifiedBy = 1,
-            ModifiedDate = system.ModifiedDate
-        };
+
+        return system.ToDto();
     }
 
     public async Task<CarSystemDto?> CreateAsync(CarSystemForCreationDto systemFor)
@@ -56,14 +40,7 @@ public class CarSystemManager : ICarSystemManager
         var createdSystem = await _carSystemRepository.CreateAsync(systemToCreate);
         if (createdSystem == null)
             return null;
-        return new CarSystemDto
-        {
-            Id = createdSystem.Id,
-            CarSystemName = createdSystem.CarSystemName,
-            Sensors = createdSystem.Sensors != null ? createdSystem.Sensors.Select(s => s.SensorName).ToList() : null,
-            CreatedBy = 1,
-            CreatedDate = createdSystem.CreatedDate
-        };
+        return createdSystem.ToDto();
     }
     public async Task<bool> DeleteAsync(int id)
     {

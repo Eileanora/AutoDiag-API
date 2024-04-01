@@ -1,11 +1,10 @@
-﻿using System.Text.Json.Nodes;
-using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.ResourceParameters;
+using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json;
+
 
 
 namespace IntelligentDiagnostician.API.Controllers;
@@ -41,6 +40,8 @@ public class CarSystemController(ICarSystemManager carSystemManager) : Controlle
         var createdSystem = await carSystemManager.CreateAsync(systemFor);
         if(createdSystem == null)
             return BadRequest();
+        
+        // TODO: Review mapping and return value for routeValue
         return CreatedAtRoute(
             routeName: "GetSystemById",
             routeValues: new { systemId = createdSystem.Id },
@@ -55,10 +56,7 @@ public class CarSystemController(ICarSystemManager carSystemManager) : Controlle
         if (system == null)
             return NotFound();
         
-        var systemToPatch = new CarSystemForUpdateDto
-        {
-            CarSystemName = system.CarSystemName
-        };
+        var systemToPatch = system.ToUpdateDto();
         patchDocument.ApplyTo(systemToPatch, ModelState);
         // check if the patch was successful
         if (!TryValidateModel(systemToPatch))

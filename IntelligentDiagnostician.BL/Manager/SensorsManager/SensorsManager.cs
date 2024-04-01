@@ -1,5 +1,6 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Repositories;
+using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 using IntelligentDiagnostician.DataModels.Models;
 
 
@@ -17,11 +18,7 @@ public class SensorsManager : ISensorsManager
     public async Task<IEnumerable<SensorDto>> GetAllAsync(int systemId)
     {
         var sensors = await _sensorRepository.GetAllAsync(systemId);
-        return sensors.Select(s => new SensorDto
-        {
-            Id = s.Id,
-            SensorName = s.SensorName,
-        });
+        return sensors.Select(s => s.ToListDto());
     }
     
     public async Task<SensorDto?> GetByIdAsync(int sensorId)
@@ -30,36 +27,16 @@ public class SensorsManager : ISensorsManager
         if (sensor == null)
             return null;
         
-        return new SensorDto
-        {
-            Id = sensor.Id,
-            SensorName = sensor.SensorName,
-            CarSystemName = sensor.CarSystem.CarSystemName,
-            CreatedBy = 1,
-            CreatedDate = sensor.CreatedDate,
-            ModifiedBy = 1,
-            ModifiedDate = sensor.ModifiedDate
-        };
+        return sensor.ToDto();
     }
 
     public async Task<SensorDto?> CreateAsync(int systemId, SensorForCreationDto sensor)
     {
-        var newSensor = await _sensorRepository.CreateAsync(new Sensor
-        {
-            SensorName = sensor.SensorName,
-            CarSystemId = systemId
-        });
+        var newSensor = await _sensorRepository.CreateAsync(sensor.ToEntity(systemId));
         if (newSensor == null)
             return null;
         
-        return new SensorDto
-        {
-            Id = newSensor.Id,
-            SensorName = newSensor.SensorName,
-            CarSystemId = systemId,
-            CreatedBy = 1,
-            CreatedDate = newSensor.CreatedDate,
-        };
+        return newSensor.ToDto();
     }
 
     public async Task DeleteAsync(SensorDto sensorToDelete)
@@ -72,7 +49,7 @@ public class SensorsManager : ISensorsManager
     public async Task UpdateAsync(int sensorId, SensorForUpdateDto sensorForUpdate)
     {
         var sensor = await _sensorRepository.GetByIdAsync(sensorId);
-        sensor!.SensorName = sensorForUpdate.SensorName;
+        sensor.SensorName = sensorForUpdate.SensorName;
         sensor.CarSystemId = sensorForUpdate.CarSystemId;
         await _sensorRepository.UpdateAsync(sensor);
     }
