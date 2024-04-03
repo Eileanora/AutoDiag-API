@@ -10,6 +10,7 @@
   </ItemGroup>
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="13.0.1" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Utils\Mapper\SensorConverters\" />

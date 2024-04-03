@@ -27,4 +27,18 @@ internal class SensorRepository : BaseRepository<Sensor>, ISensorRepository
     {
         return await DbContext.Sensors.AnyAsync(s => s.Id == id);
     }
+
+    public async Task<bool> IsNameUniqueAsync(int carSystemId, string sensorName)
+    {
+        return !await DbContext.Sensors
+            .AnyAsync(s => s.CarSystemId == carSystemId && s.SensorName == sensorName);
+    }
+    
+    public async Task<bool> IsNameUniqueAsync(int carSystemId, int sensorId, string sensorName)
+    {
+        return !await DbContext.Sensors
+            .AnyAsync(s => s.CarSystemId == carSystemId
+                           && s.SensorName == sensorName
+                           && s.Id != sensorId);
+    }
 }

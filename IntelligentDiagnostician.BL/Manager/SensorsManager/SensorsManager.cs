@@ -1,29 +1,25 @@
-﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+﻿using FluentValidation;
+using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Repositories;
+using IntelligentDiagnostician.BL.Utils.Facades.SensorManagerFacade;
 using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 using IntelligentDiagnostician.DataModels.Models;
 
 
 namespace IntelligentDiagnostician.BL.Manager.SensorsManager;
 
-public class SensorsManager : ISensorsManager
+public class SensorsManager(ISensorManagerFacade sensorManagerFacade) : ISensorsManager
 {
-    private readonly ISensorRepository _sensorRepository;
-
-    public SensorsManager(ISensorRepository sensorRepository)
-    {
-        _sensorRepository = sensorRepository;
-    }
     
     public async Task<IEnumerable<SensorDto>> GetAllAsync(int systemId)
     {
-        var sensors = await _sensorRepository.GetAllAsync(systemId);
+        var sensors = await sensorManagerFacade.SensorRepository.GetAllAsync(systemId);
         return sensors.Select(s => s.ToListDto());
     }
     
     public async Task<SensorDto?> GetByIdAsync(int sensorId)
     {
-        var sensor = await _sensorRepository.GetByIdAsync(sensorId);
+        var sensor = await sensorManagerFacade.SensorRepository.GetByIdAsync(sensorId);
         if (sensor == null)
             return null;
         
@@ -32,7 +28,14 @@ public class SensorsManager : ISensorsManager
 
     public async Task<SensorDto?> CreateAsync(int systemId, SensorForCreationDto sensor)
     {
-        var newSensor = await _sensorRepository.CreateAsync(sensor.ToEntity(systemId));
+        var validationResult = await sensorManagerFacade.CreationValidator.ValidateAsync(
+            sensor,
+            options => options.IncludeRuleSets("Business"));
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+        
+        var newSensor = await sensorManagerFacade.SensorRepository.CreateAsync(sensor.ToEntity(systemId));
         if (newSensor == null)
             return null;
         
@@ -41,16 +44,17 @@ public class SensorsManager : ISensorsManager
 
     public async Task DeleteAsync(SensorDto sensorToDelete)
     {
-        var sensor = await _sensorRepository.GetByIdAsync(sensorToDelete.Id);
-        await _sensorRepository.DeleteAsync(sensor);
+        var sensor = await sensorManagerFacade.SensorRepository.GetByIdAsync(sensorToDelete.Id);
+        await sensorManagerFacade.SensorRepository.DeleteAsync(sensor); // ignore null here
     }
     
     
     public async Task UpdateAsync(int sensorId, SensorForUpdateDto sensorForUpdate)
     {
-        var sensor = await _sensorRepository.GetByIdAsync(sensorId);
+        // TODO: Implement business validation rules for update operation
+        var sensor = await sensorManagerFacade.SensorRepository.GetByIdAsync(sensorId);
         sensor.SensorName = sensorForUpdate.SensorName;
         sensor.CarSystemId = sensorForUpdate.CarSystemId;
-        await _sensorRepository.UpdateAsync(sensor);
+        await sensorManagerFacade.SensorRepository.UpdateAsync(sensor);
     }
 }

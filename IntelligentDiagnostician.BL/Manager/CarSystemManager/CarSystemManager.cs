@@ -1,63 +1,77 @@
-﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
-using IntelligentDiagnostician.BL.Repositories;
+﻿using FluentValidation;
+using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+using IntelligentDiagnostician.BL.ResourceParameters;
+using IntelligentDiagnostician.BL.Utils.Facades.CarSystemManagerFacade;
 using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
-using IntelligentDiagnostician.DataModels.Models;
 namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
-public class CarSystemManager : ICarSystemManager
+public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : ICarSystemManager
 {
-    private readonly ICarSystemRepository _carSystemRepository;
-    public CarSystemManager(ICarSystemRepository carSystemRepository)
+
+    public async Task<IEnumerable<CarSystemDto>?> GetAllAsync(
+        CarSystemsResourceParameters resourceParameters)
     {
-        _carSystemRepository = carSystemRepository;
-    }
-    
-    public async Task<IEnumerable<CarSystemDto>?> GetAllAsync()
-    {
-        var systems = await _carSystemRepository.GetAllAsync();
+        var systems = await carSystemManagerFacade
+            .CarSystemRepository
+            .GetAllAsync(resourceParameters);
         return systems.Select(s => s.ToListDto());
     }
 
     public async Task<CarSystemDto?> GetByIdAsync(int id)
     {
-        var system = await _carSystemRepository.GetByIdAsync(id);
+        var system = await carSystemManagerFacade.CarSystemRepository.GetByIdAsync(id);
         if(system == null)
             return null;
 
         return system.ToDto();
     }
 
-    public async Task<CarSystemDto?> CreateAsync(CarSystemForCreationDto systemFor)
+    public async Task<CarSystemDto?> CreateAsync(CarSystemForCreationDto systemForCreation)
     {
-        var systemToCreate = new CarSystem
+        var validationResult = await carSystemManagerFacade.CreationValidator.ValidateAsync(
+            systemForCreation,
+            options => options.IncludeRuleSets("Business"));
+        
+        if (!validationResult.IsValid)
         {
-            CarSystemName = systemFor.CarSystemName,
-            Sensors = systemFor.Sensors != null
-                ? systemFor.Sensors
-                    .Select(s => new Sensor { SensorName = s.SensorName }).ToList()
-                : null
-        };
-        var createdSystem = await _carSystemRepository.CreateAsync(systemToCreate);
+            // rollback transaction
+            
+            throw new ValidationException(validationResult.Errors);
+        }
+
+        var systemToCreate = systemForCreation.ToEntity();
+        var createdSystem = await carSystemManagerFacade.CarSystemRepository.CreateAsync(systemToCreate);
         if (createdSystem == null)
             return null;
         return createdSystem.ToDto();
     }
     public async Task<bool> DeleteAsync(int id)
     {
-        var system = await _carSystemRepository.GetByIdAsync(id);
+        var system = await carSystemManagerFacade.CarSystemRepository.GetByIdAsync(id);
         if (system == null)
             return false;
-        await _carSystemRepository.DeleteAsync(system);
+        await carSystemManagerFacade.CarSystemRepository.DeleteAsync(system);
         return true;
     }
     public async Task<bool> CarSystemExistsAsync(int id)
     {
-        return await _carSystemRepository.CarSystemExistsAsync(id);
+        return await carSystemManagerFacade.CarSystemRepository.CarSystemExistsAsync(id);
     }
     public async Task UpdateAsync(int systemId, CarSystemForUpdateDto systemForUpdate)
     {
-        var system = await _carSystemRepository.GetByIdAsync(systemId);
-        system!.CarSystemName = systemForUpdate.CarSystemName;
-        await _carSystemRepository.UpdateAsync(system);
+        
+        // TODO: Implement business validation rules for update operation
+        // var validationResult = await _creationValidator.ValidateAsync(
+        //     systemForUpdate,
+        //     options => options.IncludeRuleSets("Business"));
+        //
+        // if (!validationResult.IsValid)
+        // {   
+        //     throw new ValidationException(validationResult.Errors);
+        // }
+        
+        var system = await carSystemManagerFacade.CarSystemRepository.GetByIdAsync(systemId);
+        systemForUpdate.UpdateEntity(system);
+        await carSystemManagerFacade.CarSystemRepository.UpdateAsync(system);
     }
 }

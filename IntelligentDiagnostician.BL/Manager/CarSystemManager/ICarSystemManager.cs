@@ -1,10 +1,12 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+using IntelligentDiagnostician.BL.ResourceParameters;
 
 namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
 public interface ICarSystemManager
 {
-    Task<IEnumerable<CarSystemDto>?> GetAllAsync();
+    Task<IEnumerable<CarSystemDto>?> GetAllAsync(
+        CarSystemsResourceParameters resourceParameters);
     Task<CarSystemDto?> GetByIdAsync(int id);
     Task<CarSystemDto?> CreateAsync(CarSystemForCreationDto systemFor);
     Task<bool> DeleteAsync(int id);

@@ -7,6 +7,8 @@ public interface ISensorRepository
     Task<IEnumerable<Sensor>> GetAllAsync(int systemId);
     Task<Sensor?> GetByIdAsync(int sensorId);
     Task<bool> SensorExistsAsync(int id);
+    Task<bool> IsNameUniqueAsync(int carSystemId, string sensorName);
+    Task<bool> IsNameUniqueAsync(int carSystemId, int sensorId, string sensorName);
     
     Task <Sensor> CreateAsync(Sensor sensor);
     // add all methods from the base repository class

@@ -7,6 +7,8 @@ public static class SensorConvertor
 {
     public static SensorDto ToListDto(this Sensor sensor)
     {
+        if (sensor == null)
+            throw new Exception("Sensor is null.");
         return new SensorDto
         {
             Id = sensor.Id,
@@ -24,7 +26,7 @@ public static class SensorConvertor
         {
             Id = sensor.Id,
             SensorName = sensor.SensorName,
-            CarSystemName = sensor.CarSystem.CarSystemName,
+            // CarSystemName = sensor.CarSystem.CarSystemName,
             CreatedBy = 1,
             CreatedDate = sensor.CreatedDate,
             ModifiedBy = 1,

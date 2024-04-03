@@ -1,6 +1,6 @@
-﻿namespace IntelligentDiagnostician.BL.DTOs.Auditable;
+﻿namespace IntelligentDiagnostician.BL.DTOs.BaseDto;
 
-public interface IAuditable
+public abstract class BaseDto
 {
     public int? CreatedBy { get; set; }
     public DateTime? CreatedDate { get; set; }

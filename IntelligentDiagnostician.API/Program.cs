@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 using IntelligentDiagnostician.API.Helpers;
+using IntelligentDiagnostician.API.Helpers.Facades.CarSystemControllerFacade;
+using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
 using IntelligentDiagnostician.BL;
 using IntelligentDiagnostician.DAL;
 
@@ -15,7 +17,7 @@ public class Program
         // builder.Services.AddDbContext<AppDbContext>(option => option
         //     .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
         builder.Services.AddControllers(options =>
-            { 
+            {
                 options.InputFormatters.Insert(0, JsonPatchInputFormatter.GetJsonPatchInputFormatter());
             })
             .AddJsonOptions(options =>
@@ -23,7 +25,7 @@ public class Program
                 options.JsonSerializerOptions
                     .DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
-
+        
         #region MQTT Configuration
 
         // builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
@@ -35,8 +37,11 @@ public class Program
         // register services of the DAL and BL
         builder.Services.AddDalServices(builder.Configuration);
         builder.Services.AddBlServices();
-            
-    
+        builder.Services.AddScoped<ICarSystemControllerFacade, CarSystemControllerControllerFacade>();
+        builder.Services.AddScoped<ISensorControllerFacade, SensorControllerFacade>();
+        // builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+        // TODO: CLEAN THIS MESS
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

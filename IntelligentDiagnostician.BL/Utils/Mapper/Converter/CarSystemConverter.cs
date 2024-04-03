@@ -44,4 +44,21 @@ public static class CarSystemConverter
             CarSystemName = carSystemDto.CarSystemName
         };
     }
+    
+    public static CarSystem ToEntity(this CarSystemForCreationDto carSystemForCreation)
+    {
+        return new CarSystem
+        {
+            CarSystemName = carSystemForCreation.CarSystemName,
+            Sensors = carSystemForCreation.Sensors != null
+                ? carSystemForCreation.Sensors
+                    .Select(s => new Sensor { SensorName = s.SensorName }).ToList()
+                : null
+        };
+    }
+    
+    public static void UpdateEntity(this CarSystemForUpdateDto carSystemForUpdate, CarSystem carSystem)
+    {
+        carSystem.CarSystemName = carSystemForUpdate.CarSystemName;
+    }
 }
