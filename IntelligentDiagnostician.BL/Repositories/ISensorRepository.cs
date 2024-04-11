@@ -1,10 +1,11 @@
-﻿using IntelligentDiagnostician.DataModels.Models;
+﻿using IntelligentDiagnostician.BL.ResourceParameters;
+using IntelligentDiagnostician.DataModels.Models;
 
 namespace IntelligentDiagnostician.BL.Repositories;
 
 public interface ISensorRepository
 {
-    Task<IEnumerable<Sensor>> GetAllAsync(int systemId);
+    Task<PagedList<Sensor>> GetAllAsync(int systemId, SensorsResourceParameters resourceParameters);
     Task<Sensor?> GetByIdAsync(int sensorId);
     Task<bool> SensorExistsAsync(int id);
     Task<bool> IsNameUniqueAsync(int carSystemId, string sensorName);

@@ -37,26 +37,24 @@ internal class CarSystemRepository : BaseRepository<CarSystem>, ICarSystemReposi
     }
 
 
-    public async Task<IEnumerable<CarSystem>> GetAllAsync(CarSystemsResourceParameters resourceParameters)
+    public async Task<PagedList<CarSystem>> GetAllAsync(CarSystemsResourceParameters resourceParameters)
     {
-        // check if both filters and search query are present
-        if(string.IsNullOrWhiteSpace(resourceParameters.SearchQuery)
-           && string.IsNullOrWhiteSpace(resourceParameters.CarSystemName))
-            return await GetAllAsync();
-        
         var collection = DbContext.CarSystems as IQueryable<CarSystem>;
         if (!string.IsNullOrWhiteSpace(resourceParameters.SearchQuery))
         {
             var searchQuery = resourceParameters.SearchQuery.Trim();
             collection = collection.Where(cs => cs.CarSystemName.Contains(searchQuery));
         }
-        
+        // TODO: Find a better way to handle filtering
         if (!string.IsNullOrWhiteSpace(resourceParameters.CarSystemName))
         {
             var name = resourceParameters.CarSystemName.Trim();
             collection = collection.Where(cs => cs.CarSystemName == name);
         }
-        
-        return await collection.ToListAsync();
+
+        return await CreateAsync(
+            collection,
+            resourceParameters.PageNumber,
+            resourceParameters.PageSize);
     }
 }

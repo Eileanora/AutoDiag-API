@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.DAL.Context;
+﻿using IntelligentDiagnostician.BL.ResourceParameters;
+using IntelligentDiagnostician.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -41,4 +42,15 @@ internal abstract class BaseRepository<T>
     {
         await DbContext.SaveChangesAsync();
     }
+    
+    public static async Task<PagedList<T>> CreateAsync(
+        IQueryable<T> source, int pageNumber, int pageSize)
+    {
+        var count = source.Count();
+        var items = await source
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        return new PagedList<T>(items, count, pageNumber, pageSize);
+    } 
 }

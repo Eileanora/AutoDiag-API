@@ -1,4 +1,5 @@
 ﻿using IntelligentDiagnostician.BL.Repositories;
+using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.DAL.Context;
 using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,31 @@ internal class SensorRepository : BaseRepository<Sensor>, ISensorRepository
             .Where(s => s.CarSystemId == systemId)
             .Include(s => s.CarSystem)
             .ToListAsync();
+    }
+    
+    public async Task<PagedList<Sensor>> GetAllAsync(
+        int systemId,
+        SensorsResourceParameters resourceParameters)
+    {
+        var collection = DbContext.Sensors as IQueryable<Sensor>;
+        collection = collection.Where(s => s.CarSystemId == systemId);
+        
+        if (!string.IsNullOrWhiteSpace(resourceParameters.SearchQuery))
+        {
+            var searchQuery = resourceParameters.SearchQuery.Trim();
+            collection = collection.Where(s => s.SensorName.Contains(searchQuery));
+        }
+        
+        if (!string.IsNullOrWhiteSpace(resourceParameters.SensorName))
+        {
+            var name = resourceParameters.SensorName.Trim();
+            collection = collection.Where(s => s.SensorName == name);
+        }
+        
+        return await CreateAsync(
+            collection,
+            resourceParameters.PageNumber,
+            resourceParameters.PageSize);
     }
     public async Task<Sensor?> GetByIdAsync(int id)
     {

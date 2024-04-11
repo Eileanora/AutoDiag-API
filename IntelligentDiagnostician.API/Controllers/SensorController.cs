@@ -5,6 +5,7 @@ using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
+using IntelligentDiagnostician.BL.ResourceParameters;
 
 namespace IntelligentDiagnostician.API.Controllers;
 
@@ -22,12 +23,16 @@ public class SensorController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors(int systemId)
+    public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors(
+        int systemId, 
+        [FromQuery] SensorsResourceParameters resourceParameters)
     {
         if(_sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensors = await _sensorControllerFacade.SensorsManager.GetAllAsync(systemId);
+        var sensors = await _sensorControllerFacade
+            .SensorsManager
+            .GetAllAsync(systemId, resourceParameters);
         return Ok(sensors);
     }
 

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Repositories;
+using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.BL.Utils.Facades.SensorManagerFacade;
 using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 using IntelligentDiagnostician.DataModels.Models;
@@ -11,9 +12,13 @@ namespace IntelligentDiagnostician.BL.Manager.SensorsManager;
 public class SensorsManager(ISensorManagerFacade sensorManagerFacade) : ISensorsManager
 {
     
-    public async Task<IEnumerable<SensorDto>> GetAllAsync(int systemId)
+    public async Task<IEnumerable<SensorDto>> GetAllAsync(
+        int systemId,
+        SensorsResourceParameters resourceParameters)
     {
-        var sensors = await sensorManagerFacade.SensorRepository.GetAllAsync(systemId);
+        var sensors = await sensorManagerFacade
+            .SensorRepository
+            .GetAllAsync(systemId, resourceParameters);
         return sensors.Select(s => s.ToListDto());
     }
     

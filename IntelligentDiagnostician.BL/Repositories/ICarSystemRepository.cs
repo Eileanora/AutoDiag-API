@@ -7,7 +7,7 @@ namespace IntelligentDiagnostician.BL.Repositories;
 public interface ICarSystemRepository
 {
     Task<bool> CarSystemExistsAsync(int id);
-    Task<IEnumerable<CarSystem>> GetAllAsync(CarSystemsResourceParameters resourceParameters);
+    Task<PagedList<CarSystem>> GetAllAsync(CarSystemsResourceParameters resourceParameters);
     new Task<CarSystem?> GetByIdAsync(int id);
     Task<bool> IsNameUnique(string carSystemName);
     Task<bool> IsNameUnique(int carSystemId, string carSystemName);
