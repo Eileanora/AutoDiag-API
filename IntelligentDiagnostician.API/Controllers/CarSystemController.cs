@@ -7,27 +7,27 @@ using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
 using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 
+
 namespace IntelligentDiagnostician.API.Controllers;
 
 [Route("api/v1/car-systems")]
 [ApiController]
-public class CarSystemController : ControllerBase
+public class CarSystemController(ICarSystemControllerFacade carSystemControllerFacade)
+    : ControllerBase
 {
-    private readonly ICarSystemControllerFacade _carSystemControllerFacade;
-
-    public CarSystemController(ICarSystemControllerFacade carSystemControllerFacade)
-    {
-        _carSystemControllerFacade = carSystemControllerFacade;
-    }
     [HttpHead]
-    [HttpGet]
+    [HttpGet(Name="GetAllSystems")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync(
         [FromQuery] CarSystemsResourceParameters resourceParameters)
     {
-        var systems = await _carSystemControllerFacade.CarSystemManager
+        var systems = await carSystemControllerFacade.CarSystemManager
             .GetAllAsync(resourceParameters);
+            
+        carSystemControllerFacade.CarSystemPaginationHelper
+            .CreateMetaDataHeader(systems, resourceParameters, Response.Headers, Url);
+        
         return Ok(systems);
     }
 
@@ -36,7 +36,7 @@ public class CarSystemController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<CarSystemDto>> GetSystemByIdAsync(int systemId)
     {
-        var system = await _carSystemControllerFacade.CarSystemManager.GetByIdAsync(systemId);
+        var system = await carSystemControllerFacade.CarSystemManager.GetByIdAsync(systemId);
         if (system == null)
         {
             return NotFound();
@@ -51,7 +51,7 @@ public class CarSystemController : ControllerBase
     public async Task<ActionResult<CarSystemDto>> CreateSystem(
         CarSystemForCreationDto systemForCreation)
     {
-        var validationResult = await _carSystemControllerFacade.CreationValidator.ValidateAsync(
+        var validationResult = await carSystemControllerFacade.CreationValidator.ValidateAsync(
             systemForCreation, 
             options => options.IncludeRuleSets("Input"));
         
@@ -61,7 +61,7 @@ public class CarSystemController : ControllerBase
             return ValidationProblem(ModelState);
         }
         
-        var createdSystem = await _carSystemControllerFacade.CarSystemManager.CreateAsync(systemForCreation);
+        var createdSystem = await carSystemControllerFacade.CarSystemManager.CreateAsync(systemForCreation);
         if (createdSystem == null)
             return BadRequest();
         
@@ -78,7 +78,7 @@ public class CarSystemController : ControllerBase
     public async Task<ActionResult> UpdateSystem(
         int systemId, JsonPatchDocument<CarSystemForUpdateDto> patchDocument)
     {
-        var system = await _carSystemControllerFacade.CarSystemManager.GetByIdAsync(systemId);
+        var system = await carSystemControllerFacade.CarSystemManager.GetByIdAsync(systemId);
         if (system == null)
             return NotFound();
         
@@ -86,7 +86,7 @@ public class CarSystemController : ControllerBase
         patchDocument.ApplyTo(systemToPatch, ModelState);
         
         // check if the patch was successful
-        var validationResult = await _carSystemControllerFacade.UpdateValidator
+        var validationResult = await carSystemControllerFacade.UpdateValidator
             .ValidateAsync(systemToPatch);
         if (!validationResult.IsValid)
         {
@@ -94,7 +94,7 @@ public class CarSystemController : ControllerBase
             return ValidationProblem(ModelState);
         }
         // if the patch was successful, update the system
-        await _carSystemControllerFacade.CarSystemManager.UpdateAsync(systemId, systemToPatch);
+        await carSystemControllerFacade.CarSystemManager.UpdateAsync(systemId, systemToPatch);
         return NoContent();
     }
     
@@ -103,7 +103,7 @@ public class CarSystemController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> DeleteSystem(int systemId)
     {
-        var deleted = await _carSystemControllerFacade.CarSystemManager.DeleteAsync(systemId);
+        var deleted = await carSystemControllerFacade.CarSystemManager.DeleteAsync(systemId);
         if (!deleted)
             return NotFound();
         return NoContent();

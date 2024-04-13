@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using IntelligentDiagnostician.API.Helpers.PaginationHelper;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
@@ -9,4 +10,7 @@ public interface ICarSystemControllerFacade
     ICarSystemManager CarSystemManager { get; }
     IValidator<CarSystemForCreationDto> CreationValidator { get; }
     IValidator<CarSystemForUpdateDto> UpdateValidator { get; }
+    ICarSystemPaginationHelper CarSystemPaginationHelper { get; }
+
+    
 }

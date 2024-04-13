@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using IntelligentDiagnostician.API.Helpers;
 using IntelligentDiagnostician.API.Helpers.Facades.CarSystemControllerFacade;
 using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
+using IntelligentDiagnostician.API.Helpers.PaginationHelper;
 using IntelligentDiagnostician.BL;
 using IntelligentDiagnostician.DAL;
 
@@ -25,6 +26,7 @@ public class Program
                 options.JsonSerializerOptions
                     .DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
+
         
         #region MQTT Configuration
 
@@ -37,6 +39,8 @@ public class Program
         // register services of the DAL and BL
         builder.Services.AddDalServices(builder.Configuration);
         builder.Services.AddBlServices();
+        builder.Services.AddScoped<ICarSystemPaginationHelper, CarSystemPaginationHelper>();
+        builder.Services.AddScoped<ISensorPaginationHelper, SensorPaginationHelper>();
         builder.Services.AddScoped<ICarSystemControllerFacade, CarSystemControllerControllerFacade>();
         builder.Services.AddScoped<ISensorControllerFacade, SensorControllerFacade>();
         // builder.Services.AddValidatorsFromAssemblyContaining<Program>();

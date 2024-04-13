@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.BL.ResourceParameters;
+﻿using System.Linq.Expressions;
+using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,12 @@ internal abstract class BaseRepository<T>
     {
         DbContext = context;
     }
+
+    // public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
+    // {
+    //     return DbContext.Set<T>().Where(expression).AsNoTracking();
+    // }
+        
     public async Task<T?> CreateAsync(T entity)
     {
         var newEntry = await DbContext.Set<T>().AddAsync(entity);

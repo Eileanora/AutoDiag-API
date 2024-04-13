@@ -1,4 +1,5 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.DataModels.Models;
 
 namespace IntelligentDiagnostician.BL.Utils.Mapper.Converter;
@@ -50,5 +51,20 @@ public static class SensorConvertor
             SensorName = sensorDto.SensorName,
             CarSystemId = sensorDto.CarSystemId
         };
+    }
+    
+    public static PagedList<SensorDto> ToListDto(this PagedList<Sensor> sensors)
+    {
+        var count = sensors.TotalCount;
+        var pageNumber = sensors.CurrentPage;
+        var pageSize = sensors.PageSize;
+        var totalPages = sensors.TotalPages;
+        return new PagedList<SensorDto>(
+            sensors.Select(s => s.ToListDto()).ToList(),
+            count,
+            pageNumber,
+            pageSize,
+            totalPages
+        );
     }
 }

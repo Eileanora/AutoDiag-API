@@ -8,13 +8,14 @@ namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : ICarSystemManager
 {
 
-    public async Task<IEnumerable<CarSystemDto>?> GetAllAsync(
+    public async Task<PagedList<CarSystemDto>?> GetAllAsync(
         CarSystemsResourceParameters resourceParameters)
     {
         var systems = await carSystemManagerFacade
             .CarSystemRepository
             .GetAllAsync(resourceParameters);
-        return systems.Select(s => s.ToListDto());
+
+        return systems.ToListDto();
     }
 
     public async Task<CarSystemDto?> GetByIdAsync(int id)

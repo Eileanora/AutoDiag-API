@@ -1,5 +1,6 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.DataModels.Models;
 
 namespace IntelligentDiagnostician.BL.Utils.Mapper.Converter;
@@ -60,5 +61,21 @@ public static class CarSystemConverter
     public static void UpdateEntity(this CarSystemForUpdateDto carSystemForUpdate, CarSystem carSystem)
     {
         carSystem.CarSystemName = carSystemForUpdate.CarSystemName;
+    }
+    
+    // from carsystem paged list to carsystemdtolist paged list
+    public static PagedList<CarSystemDto> ToListDto(this PagedList<CarSystem> carSystems)
+    {
+        var count = carSystems.TotalCount;
+        var pageNumber = carSystems.CurrentPage;
+        var pageSize = carSystems.PageSize;
+        var totalPages = carSystems.TotalPages;
+        return new PagedList<CarSystemDto>(
+            carSystems.Select(s => s.ToListDto()).ToList(),
+            count,
+            pageNumber,
+            pageSize,
+            totalPages
+        );
     }
 }

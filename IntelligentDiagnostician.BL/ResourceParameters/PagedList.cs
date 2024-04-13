@@ -14,9 +14,17 @@ public class PagedList<TEntity> : List<TEntity>
     public PagedList(List<TEntity> items, int count, int pageNumber, int pageSize)
     {
         TotalCount = count;
-        pageSize = pageSize;
+        PageSize = pageSize;
         CurrentPage = pageNumber;
         TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+        AddRange(items);
+    }
+    public PagedList(List<TEntity> items, int count, int pageNumber, int pageSize, int totalPages)
+    {
+        TotalCount = count;
+        PageSize = pageSize;
+        CurrentPage = pageNumber;
+        TotalPages = totalPages;
         AddRange(items);
     }
 }

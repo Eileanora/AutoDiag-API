@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using IntelligentDiagnostician.API.Helpers.PaginationHelper;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
@@ -11,6 +12,7 @@ public class SensorControllerFacade : ISensorControllerFacade
     public ICarSystemManager CarSystemManager { get; }
     public IValidator<SensorForCreationDto> CreationValidator { get; }
     public IValidator<SensorForUpdateDto> UpdateValidator { get; }
+    public  ISensorPaginationHelper SensorPaginationHelper { get; }
     
     
 
@@ -18,11 +20,13 @@ public class SensorControllerFacade : ISensorControllerFacade
         ISensorsManager sensorManager,
         ICarSystemManager carSystemManager,
         IValidator<SensorForCreationDto> creationValidator,
-        IValidator<SensorForUpdateDto> updateValidator)
+        IValidator<SensorForUpdateDto> updateValidator,
+        ISensorPaginationHelper sensorPaginationHelper)
     {
         SensorsManager = sensorManager;
         CarSystemManager = carSystemManager;
         CreationValidator = creationValidator;
         UpdateValidator = updateValidator;
+        SensorPaginationHelper = sensorPaginationHelper;
     }
 }

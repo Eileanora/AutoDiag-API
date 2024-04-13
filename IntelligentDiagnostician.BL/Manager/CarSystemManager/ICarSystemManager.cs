@@ -5,7 +5,7 @@ namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
 public interface ICarSystemManager
 {
-    Task<IEnumerable<CarSystemDto>?> GetAllAsync(
+    Task<PagedList<CarSystemDto>?> GetAllAsync(
         CarSystemsResourceParameters resourceParameters);
     Task<CarSystemDto?> GetByIdAsync(int id);
     Task<CarSystemDto?> CreateAsync(CarSystemForCreationDto systemFor);

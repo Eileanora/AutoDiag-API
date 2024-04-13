@@ -57,4 +57,13 @@ internal class CarSystemRepository(AppDbContext context, ISortHelper<CarSystem> 
             resourceParameters.PageNumber,
             resourceParameters.PageSize);
     }
+
+    // private void SearchByName(ref IQueryable<CarSystem> collection, string carSystemName)
+    // {
+    //     if (string.IsNullOrWhiteSpace(carSystemName))
+    //         return;
+    //     var searchQuery = carSystemName.Trim();
+    //     collection = collection.Where(cs => cs.CarSystemName
+    //         .Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase));
+    // }
 }

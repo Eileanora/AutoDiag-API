@@ -12,14 +12,14 @@ namespace IntelligentDiagnostician.BL.Manager.SensorsManager;
 public class SensorsManager(ISensorManagerFacade sensorManagerFacade) : ISensorsManager
 {
     
-    public async Task<IEnumerable<SensorDto>> GetAllAsync(
+    public async Task<PagedList<SensorDto>> GetAllAsync(
         int systemId,
         SensorsResourceParameters resourceParameters)
     {
         var sensors = await sensorManagerFacade
             .SensorRepository
             .GetAllAsync(systemId, resourceParameters);
-        return sensors.Select(s => s.ToListDto());
+        return sensors.ToListDto();
     }
     
     public async Task<SensorDto?> GetByIdAsync(int sensorId)

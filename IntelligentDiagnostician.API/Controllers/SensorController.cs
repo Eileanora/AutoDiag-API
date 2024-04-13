@@ -11,28 +11,29 @@ namespace IntelligentDiagnostician.API.Controllers;
 
 [Route("api/v1/car-systems/{systemId}/sensors")]
 [ApiController]
-public class SensorController : ControllerBase
+public class SensorController(ISensorControllerFacade sensorControllerFacade) : ControllerBase
 {
-    private readonly ISensorControllerFacade _sensorControllerFacade;
-    public SensorController(ISensorControllerFacade sensorControllerFacade)
-    {
-        _sensorControllerFacade = sensorControllerFacade;
-    }
-    
     [HttpHead]
-    [HttpGet]
+    [HttpGet(Name = "GetAllSensors")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors(
+    public async Task<ActionResult<SensorDto>> GetSensors(
         int systemId, 
         [FromQuery] SensorsResourceParameters resourceParameters)
     {
-        if(_sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if(sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensors = await _sensorControllerFacade
+        var sensors = await sensorControllerFacade
             .SensorsManager
             .GetAllAsync(systemId, resourceParameters);
+
+        sensorControllerFacade.SensorPaginationHelper
+            .CreateMetaDataHeader(
+                sensors,
+                resourceParameters,
+                Response.Headers, Url);
+        
         return Ok(sensors);
     }
 
@@ -41,10 +42,10 @@ public class SensorController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<SensorDto>> GetByIdAsync(int systemId, int sensorId)
     {
-        if(_sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if(sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensor = await _sensorControllerFacade.SensorsManager.GetByIdAsync(sensorId);
+        var sensor = await sensorControllerFacade.SensorsManager.GetByIdAsync(sensorId);
         if (sensor == null)
             return NotFound();
         return Ok(sensor);
@@ -56,10 +57,10 @@ public class SensorController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<SensorDto>> CreateSensor(int systemId, SensorForCreationDto sensor)
     {
-        if (_sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if (sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
 
-        var validationResult = await _sensorControllerFacade.CreationValidator
+        var validationResult = await sensorControllerFacade.CreationValidator
             .ValidateAsync(sensor,
                 options => options.IncludeRuleSets("Input"));
         
@@ -69,7 +70,7 @@ public class SensorController : ControllerBase
             return ValidationProblem(ModelState);
         }
 
-        var newSensor = await _sensorControllerFacade.SensorsManager.CreateAsync(systemId, sensor);
+        var newSensor = await sensorControllerFacade.SensorsManager.CreateAsync(systemId, sensor);
         if (newSensor == null)
             return BadRequest();
         
@@ -85,10 +86,10 @@ public class SensorController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateSensor(int systemId, int sensorId, JsonPatchDocument<SensorForUpdateDto> patchDocument)
     {
-        if(_sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if(sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensor = await _sensorControllerFacade.SensorsManager.GetByIdAsync(sensorId);
+        var sensor = await sensorControllerFacade.SensorsManager.GetByIdAsync(sensorId);
         if (sensor == null)
             return NotFound();
         
@@ -96,14 +97,14 @@ public class SensorController : ControllerBase
         patchDocument.ApplyTo(sensorToPatch, ModelState);
         
         // check if the patch was successful
-        var validationResult = await _sensorControllerFacade.UpdateValidator.ValidateAsync(sensorToPatch);
+        var validationResult = await sensorControllerFacade.UpdateValidator.ValidateAsync(sensorToPatch);
         if (!validationResult.IsValid)
             validationResult.AddToModelState(this.ModelState);
 
         if (!TryValidateModel(ModelState))
             return ValidationProblem(ModelState);
          
-        await _sensorControllerFacade.SensorsManager.UpdateAsync(sensorId, sensorToPatch);
+        await sensorControllerFacade.SensorsManager.UpdateAsync(sensorId, sensorToPatch);
         return NoContent();
     }
     
@@ -112,14 +113,14 @@ public class SensorController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> DeleteSensor(int systemId, int sensorId)
     {
-        if(_sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if(sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
-        var sensorToDelete = await _sensorControllerFacade.SensorsManager.GetByIdAsync(sensorId);
+        var sensorToDelete = await sensorControllerFacade.SensorsManager.GetByIdAsync(sensorId);
         
         if (sensorToDelete == null)
             return NotFound();
         
-        await _sensorControllerFacade.SensorsManager.DeleteAsync(sensorToDelete);
+        await sensorControllerFacade.SensorsManager.DeleteAsync(sensorToDelete);
         
         return NoContent();
     }
