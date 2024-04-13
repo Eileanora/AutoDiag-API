@@ -2,16 +2,15 @@
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.DAL.Context;
 using IntelligentDiagnostician.DataModels.Models;
+using IntelligentDiagnostician.DAL.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntelligentDiagnostician.DAL.Repositories;
 
-internal class CarSystemRepository : BaseRepository<CarSystem>, ICarSystemRepository
+internal class CarSystemRepository(AppDbContext context, ISortHelper<CarSystem> sortHelper)
+    : BaseRepository<CarSystem>(context), ICarSystemRepository
 {
-    public CarSystemRepository(AppDbContext context) : base(context)
-    {
-    }
-    
+
     public async Task<CarSystem?> GetByIdAsync(int id)
     {
         
@@ -36,7 +35,6 @@ internal class CarSystemRepository : BaseRepository<CarSystem>, ICarSystemReposi
         return await DbContext.CarSystems.AnyAsync(cs => cs.Id == id);
     }
 
-
     public async Task<PagedList<CarSystem>> GetAllAsync(CarSystemsResourceParameters resourceParameters)
     {
         var collection = DbContext.CarSystems as IQueryable<CarSystem>;
@@ -51,9 +49,11 @@ internal class CarSystemRepository : BaseRepository<CarSystem>, ICarSystemReposi
             var name = resourceParameters.CarSystemName.Trim();
             collection = collection.Where(cs => cs.CarSystemName == name);
         }
-
+        
+        var sortedList = sortHelper.ApplySort(collection, resourceParameters.OrderBy);
+        
         return await CreateAsync(
-            collection,
+            sortedList,
             resourceParameters.PageNumber,
             resourceParameters.PageSize);
     }

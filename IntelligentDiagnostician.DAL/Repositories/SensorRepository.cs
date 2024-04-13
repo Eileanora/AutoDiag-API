@@ -1,16 +1,16 @@
 ﻿using IntelligentDiagnostician.BL.Repositories;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.DAL.Context;
+using IntelligentDiagnostician.DAL.Helpers;
 using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntelligentDiagnostician.DAL.Repositories;
 
-internal class SensorRepository : BaseRepository<Sensor>, ISensorRepository
+internal class SensorRepository(AppDbContext context, ISortHelper<Sensor> sortHelper)
+    : BaseRepository<Sensor>(context), ISensorRepository
 {
-    public SensorRepository(AppDbContext context) : base(context)
-    {
-    }
+
     public async Task<IEnumerable<Sensor>> GetAllAsync(int systemId)
     {
         return await DbContext.Sensors
@@ -38,8 +38,10 @@ internal class SensorRepository : BaseRepository<Sensor>, ISensorRepository
             collection = collection.Where(s => s.SensorName == name);
         }
         
+        var sortedList = sortHelper.ApplySort(collection, resourceParameters.OrderBy);
+        
         return await CreateAsync(
-            collection,
+            sortedList,
             resourceParameters.PageNumber,
             resourceParameters.PageSize);
     }
