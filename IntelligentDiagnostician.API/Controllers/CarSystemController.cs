@@ -18,7 +18,7 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
 {
     [HttpHead]
     [HttpGet(Name="GetAllSystems")]
-    [Authorize(AuthenticationSchemes = "Bearer",Roles ="admin")]
+    [Authorize(AuthenticationSchemes = "Bearer",Roles ="Admin")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync(

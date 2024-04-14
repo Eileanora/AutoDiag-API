@@ -1,8 +1,6 @@
 ﻿using IntelligentDiagnostician.BL.AuthServices;
 using IntelligentDiagnostician.BL.DTOs.UserDtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MQTTnet.Formatter;
 
 namespace IntelligentDiagnostician.API.Controllers
 {
@@ -19,19 +17,19 @@ namespace IntelligentDiagnostician.API.Controllers
         public async Task<IActionResult> RegisterAync(CreateUserDto createuserdto) 
         {
             if(!ModelState.IsValid) 
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
 
-            var Result = await _authService.RegisterAsync(createuserdto); 
+            var result = await _authService.RegisterAsync(createuserdto); 
             
-            if( Result.IsAuthenticated is not true ) 
-                return BadRequest(Result.Message);
+            if( result.IsAuthenticated is not true ) 
+                return BadRequest(result.Message);
 
             return Ok( new
             {
-                Result.Email,
-                Result.UserName,
-                Result.Token,
-                Result.Roles , 
+                result.Email,
+                result.UserName,
+                result.Token,
+                result.Roles , 
             }); 
         }
 
@@ -39,18 +37,18 @@ namespace IntelligentDiagnostician.API.Controllers
         public async Task<IActionResult> Login(LoginUser loginuser) 
         {
             if(!ModelState.IsValid) 
-            return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
 
-            var Result = await _authService.LoginAsync(loginuser);  
+            var result = await _authService.LoginAsync(loginuser);  
 
-            if(Result.IsAuthenticated is not true ) 
-                return BadRequest(Result.Message);
+            if(result.IsAuthenticated is not true ) 
+                return BadRequest(result.Message);
 
             return Ok( new
             {
-                Result.Email,
-                Result.Token,
-                Result.Roles
+                result.Email,
+                result.Token,
+                result.Roles
             });
         }
 
@@ -58,12 +56,12 @@ namespace IntelligentDiagnostician.API.Controllers
         public async Task<IActionResult> AssignRolesToUser(AssignRolesToUser assignRolesToUser)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
 
-            var Result = await _authService.AssignRolesToUser(assignRolesToUser);
+            var result = await _authService.AssignRolesToUser(assignRolesToUser);
 
-            if (!string.IsNullOrEmpty(Result))
-                return BadRequest(Result);
+            if (!string.IsNullOrEmpty(result))
+                return BadRequest(result);
 
             return Ok(assignRolesToUser);
         }
