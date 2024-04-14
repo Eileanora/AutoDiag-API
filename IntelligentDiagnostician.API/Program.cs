@@ -11,6 +11,8 @@ using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
 using IntelligentDiagnostician.API.Helpers.PaginationHelper;
 using IntelligentDiagnostician.BL;
 using IntelligentDiagnostician.DAL;
+using IntelligentDiagnostician.DAL.Context;
+using IntelligentDiagnostician.DataModels.Models;
 
 namespace IntelligentDiagnostician.API;
 
@@ -33,7 +35,7 @@ public class Program
                 options.JsonSerializerOptions
                     .DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
-        #endregion
+
 
         #region Jwt Options  And Identity
         
@@ -87,7 +89,6 @@ public class Program
         
 
         builder.Services.AddScoped<IAuthService , AuthService>();       
-        var app = builder.Build();
 
         // #region AutoMapper
         // builder.Services.AddScoped<IConverterFactory, ConverterFactory>();
