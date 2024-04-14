@@ -20,9 +20,6 @@ public class ReadingConfiguration : IEntityTypeConfiguration<Reading>
            .HasForeignKey(x => x.SensorId).IsRequired()
            .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne(x => x.User)
-           .WithMany(x => x.Readings)
-           .HasForeignKey(x => x.UserId).IsRequired()
-           .OnDelete(DeleteBehavior.Cascade);
+      
     }
 }

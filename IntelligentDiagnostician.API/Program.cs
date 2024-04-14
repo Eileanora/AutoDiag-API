@@ -1,4 +1,10 @@
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Identity;
+using IntelligentDiagnostician.BL.AuthServices;
 using IntelligentDiagnostician.API.Helpers;
 using IntelligentDiagnostician.API.Helpers.Facades.CarSystemControllerFacade;
 using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
@@ -15,6 +21,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+
         // builder.Services.AddDbContext<AppDbContext>(option => option
         //     .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionStrings")));
         builder.Services.AddControllers(options =>
@@ -26,6 +33,34 @@ public class Program
                 options.JsonSerializerOptions
                     .DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
+        #endregion
+
+        #region Jwt Options  And Identity
+        
+        builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+
+        var JwtOptions =    builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
+
+        builder.Services.AddSingleton(JwtOptions);
+
+        builder.Services.AddAuthentication()
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, Options =>
+            {
+                Options.SaveToken = true;
+
+                Options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,  
+                    ValidIssuer = JwtOptions.Issuer , 
+                    ValidateAudience = true,    
+                    ValidAudience = JwtOptions.Audience ,   
+                    ValidateLifetime = true , 
+                    ValidateIssuerSigningKey = true ,   
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.SigningKey))
+                };
+            }); 
+        #endregion
+
 
         
         #region MQTT Configuration
@@ -50,6 +85,10 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         
+
+        builder.Services.AddScoped<IAuthService , AuthService>();       
+        var app = builder.Build();
+
         // #region AutoMapper
         // builder.Services.AddScoped<IConverterFactory, ConverterFactory>();
         // builder.Services.AddSingleton<IConverter<Sensor, SensorDto>, SensorConvertor>();
@@ -71,6 +110,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+      //  app.UseAuthentication();    
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
