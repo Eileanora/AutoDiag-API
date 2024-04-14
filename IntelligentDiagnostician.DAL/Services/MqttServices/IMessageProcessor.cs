@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntelligentDiagnostician.DAL.Services;
+namespace IntelligentDiagnostician.DAL.Services.MqttServices;
 
 public interface IMessageProcessor
 {

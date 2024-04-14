@@ -1,12 +1,4 @@
-﻿INSERT INTO Roles (RoleName)
-VALUES
-    ('Admin'),
-    ('User')
-
-    INSERT INTO Users (Fname, Lname, Email, Password, RoleId)
-VALUES
-    ('yasmeen', 'hany', 'yasmeenhany@btats.com', '123456', 1),
-    ('btats', 'btats2', 'btats@btats', '56789', 1)
+﻿
 
 INSERT INTO CarSystems (CarSystemName)
 VALUES

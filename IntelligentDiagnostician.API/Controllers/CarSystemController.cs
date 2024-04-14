@@ -1,5 +1,6 @@
 ﻿using IntelligentDiagnostician.API.Helpers.InputValidator;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+using Microsoft.AspNetCore.Authorization;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.API.Helpers.Facades.CarSystemControllerFacade;
 using Microsoft.AspNetCore.JsonPatch;
@@ -17,10 +18,12 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
 {
     [HttpHead]
     [HttpGet(Name="GetAllSystems")]
+    [Authorize(AuthenticationSchemes = "Bearer",Roles ="admin")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync(
         [FromQuery] CarSystemsResourceParameters resourceParameters)
+
     {
         var systems = await carSystemControllerFacade.CarSystemManager
             .GetAllAsync(resourceParameters);

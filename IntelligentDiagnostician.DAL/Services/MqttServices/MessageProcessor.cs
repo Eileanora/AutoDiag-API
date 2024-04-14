@@ -10,7 +10,7 @@ using IntelligentDiagnostician.DAL.Context;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IntelligentDiagnostician.DAL.Services;
+namespace IntelligentDiagnostician.DAL.Services.MqttServices;
 
 public class MessageProcessor : IMessageProcessor
 {

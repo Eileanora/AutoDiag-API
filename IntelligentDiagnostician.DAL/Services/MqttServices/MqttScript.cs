@@ -10,7 +10,7 @@ using IntelligentDiagnostician.DAL.Context;
 using MQTTnet.Client;
 using IntelligentDiagnostician.DataModels.Models;
 
-namespace IntelligentDiagnostician.DAL.Services;
+namespace IntelligentDiagnostician.DAL.Services.MqttServices;
 
 public class MqttScript
 {

@@ -12,9 +12,5 @@ public class ErrorConfiguration : IEntityTypeConfiguration<Error>
             .HasColumnType("varchar")
             .IsRequired();
 
-        builder.HasOne(x => x.User)
-            .WithMany(x => x.Errors)
-            .HasForeignKey(x => x.UserId).IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

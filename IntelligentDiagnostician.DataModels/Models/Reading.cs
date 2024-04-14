@@ -5,5 +5,5 @@ public class Reading : PrimaryKeyBaseEntity
     public int SensorId { get; set; }
     public Sensor Sensor { get; set; }
     public int UserId { get; set; }
-    public User User { get; set; }
+    public AppUser User { get; set; }
 }
