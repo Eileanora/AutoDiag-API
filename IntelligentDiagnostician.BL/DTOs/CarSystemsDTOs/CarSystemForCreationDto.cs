@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 
 namespace IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 
-public class CarSystemForCreationDto
+public class CarSystemForCreationDto : BaseDto.BaseDto
 {
-    [Required(ErrorMessage = "Name should be filled in")]
-    [MaxLength(4)]
-    public string Name { get; set; } = string.Empty;
+    public string CarSystemName { get; set; } = string.Empty;
+    public ICollection<SensorForCreationDto>? Sensors { get; set; } = new List<SensorForCreationDto>();
 }
+;

@@ -1,11 +1,12 @@
-﻿using IntelligentDiagnostician.BL.DTOs.BaseDTOs;
-using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+
 
 namespace IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 
-public class CarSystemDto : BaseDto
+// [JsonConverter(typeof(MicrosoftOrderedPropertiesConverter<CarSystemDto>))]
+public class CarSystemDto : BaseDto.BaseDto
 {
     public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public IEnumerable<string>? Sensors { get; set; }
+    public string CarSystemName { get; set; } = string.Empty;
+    public ICollection<SensorDto>? Sensors { get; set; }
 }
