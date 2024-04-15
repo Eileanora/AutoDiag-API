@@ -92,7 +92,9 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
         
         // check if the patch was successful
         var validationResult = await carSystemControllerFacade.UpdateValidator
-            .ValidateAsync(systemToPatch);
+            .ValidateAsync(
+                systemToPatch,
+                options => options.IncludeRuleSets("Input"));
         if (!validationResult.IsValid)
         {
             validationResult.AddToModelState(this.ModelState);

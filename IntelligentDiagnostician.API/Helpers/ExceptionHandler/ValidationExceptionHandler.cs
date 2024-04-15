@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +30,13 @@ internal sealed class ValidationExceptionHandler : IExceptionHandler
 
         var problemDetails = new ValidationProblemDetails
         {
+            Type = "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+            Title = "One or more validation errors occurred.",
             Status = StatusCodes.Status400BadRequest,
-            Title = "Validation error",
-            Detail = "One or more validation errors occurred",
             Errors = validationException.Errors.ToDictionary(
                 failure => failure.PropertyName,
-                failure => new[] { failure.ErrorMessage })
-        };
+                failure => new[] { failure.ErrorMessage }),
+            Extensions = { { "TraceId", Activity.Current?.Id ?? httpContext.TraceIdentifier } }        };
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);

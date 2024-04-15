@@ -99,7 +99,9 @@ public class SensorController(ISensorControllerFacade sensorControllerFacade) : 
         patchDocument.ApplyTo(sensorToPatch, ModelState);
         
         // check if the patch was successful
-        var validationResult = await sensorControllerFacade.UpdateValidator.ValidateAsync(sensorToPatch);
+        var validationResult = await sensorControllerFacade.UpdateValidator.ValidateAsync(
+            sensorToPatch,
+            options => options.IncludeRuleSets("Input"));
         if (!validationResult.IsValid)
             validationResult.AddToModelState(this.ModelState);
 
