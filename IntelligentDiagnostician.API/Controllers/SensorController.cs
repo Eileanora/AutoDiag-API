@@ -1,6 +1,7 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ public class SensorController : ControllerBase
         _sensorsManager = sensorsManager;
         _carSystemManager = carSystemManager;
     }
-
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "ASDF")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors(int systemId)
     {
@@ -27,7 +28,6 @@ public class SensorController : ControllerBase
         var sensors = await _sensorsManager.GetAllAsync(systemId);
         return Ok(sensors);
     }
-
     [HttpGet("{sensorId}", Name = "GetSensorById")]
     public async Task<ActionResult<SensorDto>> GetByIdAsync(int systemId, int sensorId)
     {

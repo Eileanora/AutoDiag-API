@@ -10,5 +10,6 @@ namespace IntelligentDiagnostician.DataModels.Constants
     {
         public const string UserRole = "User"; 
         public const string AdminRole = "Admin"; 
+        public const string SuperUserRole = "SuperUser"; 
     }
 }

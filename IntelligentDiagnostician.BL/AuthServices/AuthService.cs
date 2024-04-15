@@ -28,7 +28,6 @@ namespace IntelligentDiagnostician.BL.AuthServices
             _roleManager = roleManager;
             _configuration = configuration;
         }
-
         public async Task<AuthModel> RegisterAsync(CreateUserDto createuser)
         {
             if (await _userManager.FindByEmailAsync(createuser.Email) is not null)
@@ -71,15 +70,14 @@ namespace IntelligentDiagnostician.BL.AuthServices
                 Roles = new List<string> { ConstantRole.UserRole } 
             };
         }
-        
         public async Task<AuthModel> LoginAsync(LoginUser loginuser)
         {
             var User = await _userManager.FindByEmailAsync(loginuser.Email);
 
             if (User == null || !await _userManager.CheckPasswordAsync(User, loginuser.Password))
-                return new AuthModel { Message = "Email or Password is incorrect!" }; 
+                return new AuthModel { Message = "Email or Password is incorrect!" };
 
-            await _userManager.AddToRoleAsync(User , ConstantRole.UserRole );   
+            var userRoles = await _userManager.GetRolesAsync(User);
 
             var JwtToken = await GenerateAccessToken(User);
 
@@ -89,10 +87,9 @@ namespace IntelligentDiagnostician.BL.AuthServices
                 IsAuthenticated = true,
                 Email = loginuser.Email,
                 Token = JwtToken,
-                Roles = new List<string> { ConstantRole.UserRole },
+                Roles = userRoles.ToList(),
             };
         }
-
         public async Task<string> AssignRolesToUser(AssignRolesToUser assignrolestouser) 
         {
             var UserId = await _userManager.FindByIdAsync(assignrolestouser.UserId);
@@ -112,30 +109,34 @@ namespace IntelligentDiagnostician.BL.AuthServices
         }
         private async Task<string> GenerateAccessToken(AppUser appUser)
         {
+            var tokenHandler = new JwtSecurityTokenHandler();
 
-            var TokenHandler = new JwtSecurityTokenHandler();
+            var claims = new ClaimsIdentity(new Claim[]
+            {
+        new Claim(ClaimTypes.NameIdentifier, appUser.UserName),
+        new Claim(ClaimTypes.Email, appUser.Email)
+            });
 
-            var TokenDescriptor = new SecurityTokenDescriptor
+            var roles = await _userManager.GetRolesAsync(appUser);
+            foreach (var role in roles)
+            {
+                claims.AddClaim(new Claim(ClaimTypes.Role, role));
+            }
+
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = _jwtoptions.Issuer,
                 Audience = _jwtoptions.Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.
-                 UTF8.GetBytes(_configuration["SigningKey"])),
-                SecurityAlgorithms.HmacSha256),
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                  new(ClaimTypes.NameIdentifier, appUser.UserName),
-                  new(ClaimTypes.Email, appUser.Email) ,
-                })
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtoptions.SigningKey)),
+                    SecurityAlgorithms.HmacSha256),
+                Subject = claims 
             };
 
-            var SecuirtyToken = TokenHandler.CreateToken(TokenDescriptor);
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
-            var AccessToken = TokenHandler.WriteToken(SecuirtyToken);
+            var accessToken = tokenHandler.WriteToken(securityToken);
 
-            return AccessToken;
+            return accessToken;
         }
-
-       
     }
 }
