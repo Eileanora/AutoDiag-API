@@ -100,6 +100,8 @@ internal static class StartupHelper
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        app.UseExceptionHandler();
+
         return app;
     }
 }
