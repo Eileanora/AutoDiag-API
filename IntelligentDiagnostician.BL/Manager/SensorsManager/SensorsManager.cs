@@ -70,7 +70,6 @@ public class SensorsManager(ISensorManagerFacade sensorManagerFacade) : ISensors
         };
 
         var validationResult = await sensorManagerFacade.UpdateValidator.ValidateAsync(context);
-        // TODO: Handle validation exception
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
         

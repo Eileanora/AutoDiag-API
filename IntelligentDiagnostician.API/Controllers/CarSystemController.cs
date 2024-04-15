@@ -1,7 +1,6 @@
 ﻿using Asp.Versioning;
 using IntelligentDiagnostician.API.Helpers.InputValidator;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
-using Microsoft.AspNetCore.Authorization;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.API.Helpers.Facades.CarSystemControllerFacade;
 using Microsoft.AspNetCore.JsonPatch;

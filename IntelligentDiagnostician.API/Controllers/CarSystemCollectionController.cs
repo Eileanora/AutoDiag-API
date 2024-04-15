@@ -1,9 +1,6 @@
 ﻿using Asp.Versioning;
-using FluentValidation;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
-using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
 using IntelligentDiagnostician.API.Helpers.Facades.CarSystemCollectionControllerFacade;
 using IntelligentDiagnostician.API.Helpers.InputValidator;
 
@@ -32,7 +29,7 @@ public class CarSystemCollectionController(ICarSystemCollectionControllerFacade 
 
     [HttpPost]
     public async Task<ActionResult<IEnumerable<CarSystemDto>>> CreateCarSystemCollection(
-        IEnumerable<CarSystemForCreationDto> carSystemCollection)
+        [FromBody]IEnumerable<CarSystemForCreationDto> carSystemCollection)
     {
         // BUG: inputting a list with more than one item with the same name will result in some items created and some not
         // DesiredBehavior: DO NOT ADD ANY ITEM
@@ -42,8 +39,8 @@ public class CarSystemCollectionController(ICarSystemCollectionControllerFacade 
         {
             // validate input
             var validationResult = await carSystemControllerFacade.CreationValidator.ValidateAsync(
-                carSystem,
-                options => options.IncludeRuleSets("Input"));
+                carSystem);
+                // options => options.IncludeRuleSets("Input"));
             if (!validationResult.IsValid)
             {
                 validationResult.AddToModelState(this.ModelState);

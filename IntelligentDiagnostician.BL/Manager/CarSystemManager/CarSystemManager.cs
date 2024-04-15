@@ -72,11 +72,8 @@ public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : 
         };
 
         var validationResult = await carSystemManagerFacade.UpdateValidator.ValidateAsync(context);
-        // TODO: Handle validation exception
         if (!validationResult.IsValid)
-        {   
             throw new ValidationException(validationResult.Errors);
-        }
         
         var system = await carSystemManagerFacade.CarSystemRepository.GetByIdAsync(systemId);
         systemForUpdate.UpdateEntity(system);

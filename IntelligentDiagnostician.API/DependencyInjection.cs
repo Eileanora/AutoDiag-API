@@ -1,4 +1,5 @@
 ﻿using IntelligentDiagnostician.API.Helpers.ExceptionHandler;
+using IntelligentDiagnostician.API.Helpers.Facades.CarSystemCollectionControllerFacade;
 using IntelligentDiagnostician.API.Helpers.Facades.CarSystemControllerFacade;
 using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
 using IntelligentDiagnostician.API.Helpers.PaginationHelper;
@@ -13,6 +14,7 @@ public static class DependencyInjection
         services.AddScoped<ICarSystemPaginationHelper, CarSystemPaginationHelper>();
         services.AddScoped<ISensorPaginationHelper, SensorPaginationHelper>();
         services.AddScoped<ICarSystemControllerFacade, CarSystemControllerControllerFacade>();
+        services.AddScoped<ICarSystemCollectionControllerFacade, CarSystemCollectionControllerFacade>();
         services.AddScoped<ISensorControllerFacade, SensorControllerFacade>();
         services.AddScoped<IAuthService , AuthService>();
         services.AddExceptionHandler<ValidationExceptionHandler>();
