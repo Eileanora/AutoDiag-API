@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Asp.Versioning;
+using FluentValidation;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +9,8 @@ using IntelligentDiagnostician.API.Helpers.InputValidator;
 
 namespace IntelligentDiagnostician.API.Controllers;
 
-[ApiController]
-[Route("api/v1/carsystemcollections")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/carsystemcollections")]
 public class CarSystemCollectionController(ICarSystemCollectionControllerFacade carSystemControllerFacade) : ControllerBase
 {
     [HttpGet("({carSystemIds})", Name = "GetCarSystemCollection")]

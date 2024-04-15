@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.API.Helpers.InputValidator;
+﻿using Asp.Versioning;
+using IntelligentDiagnostician.API.Helpers.InputValidator;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using Microsoft.AspNetCore.Authorization;
 using IntelligentDiagnostician.BL.ResourceParameters;
@@ -11,16 +12,17 @@ using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 
 namespace IntelligentDiagnostician.API.Controllers;
 
-[Route("api/v1/car-systems")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/car-systems")]
 [ApiController]
 public class CarSystemController(ICarSystemControllerFacade carSystemControllerFacade)
     : ControllerBase
 {
     [HttpHead]
     [HttpGet(Name="GetAllSystems")]
-    [Authorize(AuthenticationSchemes = "Bearer",Roles ="Admin")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    // [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync(
         [FromQuery] CarSystemsResourceParameters resourceParameters)
 
@@ -33,7 +35,7 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
         
         return Ok(systems);
     }
-
+    
     [HttpGet("{systemId}", Name = "GetSystemById")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]

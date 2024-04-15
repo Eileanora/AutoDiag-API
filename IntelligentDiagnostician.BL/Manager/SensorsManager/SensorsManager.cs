@@ -34,6 +34,7 @@ public class SensorsManager(ISensorManagerFacade sensorManagerFacade) : ISensors
 
     public async Task<SensorDto?> CreateAsync(int systemId, SensorForCreationDto sensor)
     {
+        sensor.CarSystemId = systemId;
         var validationResult = await sensorManagerFacade.CreationValidator.ValidateAsync(
             sensor,
             options => options.IncludeRuleSets("Business"));

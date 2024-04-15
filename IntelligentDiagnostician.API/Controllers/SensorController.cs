@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.API.Helpers.InputValidator;
+﻿using Asp.Versioning;
+using IntelligentDiagnostician.API.Helpers.InputValidator;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
 using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
@@ -9,7 +10,8 @@ using IntelligentDiagnostician.BL.ResourceParameters;
 
 namespace IntelligentDiagnostician.API.Controllers;
 
-[Route("api/v1/car-systems/{systemId}/sensors")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/car-systems/{systemId}/sensors")]
 [ApiController]
 public class SensorController(ISensorControllerFacade sensorControllerFacade) : ControllerBase
 {
