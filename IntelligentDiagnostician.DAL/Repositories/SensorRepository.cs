@@ -69,4 +69,10 @@ internal class SensorRepository(AppDbContext context, ISortHelper<Sensor> sortHe
                            && s.SensorName == sensorName
                            && s.Id != sensorId);
     }
+    
+    public async Task<Sensor?> GetByNameAsync(string sensorName)
+    {
+        return await DbContext.Sensors
+            .FirstOrDefaultAsync(s => s.SensorName == sensorName);
+    }
 }

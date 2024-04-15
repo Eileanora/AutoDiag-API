@@ -15,4 +15,6 @@ public interface ISensorRepository
     // add all methods from the base repository class
     Task <Sensor> UpdateAsync(Sensor sensor);
     Task DeleteAsync(Sensor sensor);
+    
+    Task<Sensor?> GetByNameAsync(string sensorName);
 }

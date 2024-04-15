@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Internal;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.BL.Utils.Facades.CarSystemManagerFacade;
@@ -36,7 +37,6 @@ public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : 
         if (!validationResult.IsValid)
         {
             // rollback transaction
-            
             throw new ValidationException(validationResult.Errors);
         }
 
@@ -60,16 +60,23 @@ public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : 
     }
     public async Task UpdateAsync(int systemId, CarSystemForUpdateDto systemForUpdate)
     {
-        
-        // TODO: Implement business validation rules for update operation
-        // var validationResult = await _creationValidator.ValidateAsync(
-        //     systemForUpdate,
-        //     options => options.IncludeRuleSets("Business"));
-        //
-        // if (!validationResult.IsValid)
-        // {   
-        //     throw new ValidationException(validationResult.Errors);
-        // }
+        var context= new ValidationContext<CarSystemForUpdateDto>(
+            systemForUpdate,
+            new PropertyChain(),
+            new RulesetValidatorSelector(new [] {"Business"}))
+        {
+            RootContextData =
+            {
+                ["systemId"] = systemId
+            }
+        };
+
+        var validationResult = await carSystemManagerFacade.UpdateValidator.ValidateAsync(context);
+        // TODO: Handle validation exception
+        if (!validationResult.IsValid)
+        {   
+            throw new ValidationException(validationResult.Errors);
+        }
         
         var system = await carSystemManagerFacade.CarSystemRepository.GetByIdAsync(systemId);
         systemForUpdate.UpdateEntity(system);

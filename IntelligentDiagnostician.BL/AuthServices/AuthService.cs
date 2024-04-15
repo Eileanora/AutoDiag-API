@@ -120,7 +120,7 @@ namespace IntelligentDiagnostician.BL.AuthServices
                 Issuer = _jwtoptions.Issuer,
                 Audience = _jwtoptions.Audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.
-                 UTF8.GetBytes(_configuration["SigningKey"])),
+                        UTF8.GetBytes(_jwtoptions.SigningKey)),
                 SecurityAlgorithms.HmacSha256),
                 Subject = new ClaimsIdentity(new Claim[]
                 {
