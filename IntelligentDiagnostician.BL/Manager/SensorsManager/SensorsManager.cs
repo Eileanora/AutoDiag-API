@@ -1,86 +1,65 @@
-﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
-using IntelligentDiagnostician.DAL.Repositories.SensorRepository;
+﻿using FluentValidation;
+using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+using IntelligentDiagnostician.BL.Repositories;
+using IntelligentDiagnostician.BL.ResourceParameters;
+using IntelligentDiagnostician.BL.Utils.Facades.SensorManagerFacade;
+using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 using IntelligentDiagnostician.DataModels.Models;
 
 
 namespace IntelligentDiagnostician.BL.Manager.SensorsManager;
 
-public class SensorsManager : ISensorsManager
+public class SensorsManager(ISensorManagerFacade sensorManagerFacade) : ISensorsManager
 {
-    private readonly ISensorRepository _sensorRepository;
-    public SensorsManager(ISensorRepository sensorRepository)
+    
+    public async Task<PagedList<SensorDto>> GetAllAsync(
+        int systemId,
+        SensorsResourceParameters resourceParameters)
     {
-        _sensorRepository = sensorRepository;
+        var sensors = await sensorManagerFacade
+            .SensorRepository
+            .GetAllAsync(systemId, resourceParameters);
+        return sensors.ToListDto();
     }
     
-    public async Task<IEnumerable<SensorDto>> GetAllAsync(int systemId)
+    public async Task<SensorDto?> GetByIdAsync(int sensorId)
     {
-        var sensors = await _sensorRepository.GetAllAsync(systemId);
-
-        return sensors.Select(s => new SensorDto
-        {
-            Id = s.Id,
-            Name = s.SensorName,
-        });
-    }
-    
-    public async Task<SensorDto?> GetByIdAsync(int systemId, int sensorId)
-    {
-        var sensor = await _sensorRepository.GetByIdAsync(systemId, sensorId);
+        var sensor = await sensorManagerFacade.SensorRepository.GetByIdAsync(sensorId);
         if (sensor == null)
             return null;
         
-        return new SensorDto
-        {
-            Id = sensor.Id,
-            Name = sensor.SensorName,
-            CarSystemName = sensor.CarSystem.CarSystemName,
-            CreatedBy = 1,
-            CreatedDate = sensor.CreatedDate,
-            ModifiedBy = 1,
-            ModifiedDate = sensor.ModifiedDate
-        };
+        return sensor.ToDto();
     }
 
     public async Task<SensorDto?> CreateAsync(int systemId, SensorForCreationDto sensor)
     {
-        var newSensor = await _sensorRepository.CreateAsync(new Sensor
-        {
-            SensorName = sensor.SensorName,
-            CarSystemId = systemId
-        });
+        var validationResult = await sensorManagerFacade.CreationValidator.ValidateAsync(
+            sensor,
+            options => options.IncludeRuleSets("Business"));
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+        
+        var newSensor = await sensorManagerFacade.SensorRepository.CreateAsync(sensor.ToEntity(systemId));
         if (newSensor == null)
             return null;
         
-        return new SensorDto
-        {
-            Id = newSensor.Id,
-            Name = newSensor.SensorName,
-            CarSystemId = systemId,
-            CreatedBy = 1,
-            CreatedDate = newSensor.CreatedDate,
-        };
+        return newSensor.ToDto();
     }
 
-    public async  Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(SensorDto sensorToDelete)
     {
-        var toDelete = await _sensorRepository.GetByIdAsync(id);
-        if (toDelete == null)
-            return false;
-        await _sensorRepository.DeleteAsync(toDelete);
-        return true;
+        var sensor = await sensorManagerFacade.SensorRepository.GetByIdAsync(sensorToDelete.Id);
+        await sensorManagerFacade.SensorRepository.DeleteAsync(sensor); // ignore null here
     }
     
-    public async Task<bool> SensorExistsAsync(int id)
-    {
-        return await _sensorRepository.SensorExistsAsync(id);
-    }
     
     public async Task UpdateAsync(int sensorId, SensorForUpdateDto sensorForUpdate)
     {
-        var sensor = await _sensorRepository.GetByIdAsync(sensorId);
-        sensor!.SensorName = sensorForUpdate.Name;
+        // TODO: Implement business validation rules for update operation
+        var sensor = await sensorManagerFacade.SensorRepository.GetByIdAsync(sensorId);
+        sensor.SensorName = sensorForUpdate.SensorName;
         sensor.CarSystemId = sensorForUpdate.CarSystemId;
-        await _sensorRepository.UpdateAsync(sensor);
+        await sensorManagerFacade.SensorRepository.UpdateAsync(sensor);
     }
 }

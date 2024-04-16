@@ -216,7 +216,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CarSystemId")
+                    b.Property<int?>("CarSystemId")
                         .HasColumnType("int");
 
                     b.Property<int?>("CreatedBy")
@@ -411,8 +411,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.HasOne("IntelligentDiagnostician.DataModels.Models.CarSystem", "CarSystem")
                         .WithMany("Sensors")
                         .HasForeignKey("CarSystemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("CarSystem");
                 });

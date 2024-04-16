@@ -2,50 +2,78 @@
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using Microsoft.AspNetCore.Authorization;
+﻿using IntelligentDiagnostician.API.Helpers.InputValidator;
+using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
+using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
+using IntelligentDiagnostician.BL.ResourceParameters;
 
 namespace IntelligentDiagnostician.API.Controllers;
 
 [Route("api/v1/car-systems/{systemId}/sensors")]
 [ApiController]
-public class SensorController : ControllerBase
+public class SensorController(ISensorControllerFacade sensorControllerFacade) : ControllerBase
 {
-    private readonly ISensorsManager _sensorsManager;
-    private readonly ICarSystemManager _carSystemManager;
-    public SensorController(ISensorsManager sensorsManager, ICarSystemManager carSystemManager)
+    [HttpHead]
+    [HttpGet(Name = "GetAllSensors")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<SensorDto>> GetSensors(
+        int systemId, 
+        [FromQuery] SensorsResourceParameters resourceParameters)
     {
-        _sensorsManager = sensorsManager;
-        _carSystemManager = carSystemManager;
-    }
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "ASDF")]
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<SensorDto>>> GetSensors(int systemId)
-    {
-        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if(sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensors = await _sensorsManager.GetAllAsync(systemId);
+        var sensors = await sensorControllerFacade
+            .SensorsManager
+            .GetAllAsync(systemId, resourceParameters);
+
+        sensorControllerFacade.SensorPaginationHelper
+            .CreateMetaDataHeader(
+                sensors,
+                resourceParameters,
+                Response.Headers, Url);
+        
         return Ok(sensors);
     }
     [HttpGet("{sensorId}", Name = "GetSensorById")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<SensorDto>> GetByIdAsync(int systemId, int sensorId)
     {
-        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if(sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensor = await _sensorsManager.GetByIdAsync(systemId, sensorId);
+        var sensor = await sensorControllerFacade.SensorsManager.GetByIdAsync(sensorId);
         if (sensor == null)
             return NotFound();
         return Ok(sensor);
     }
+
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<SensorDto>> CreateSensor(int systemId, SensorForCreationDto sensor)
     {
-        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if (sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
+
+        var validationResult = await sensorControllerFacade.CreationValidator
+            .ValidateAsync(sensor,
+                options => options.IncludeRuleSets("Input"));
         
-        var newSensor = await _sensorsManager.CreateAsync(systemId, sensor);
+        if (!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(this.ModelState);
+            return ValidationProblem(ModelState);
+        }
+
+        var newSensor = await sensorControllerFacade.SensorsManager.CreateAsync(systemId, sensor);
         if (newSensor == null)
             return BadRequest();
         
@@ -56,37 +84,55 @@ public class SensorController : ControllerBase
     }
     
     [HttpPatch("{sensorId}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> UpdateSensor(int systemId, int sensorId, JsonPatchDocument<SensorForUpdateDto> patchDocument)
     {
-        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if(sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
             return NotFound();
         
-        var sensor = await _sensorsManager.GetByIdAsync(systemId, sensorId);
+        var sensor = await sensorControllerFacade.SensorsManager.GetByIdAsync(sensorId);
         if (sensor == null)
             return NotFound();
         
-        var sensorToPatch = new SensorForUpdateDto
-        {
-            Name = sensor.Name,
-            CarSystemId = systemId
-        };
+        var sensorToPatch = sensor.ToUpdateDto();
         patchDocument.ApplyTo(sensorToPatch, ModelState);
-        if (!TryValidateModel(sensorToPatch))
-            return ValidationProblem(ModelState);
         
-        await _sensorsManager.UpdateAsync(sensorId, sensorToPatch);
+        // check if the patch was successful
+        var validationResult = await sensorControllerFacade.UpdateValidator.ValidateAsync(sensorToPatch);
+        if (!validationResult.IsValid)
+            validationResult.AddToModelState(this.ModelState);
+
+        if (!TryValidateModel(ModelState))
+            return ValidationProblem(ModelState);
+         
+        await sensorControllerFacade.SensorsManager.UpdateAsync(sensorId, sensorToPatch);
         return NoContent();
     }
     
     [HttpDelete("{sensorId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> DeleteSensor(int systemId, int sensorId)
     {
-        if(_carSystemManager.CarSystemExistsAsync(systemId).Result == false)
+        if(sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(systemId).Result == false)
+            return NotFound();
+        var sensorToDelete = await sensorControllerFacade.SensorsManager.GetByIdAsync(sensorId);
+        
+        if (sensorToDelete == null)
             return NotFound();
         
-        var deleted = await _sensorsManager.DeleteAsync(sensorId);
-        if (!deleted)
-            return NotFound();
+        await sensorControllerFacade.SensorsManager.DeleteAsync(sensorToDelete);
+        
         return NoContent();
+    }
+    [Route("/api/v1/car-systems/sensors")]
+    [HttpOptions]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetSensorsOptions()
+    {
+        Response.Headers.Append("Allow", "GET,POST,PATCH,DELETE,OPTIONS");
+        return Ok();
     }
 }

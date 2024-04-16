@@ -1,6 +1,6 @@
-﻿namespace IntelligentDiagnostician.BL.DTOs.BaseDTOs;
+﻿namespace IntelligentDiagnostician.BL.DTOs.BaseDto;
 
-public class BaseDto
+public abstract class BaseDto
 {
     public int? CreatedBy { get; set; }
     public DateTime? CreatedDate { get; set; }
