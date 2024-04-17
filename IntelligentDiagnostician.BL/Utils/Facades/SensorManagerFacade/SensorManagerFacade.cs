@@ -8,13 +8,16 @@ public class SensorManagerFacade : ISensorManagerFacade
 {
     public ISensorRepository SensorRepository { get; }
     public IValidator<SensorForCreationDto> CreationValidator { get; }
+    public IValidator<SensorForUpdateDto> UpdateValidator { get; }
 
     public SensorManagerFacade(
         ISensorRepository sensorRepository,
-        IValidator<SensorForCreationDto> creationValidator)
+        IValidator<SensorForCreationDto> creationValidator,
+        IValidator<SensorForUpdateDto> updateValidator)
     {
         SensorRepository = sensorRepository;
         CreationValidator = creationValidator;
+        UpdateValidator = updateValidator;
     }
     
 }

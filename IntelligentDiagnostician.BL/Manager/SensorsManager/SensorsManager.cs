@@ -1,10 +1,9 @@
 ﻿using FluentValidation;
+using FluentValidation.Internal;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
-using IntelligentDiagnostician.BL.Repositories;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.BL.Utils.Facades.SensorManagerFacade;
-using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
-using IntelligentDiagnostician.DataModels.Models;
+using IntelligentDiagnostician.BL.Utils.Converter;
 
 
 namespace IntelligentDiagnostician.BL.Manager.SensorsManager;
@@ -33,6 +32,7 @@ public class SensorsManager(ISensorManagerFacade sensorManagerFacade) : ISensors
 
     public async Task<SensorDto?> CreateAsync(int systemId, SensorForCreationDto sensor)
     {
+        sensor.CarSystemId = systemId;
         var validationResult = await sensorManagerFacade.CreationValidator.ValidateAsync(
             sensor,
             options => options.IncludeRuleSets("Business"));
@@ -56,7 +56,21 @@ public class SensorsManager(ISensorManagerFacade sensorManagerFacade) : ISensors
     
     public async Task UpdateAsync(int sensorId, SensorForUpdateDto sensorForUpdate)
     {
-        // TODO: Implement business validation rules for update operation
+        var context= new ValidationContext<SensorForUpdateDto>(
+            sensorForUpdate,
+            new PropertyChain(),
+            new RulesetValidatorSelector(new [] {"Business"}))
+        {
+            RootContextData =
+            {
+                ["sensorId"] = sensorId
+            }
+        };
+
+        var validationResult = await sensorManagerFacade.UpdateValidator.ValidateAsync(context);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+        
         var sensor = await sensorManagerFacade.SensorRepository.GetByIdAsync(sensorId);
         sensor.SensorName = sensorForUpdate.SensorName;
         sensor.CarSystemId = sensorForUpdate.CarSystemId;

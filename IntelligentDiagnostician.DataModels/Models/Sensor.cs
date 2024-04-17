@@ -1,6 +1,6 @@
 ﻿namespace IntelligentDiagnostician.DataModels.Models;
 
-public class Sensor : PrimaryKeyBaseEntity
+public class Sensor : BaseEntity
 {
     public string SensorName { get; set; }
     public int? CarSystemId { get; set; }
