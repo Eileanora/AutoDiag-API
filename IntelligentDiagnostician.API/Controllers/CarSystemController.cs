@@ -24,11 +24,6 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync(
         [FromQuery] CarSystemsResourceParameters resourceParameters)
-
-
-    [Authorize(AuthenticationSchemes = "Bearer" , Roles = "Admin")]
-    [HttpGet]
-    public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync()
     {
         var systems = await carSystemControllerFacade.CarSystemManager
             .GetAllAsync(resourceParameters);
