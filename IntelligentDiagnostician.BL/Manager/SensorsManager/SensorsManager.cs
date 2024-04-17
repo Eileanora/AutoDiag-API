@@ -1,11 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.Internal;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
-using IntelligentDiagnostician.BL.Repositories;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.BL.Utils.Facades.SensorManagerFacade;
-using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
-using IntelligentDiagnostician.DataModels.Models;
+using IntelligentDiagnostician.BL.Utils.Converter;
 
 
 namespace IntelligentDiagnostician.BL.Manager.SensorsManager;

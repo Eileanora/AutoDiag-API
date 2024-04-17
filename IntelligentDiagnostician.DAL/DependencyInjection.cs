@@ -15,10 +15,11 @@ public static class DependencyInjection
     public static IServiceCollection AddDalServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<UpdateAuditFieldsInterceptor>();
-        services.AddDbContext<AppDbContext>(options =>
+        services.AddDbContext<AppDbContext>((sp, options) =>
         {
+            var UpdateAuditFieldsInterceptor = sp.GetRequiredService<UpdateAuditFieldsInterceptor>();
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionStrings"));
-            options.AddInterceptors(new UpdateAuditFieldsInterceptor());
+            options.AddInterceptors(UpdateAuditFieldsInterceptor);
         });
             
         services.AddScoped<ICarSystemRepository, CarSystemRepository>();

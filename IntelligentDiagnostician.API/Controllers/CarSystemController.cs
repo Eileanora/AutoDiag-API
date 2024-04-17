@@ -6,7 +6,7 @@ using IntelligentDiagnostician.API.Helpers.Facades.CarSystemControllerFacade;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
-using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
+using IntelligentDiagnostician.BL.Utils.Converter;
 
 
 namespace IntelligentDiagnostician.API.Controllers;

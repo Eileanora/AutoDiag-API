@@ -3,7 +3,7 @@ using FluentValidation.Internal;
 using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.BL.Utils.Facades.CarSystemManagerFacade;
-using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
+using IntelligentDiagnostician.BL.Utils.Converter;
 namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
 public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : ICarSystemManager

@@ -2,7 +2,7 @@
 using IntelligentDiagnostician.API.Helpers.InputValidator;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
-using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
+using IntelligentDiagnostician.BL.Utils.Converter;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
@@ -128,7 +128,7 @@ public class SensorController(ISensorControllerFacade sensorControllerFacade) : 
         
         return NoContent();
     }
-    [Route("/api/v1/car-systems/sensors")]
+    [Route("/api/v{version:apiVersion}/car-systems/sensors")]
     [HttpOptions]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetSensorsOptions()
