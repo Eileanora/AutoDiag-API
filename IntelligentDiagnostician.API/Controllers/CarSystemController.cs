@@ -5,6 +5,7 @@ using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.API.Helpers.Facades.CarSystemControllerFacade;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using FluentValidation;
 using IntelligentDiagnostician.BL.Utils.Converter;
 
@@ -24,7 +25,6 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
     // [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync(
         [FromQuery] CarSystemsResourceParameters resourceParameters)
-
     {
         var systems = await carSystemControllerFacade.CarSystemManager
             .GetAllAsync(resourceParameters);

@@ -1,3 +1,6 @@
+using IntelligentDiagnostician.BL.Manager.CarSystemManager;
+using IntelligentDiagnostician.BL.Manager.SensorsManager;
+using Microsoft.AspNetCore.Authorization;
 ﻿using Asp.Versioning;
 using IntelligentDiagnostician.API.Helpers.InputValidator;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
@@ -38,7 +41,6 @@ public class SensorController(ISensorControllerFacade sensorControllerFacade) : 
         
         return Ok(sensors);
     }
-
     [HttpGet("{sensorId}", Name = "GetSensorById")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
