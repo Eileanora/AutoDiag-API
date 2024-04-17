@@ -113,8 +113,9 @@ namespace IntelligentDiagnostician.BL.AuthServices
 
             var claims = new ClaimsIdentity(new Claim[]
             {
-        new Claim(ClaimTypes.NameIdentifier, appUser.UserName),
-        new Claim(ClaimTypes.Email, appUser.Email)
+                new Claim(ClaimTypes.Sid, appUser.Id),
+                new Claim(ClaimTypes.NameIdentifier, appUser.UserName),
+                new Claim(ClaimTypes.Email, appUser.Email)
             });
 
             var roles = await _userManager.GetRolesAsync(appUser);

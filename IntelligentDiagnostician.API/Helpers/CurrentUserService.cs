@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.BL.Services.CurrentUserService;
+﻿using System.Security.Claims;
+using IntelligentDiagnostician.BL.Services.CurrentUserService;
 using IntelligentDiagnostician.BL.Services.UserSession;
 using Microsoft.AspNetCore.Http;
 
@@ -18,8 +19,10 @@ public class CurrentUserService(IHttpContextAccessor contextAccessor) : ICurrent
         var currentUser = new UserSession
         {
             IsAuthenticated = contextAccessor.HttpContext.User.Identity != null && contextAccessor.HttpContext.User.Identity.IsAuthenticated,
-            UserId = Guid.Parse(contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value),
-            LoginName = contextAccessor.HttpContext.User.Identity.Name
+            
+            UserId = Guid.Parse(contextAccessor.HttpContext.User
+                                    .FindFirstValue(ClaimTypes.Sid)
+                                ?? Guid.Empty.ToString()),
         };
         return currentUser;
     }
