@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Asp.Versioning;
 using IntelligentDiagnostician.API.Helpers;
 using IntelligentDiagnostician.BL;
+using IntelligentDiagnostician.BL.Services.MqttServices;
 using IntelligentDiagnostician.DAL;
 using IntelligentDiagnostician.DAL.Context;
 using IntelligentDiagnostician.DataModels.Models;
@@ -91,6 +92,9 @@ internal static class StartupHelper
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
+        var mqttService = app.Services.GetRequiredService<IMqttService>();
+        mqttService.ConnectAsync().GetAwaiter().GetResult();
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

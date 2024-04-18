@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
 
-namespace IntelligentDiagnostician.DAL.Services.MqttServices;
+namespace IntelligentDiagnostician.BL.Services.MqttServices;
 
 public class MqttService : IMqttService
 {

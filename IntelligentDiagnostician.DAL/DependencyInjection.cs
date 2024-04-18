@@ -24,6 +24,7 @@ public static class DependencyInjection
             
         services.AddScoped<ICarSystemRepository, CarSystemRepository>();
         services.AddScoped<ISensorRepository, SensorRepository>();
+        services.AddScoped<IReadingRepository, ReadingRepository>();
         services.AddScoped<ISortHelper<CarSystem>, SortHelper<CarSystem>>();
         services.AddScoped<ISortHelper<Sensor>, SortHelper<Sensor>>();
         
