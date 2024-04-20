@@ -59,5 +59,5 @@ internal abstract class BaseRepository<T>
             .Take(pageSize)
             .ToListAsync();
         return new PagedList<T>(items, count, pageNumber, pageSize);
-    } 
+    }
 }

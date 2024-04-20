@@ -3,7 +3,7 @@ using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.DataModels.Models;
 
-namespace IntelligentDiagnostician.BL.Utils.Mapper.Converter;
+namespace IntelligentDiagnostician.BL.Utils.Converter;
 
 public static class CarSystemConverter
 {
@@ -13,9 +13,9 @@ public static class CarSystemConverter
         {
             Id = carSystem.Id,
             CarSystemName = carSystem.CarSystemName,
-            CreatedBy = 1,
+            CreatedBy = carSystem.CreatedBy ?? Guid.Empty,
             CreatedDate = carSystem.CreatedDate,
-            ModifiedBy = 1,
+            ModifiedBy = carSystem.ModifiedBy ?? Guid.Empty,
             ModifiedDate = carSystem.ModifiedDate
         };
     }
@@ -26,9 +26,9 @@ public static class CarSystemConverter
         {
             Id = carSystem.Id,
             CarSystemName = carSystem.CarSystemName,
-            CreatedBy = 1,
+            CreatedBy = carSystem.CreatedBy ?? Guid.Empty,
             CreatedDate = carSystem.CreatedDate,
-            ModifiedBy = 1,
+            ModifiedBy = carSystem.ModifiedBy ?? Guid.Empty,
             ModifiedDate = carSystem.ModifiedDate,
             Sensors = carSystem.Sensors.Select(s => new SensorDto
             {

@@ -4,7 +4,7 @@ using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
 namespace IntelligentDiagnostician.API.Helpers.Facades.CarSystemCollectionControllerFacade;
 
-public class ICarSystemCollectionControllerFacade
+public interface ICarSystemCollectionControllerFacade
 {
      public ICarSystemManager CarSystemManager { get; }
      public IValidator<CarSystemForCreationDto> CreationValidator { get; }

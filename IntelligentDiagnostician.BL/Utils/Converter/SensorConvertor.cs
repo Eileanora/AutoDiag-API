@@ -2,7 +2,7 @@
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.DataModels.Models;
 
-namespace IntelligentDiagnostician.BL.Utils.Mapper.Converter;
+namespace IntelligentDiagnostician.BL.Utils.Converter;
 
 public static class SensorConvertor
 {
@@ -14,9 +14,9 @@ public static class SensorConvertor
         {
             Id = sensor.Id,
             SensorName = sensor.SensorName,
-            CreatedBy = 1,
+            CreatedBy = sensor.CreatedBy ?? Guid.Empty,
             CreatedDate = sensor.CreatedDate,
-            ModifiedBy = 1,
+            ModifiedBy = sensor.ModifiedBy ?? Guid.Empty,
             ModifiedDate = sensor.ModifiedDate
         };
     }
@@ -28,9 +28,9 @@ public static class SensorConvertor
             Id = sensor.Id,
             SensorName = sensor.SensorName,
             // CarSystemName = sensor.CarSystem.CarSystemName,
-            CreatedBy = 1,
+            CreatedBy = sensor.CreatedBy ?? Guid.Empty,
             CreatedDate = sensor.CreatedDate,
-            ModifiedBy = 1,
+            ModifiedBy = sensor.ModifiedBy ?? Guid.Empty,
             ModifiedDate = sensor.ModifiedDate
         };
     }

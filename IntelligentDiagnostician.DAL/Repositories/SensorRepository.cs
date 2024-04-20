@@ -58,15 +58,13 @@ internal class SensorRepository(AppDbContext context, ISortHelper<Sensor> sortHe
 
     public async Task<bool> IsNameUniqueAsync(int carSystemId, string sensorName)
     {
-        return !await DbContext.Sensors
+        return await DbContext.Sensors
             .AnyAsync(s => s.CarSystemId == carSystemId && s.SensorName == sensorName);
     }
     
-    public async Task<bool> IsNameUniqueAsync(int carSystemId, int sensorId, string sensorName)
+    public async Task<Sensor?> GetByNameAsync(string sensorName)
     {
-        return !await DbContext.Sensors
-            .AnyAsync(s => s.CarSystemId == carSystemId
-                           && s.SensorName == sensorName
-                           && s.Id != sensorId);
+        return await DbContext.Sensors
+            .FirstOrDefaultAsync(s => s.SensorName == sensorName);
     }
 }

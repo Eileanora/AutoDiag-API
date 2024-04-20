@@ -57,6 +57,12 @@ internal class CarSystemRepository(AppDbContext context, ISortHelper<CarSystem> 
             resourceParameters.PageNumber,
             resourceParameters.PageSize);
     }
+    
+    public async Task<CarSystem?> GetByNameAsync(string carSystemName)
+    {
+        return await DbContext.CarSystems
+            .FirstOrDefaultAsync(cs => cs.CarSystemName == carSystemName);
+    }
 
     // private void SearchByName(ref IQueryable<CarSystem> collection, string carSystemName)
     // {

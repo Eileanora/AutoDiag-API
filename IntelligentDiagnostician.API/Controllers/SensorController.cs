@@ -1,11 +1,11 @@
-﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using Microsoft.AspNetCore.Authorization;
-﻿using IntelligentDiagnostician.API.Helpers.InputValidator;
+﻿using Asp.Versioning;
+using IntelligentDiagnostician.API.Helpers.InputValidator;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
-using IntelligentDiagnostician.BL.Utils.Mapper.Converter;
+using IntelligentDiagnostician.BL.Utils.Converter;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
@@ -13,7 +13,8 @@ using IntelligentDiagnostician.BL.ResourceParameters;
 
 namespace IntelligentDiagnostician.API.Controllers;
 
-[Route("api/v1/car-systems/{systemId}/sensors")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/car-systems/{systemId}/sensors")]
 [ApiController]
 public class SensorController(ISensorControllerFacade sensorControllerFacade) : ControllerBase
 {
@@ -100,7 +101,9 @@ public class SensorController(ISensorControllerFacade sensorControllerFacade) : 
         patchDocument.ApplyTo(sensorToPatch, ModelState);
         
         // check if the patch was successful
-        var validationResult = await sensorControllerFacade.UpdateValidator.ValidateAsync(sensorToPatch);
+        var validationResult = await sensorControllerFacade.UpdateValidator.ValidateAsync(
+            sensorToPatch,
+            options => options.IncludeRuleSets("Input"));
         if (!validationResult.IsValid)
             validationResult.AddToModelState(this.ModelState);
 
@@ -127,7 +130,7 @@ public class SensorController(ISensorControllerFacade sensorControllerFacade) : 
         
         return NoContent();
     }
-    [Route("/api/v1/car-systems/sensors")]
+    [Route("/api/v{version:apiVersion}/car-systems/sensors")]
     [HttpOptions]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetSensorsOptions()
