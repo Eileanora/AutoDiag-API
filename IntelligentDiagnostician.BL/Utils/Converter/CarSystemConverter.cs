@@ -12,11 +12,7 @@ public static class CarSystemConverter
         return new CarSystemDto
         {
             Id = carSystem.Id,
-            CarSystemName = carSystem.CarSystemName,
-            CreatedBy = carSystem.CreatedBy ?? Guid.Empty,
-            CreatedDate = carSystem.CreatedDate,
-            ModifiedBy = carSystem.ModifiedBy ?? Guid.Empty,
-            ModifiedDate = carSystem.ModifiedDate
+            CarSystemName = carSystem.CarSystemName
         };
     }
 
@@ -26,15 +22,7 @@ public static class CarSystemConverter
         {
             Id = carSystem.Id,
             CarSystemName = carSystem.CarSystemName,
-            CreatedBy = carSystem.CreatedBy ?? Guid.Empty,
-            CreatedDate = carSystem.CreatedDate,
-            ModifiedBy = carSystem.ModifiedBy ?? Guid.Empty,
-            ModifiedDate = carSystem.ModifiedDate,
-            Sensors = carSystem.Sensors.Select(s => new SensorDto
-            {
-                Id = s.Id,
-                SensorName = s.SensorName
-            }).ToList()
+            Sensors = carSystem.Sensors.Select(s =>s.ToDto()).ToList()
         };
     }
     
@@ -52,9 +40,7 @@ public static class CarSystemConverter
         {
             CarSystemName = carSystemForCreation.CarSystemName,
             Sensors = carSystemForCreation.Sensors != null
-                ? carSystemForCreation.Sensors
-                    .Select(s => new Sensor { SensorName = s.SensorName }).ToList()
-                : null
+                ? carSystemForCreation.Sensors.Select(s => s.ToEntity()).ToList() : null
         };
     }
     

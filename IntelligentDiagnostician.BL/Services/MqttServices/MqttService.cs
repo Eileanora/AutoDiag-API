@@ -41,13 +41,12 @@ public class MqttService : IMqttService
 
         _mqttClient.UseApplicationMessageReceivedHandler(async e =>
         {
-            Console.WriteLine("### RECEIVED APPLICATION MESSAGE ###");
-            Console.WriteLine($"+ Topic = {e.ApplicationMessage.Topic}");
-            Console.WriteLine($"+ Payload = {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
-            Console.WriteLine($"+ QoS = {e.ApplicationMessage.QualityOfServiceLevel}");
-            Console.WriteLine($"+ Retain = {e.ApplicationMessage.Retain}");
-            Console.WriteLine();
-
+            // Console.WriteLine("### RECEIVED APPLICATION MESSAGE ###");
+            // Console.WriteLine($"+ Topic = {e.ApplicationMessage.Topic}");
+            // Console.WriteLine($"+ Payload = {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
+            // Console.WriteLine($"+ QoS = {e.ApplicationMessage.QualityOfServiceLevel}");
+            // Console.WriteLine($"+ Retain = {e.ApplicationMessage.Retain}");
+            // Console.WriteLine();
             await _messageProcessor.ProcessMessage(e.ApplicationMessage.Topic, Encoding.UTF8.GetString(e.ApplicationMessage.Payload));
         });
 

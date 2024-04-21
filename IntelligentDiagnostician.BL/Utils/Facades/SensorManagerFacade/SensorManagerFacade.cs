@@ -9,15 +9,18 @@ public class SensorManagerFacade : ISensorManagerFacade
     public ISensorRepository SensorRepository { get; }
     public IValidator<SensorForCreationDto> CreationValidator { get; }
     public IValidator<SensorForUpdateDto> UpdateValidator { get; }
+    public IUnitOfWork UnitOfWork { get; }
 
     public SensorManagerFacade(
         ISensorRepository sensorRepository,
         IValidator<SensorForCreationDto> creationValidator,
-        IValidator<SensorForUpdateDto> updateValidator)
+        IValidator<SensorForUpdateDto> updateValidator,
+        IUnitOfWork unitOfWork)
     {
         SensorRepository = sensorRepository;
         CreationValidator = creationValidator;
         UpdateValidator = updateValidator;
+        UnitOfWork = unitOfWork;
     }
     
 }

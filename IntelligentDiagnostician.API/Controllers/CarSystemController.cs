@@ -20,10 +20,8 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
 {
     [HttpHead]
     [HttpGet(Name="GetAllSystems")]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
     public async Task<ActionResult<CarSystemDto>> GetAllSystemsAsync(
         [FromQuery] CarSystemsResourceParameters resourceParameters)
     {
@@ -35,11 +33,12 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
         
         return Ok(systems);
     }
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
+    // [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
     [HttpGet("{systemId}", Name = "GetSystemById")]
-    // [ProducesResponseType(StatusCodes.Status404NotFound)]
-    // [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
     public async Task<ActionResult<CarSystemDto>> GetSystemByIdAsync(int systemId)
     {
         var system = await carSystemControllerFacade.CarSystemManager.GetByIdAsync(systemId);
@@ -54,7 +53,7 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    // [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     // [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public async Task<ActionResult<CarSystemDto>> CreateSystem(
         CarSystemForCreationDto systemForCreation)
@@ -83,7 +82,7 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    // [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     // [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public async Task<ActionResult> UpdateSystem(
         int systemId, JsonPatchDocument<CarSystemForUpdateDto> patchDocument)
@@ -113,7 +112,7 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
     [HttpDelete("{systemId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    // [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     // [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public async Task<ActionResult> DeleteSystem(int systemId)
     {

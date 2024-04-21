@@ -14,10 +14,9 @@ public static class SensorConvertor
         {
             Id = sensor.Id,
             SensorName = sensor.SensorName,
-            CreatedBy = sensor.CreatedBy ?? Guid.Empty,
-            CreatedDate = sensor.CreatedDate,
-            ModifiedBy = sensor.ModifiedBy ?? Guid.Empty,
-            ModifiedDate = sensor.ModifiedDate
+            MinValue = sensor.MinValue,
+            AvgValue = sensor.AvgValue,
+            MaxValue = sensor.MaxValue,
         };
     }
     
@@ -27,29 +26,49 @@ public static class SensorConvertor
         {
             Id = sensor.Id,
             SensorName = sensor.SensorName,
-            // CarSystemName = sensor.CarSystem.CarSystemName,
-            CreatedBy = sensor.CreatedBy ?? Guid.Empty,
-            CreatedDate = sensor.CreatedDate,
-            ModifiedBy = sensor.ModifiedBy ?? Guid.Empty,
-            ModifiedDate = sensor.ModifiedDate
+            MinValue = sensor.MinValue,
+            AvgValue = sensor.AvgValue,
+            MaxValue = sensor.MaxValue,
         };
     }
     
     public static Sensor ToEntity(this SensorForCreationDto sensorDto, int systemId)
     {
-        return new Sensor
+        var sensor = new Sensor
         {
+            Id = sensorDto.Id,
             SensorName = sensorDto.SensorName,
             CarSystemId = systemId,
+            MinValue = sensorDto.MinValue,
+            MaxValue = sensorDto.MaxValue,
+            AvgValue = sensorDto.AvgValue
         };
+
+        return sensor;
+    }
+    public static Sensor ToEntity(this SensorForCreationDto sensorDto)
+    {
+        var sensor = new Sensor
+        {
+            Id = sensorDto.Id,
+            SensorName = sensorDto.SensorName,
+            MinValue = sensorDto.MinValue,
+            MaxValue = sensorDto.MaxValue,
+            AvgValue = sensorDto.AvgValue
+        };
+
+        return sensor;
     }
     
-    public static SensorForUpdateDto ToUpdateDto(this SensorDto sensorDto)
+    public static SensorForUpdateDto ToUpdateDto(this SensorDto sensorDto, int carSystemId)
     {
         return new SensorForUpdateDto
         {
             SensorName = sensorDto.SensorName,
-            CarSystemId = sensorDto.CarSystemId
+            CarSystemId = carSystemId,
+            MinValue = sensorDto.MinValue,
+            MaxValue = sensorDto.MaxValue,
+            AvgValue = sensorDto.AvgValue
         };
     }
     
@@ -66,5 +85,14 @@ public static class SensorConvertor
             pageSize,
             totalPages
         );
+    }
+    public static Sensor ToSensorEntity(this SensorForUpdateDto sensorForUpdate, ref Sensor sensor)
+    {
+        sensor.SensorName = sensorForUpdate.SensorName;
+        sensor.CarSystemId = sensorForUpdate.CarSystemId;
+        sensor.MinValue = sensorForUpdate.MinValue;
+        sensor.MaxValue = sensorForUpdate.MaxValue;
+        sensor.AvgValue = sensorForUpdate.AvgValue;
+        return sensor;
     }
 }

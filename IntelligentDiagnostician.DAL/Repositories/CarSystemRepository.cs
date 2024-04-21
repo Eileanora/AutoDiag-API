@@ -15,6 +15,7 @@ internal class CarSystemRepository(AppDbContext context, ISortHelper<CarSystem> 
     {
         
         return await DbContext.CarSystems
+            .AsNoTracking()
             .Include(cs => cs.Sensors)
             .FirstOrDefaultAsync(cs => cs.Id == id);
     }

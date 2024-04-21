@@ -2,8 +2,11 @@
 
 namespace IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 
-public class SensorForUpdateDto : BaseDto.BaseDto
+public class SensorForUpdateDto
 {
-    public string SensorName { get; set; } = string.Empty;
+    public string? SensorName { get; set; }
+    public float? MinValue { get; set; }
+    public float? MaxValue { get; set; }
+    public float? AvgValue { get; set; }
     public int? CarSystemId { get; set; }
 }

@@ -8,10 +8,6 @@ public class ReadingConfiguration : IEntityTypeConfiguration<Reading>
 {
     public void Configure(EntityTypeBuilder<Reading> builder)
     {
-        // builder.HasKey(x => x.UserId);
-        // builder.HasKey(x => x.CarSystemId);
-        // builder.HasKey(x => x.ParameterId);
-        // builder.HasKey(x => x.CreatedDate);
         builder.Property(x => x.Value)
                .IsRequired();
 
@@ -23,6 +19,14 @@ public class ReadingConfiguration : IEntityTypeConfiguration<Reading>
         builder.HasOne(x => x.User)
             .WithMany(x => x.Readings)
             .HasForeignKey(x => x.UserId).IsRequired();
-
+        
+        builder.HasOne(x => x.TroubleCode)
+            .WithOne()
+            .HasForeignKey<Reading>(x => x.Code)
+            .OnDelete(DeleteBehavior.SetNull);
+        
+        builder.Property(x => x.Code)
+            .HasMaxLength(10)
+            .HasColumnType("varchar");
     }
 }

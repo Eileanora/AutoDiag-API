@@ -37,7 +37,7 @@ public sealed class UpdateAuditFieldsInterceptor(
                 SetUserAuditFields(entityEntry, currentUserId);
             
             if (entityEntry.Entity is not AppUser)
-                setEntitesAuditFields(entityEntry, currentUserId);
+                SetEntitesAuditFields(entityEntry, currentUserId);
         }
         return base.SavingChangesAsync(
             eventData,
@@ -60,7 +60,7 @@ public sealed class UpdateAuditFieldsInterceptor(
         }
     }
     
-    void setEntitesAuditFields(EntityEntry<IAuditFields> entityEntry, Guid? currentUserId)
+    void SetEntitesAuditFields(EntityEntry<IAuditFields> entityEntry, Guid? currentUserId)
     {
         if (entityEntry.State == EntityState.Added)
         {

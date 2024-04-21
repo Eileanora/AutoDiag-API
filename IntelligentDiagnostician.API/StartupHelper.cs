@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
 using IntelligentDiagnostician.API.Helpers;
@@ -10,6 +12,7 @@ using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace IntelligentDiagnostician.API;
 
@@ -26,7 +29,8 @@ internal static class StartupHelper
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions
-                    .DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                    .NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals |
+                                     JsonNumberHandling.AllowReadingFromString;
             });
         #endregion
         
@@ -76,7 +80,7 @@ internal static class StartupHelper
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         #endregion
-        
+
         #region MQTT Configuration
 
         // builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
@@ -86,6 +90,12 @@ internal static class StartupHelper
         // mqttService.ConnectAsync().GetAwaiter().GetResult();
 
         #endregion
+
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+            $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+        });
 
         return builder.Build();
     }

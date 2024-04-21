@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelligentDiagnostician.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240418093821_AddUserIdReadingRelation")]
-    partial class AddUserIdReadingRelation
+    [Migration("20240420105509_MarkFieldsAsNullable")]
+    partial class MarkFieldsAsNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,10 +209,10 @@ namespace IntelligentDiagnostician.DAL.Migrations
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Sensor", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<float?>("AvgValue")
+                        .HasColumnType("real");
 
                     b.Property<int?>("CarSystemId")
                         .HasColumnType("int");
@@ -222,6 +222,12 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<float?>("MaxValue")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("MinValue")
+                        .HasColumnType("real");
 
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
@@ -239,6 +245,38 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.HasIndex("CarSystemId");
 
                     b.ToTable("Sensors");
+                });
+
+            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCode", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Severity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("TroubleCodes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

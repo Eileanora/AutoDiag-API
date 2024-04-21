@@ -19,11 +19,10 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ErrorConfiguration).Assembly);
-        // modelBuilder.Ignore<BaseEntity>();
-        // modelBuilder.Ignore<PrimaryKeyBaseEntity>();
     }
     public DbSet<CarSystem> CarSystems {  get; set; }    
     public DbSet<Reading> Readings { get; set; } 
     public DbSet<Sensor> Sensors { get; set; }
+    public DbSet<TroubleCode> TroubleCodes { get; set; }
     public DbSet<Error> Errors { get; set; }
 }

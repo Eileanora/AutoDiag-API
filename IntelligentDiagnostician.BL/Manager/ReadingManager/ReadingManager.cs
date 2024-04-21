@@ -8,7 +8,7 @@ namespace IntelligentDiagnostician.BL.Manager.ReadingManager;
 public class ReadingManager(IReadingFacade readingFacade) : IReadingManager
 {
     public async Task CreateAsync(
-        int sensorId, Guid userId, int value)
+        int sensorId, Guid userId, float value)
     {
         var readingForCreationDto = new ReadingForCreationDto
         {

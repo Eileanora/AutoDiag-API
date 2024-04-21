@@ -2,5 +2,5 @@
 
 public interface IReadingManager
 {
-    Task CreateAsync(int sensorId, Guid userId, int value);
+    Task CreateAsync(int sensorId, Guid userId, float value);
 }

@@ -14,6 +14,6 @@ public interface ICarSystemRepository
     Task<bool> IsNameUnique(int carSystemId, string carSystemName);
     Task <CarSystem> CreateAsync(CarSystem carSystem);
     // add all methods from the base repository class
-    Task <CarSystem> UpdateAsync(CarSystem carSystem);
-    Task DeleteAsync(CarSystem carSystem);
+    CarSystem Update(CarSystem carSystem);
+    void Delete(CarSystem carSystem);
 }
