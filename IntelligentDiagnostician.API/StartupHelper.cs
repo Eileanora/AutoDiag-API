@@ -91,11 +91,11 @@ internal static class StartupHelper
 
         #endregion
 
-        builder.Services.AddSwaggerGen(c =>
-        {
-            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
-            $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
-        });
+        // builder.Services.AddSwaggerGen(c =>
+        // {
+        //     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+        //     $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+        // });
 
         return builder.Build();
     }

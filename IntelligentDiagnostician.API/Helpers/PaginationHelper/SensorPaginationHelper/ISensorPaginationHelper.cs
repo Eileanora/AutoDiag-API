@@ -2,7 +2,7 @@
 using IntelligentDiagnostician.BL.ResourceParameters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IntelligentDiagnostician.API.Helpers.PaginationHelper;
+namespace IntelligentDiagnostician.API.Helpers.PaginationHelper.SensorPaginationHelper;
 
 public interface ISensorPaginationHelper
 {

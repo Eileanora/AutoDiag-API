@@ -81,4 +81,9 @@ public class SensorsManager : ISensorsManager
         _sensorManagerFacade.SensorRepository.Update(sensor);
         await _sensorManagerFacade.UnitOfWork.SaveAsync();
     }
+    
+    public async Task<bool> SensorExistsAsync(int sensorId)
+    {
+        return await _sensorManagerFacade.SensorRepository.SensorExistsAsync(sensorId);
+    }
 }

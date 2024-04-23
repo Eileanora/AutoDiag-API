@@ -4,6 +4,7 @@ using IntelligentDiagnostician.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelligentDiagnostician.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240421124400_seeding")]
+    partial class seeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,7 +257,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCode", b =>
                 {
-                    b.Property<string>("ProblemCode")
+                    b.Property<string>("Code")
                         .HasMaxLength(10)
                         .HasColumnType("varchar");
 
@@ -264,22 +267,22 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar");
+
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ProblemDescription")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar");
-
                     b.Property<string>("Severity")
                         .HasMaxLength(10)
                         .HasColumnType("varchar");
 
-                    b.HasKey("ProblemCode");
+                    b.HasKey("Code");
 
                     b.ToTable("TroubleCodes");
                 });

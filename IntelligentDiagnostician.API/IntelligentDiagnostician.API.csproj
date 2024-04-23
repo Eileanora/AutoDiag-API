@@ -7,17 +7,6 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <UserSecretsId>8f3b480e-2a1b-4faa-8e62-fc998e99e53d</UserSecretsId>
   </PropertyGroup>
-	<PropertyGroup>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	</PropertyGroup>
-	
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DocumentationFile>bin\Debug\IntelligentDiagnostician.API.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DocumentationFile>bin\Release\IntelligentDiagnostician.API.xml</DocumentationFile>
-  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />

@@ -8,15 +8,15 @@ public class TroubleCodeConfiguration : IEntityTypeConfiguration<TroubleCode>
 {
     public void Configure(EntityTypeBuilder<TroubleCode> builder)
     {
-        builder.HasKey(x => x.Code);
+        builder.HasKey(x => x.ProblemCode);
         
-        builder.Property(x => x.Code)
+        builder.Property(x => x.ProblemCode)
             .IsRequired()
             .HasMaxLength(10)
             .HasColumnType("varchar")
             .ValueGeneratedNever();
         
-        builder.Property(x => x.Description)
+        builder.Property(x => x.ProblemDescription)
             .IsRequired()
             .HasMaxLength(50)
             .HasColumnType("varchar");

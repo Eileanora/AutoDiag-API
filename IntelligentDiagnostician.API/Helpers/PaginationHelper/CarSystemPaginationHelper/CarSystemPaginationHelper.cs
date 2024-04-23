@@ -1,29 +1,29 @@
-﻿using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IntelligentDiagnostician.API.Helpers.PaginationHelper;
+namespace IntelligentDiagnostician.API.Helpers.PaginationHelper.CarSystemPaginationHelper;
 
-public class SensorPaginationHelper : ISensorPaginationHelper
+public class CarSystemPaginationHelper : ICarSystemPaginationHelper
 {
-    public void CreateMetaDataHeader(PagedList<SensorDto> sensors,
-        SensorsResourceParameters resourceParameters,
+    public void CreateMetaDataHeader(PagedList<CarSystemDto> systems,
+        CarSystemsResourceParameters resourceParameters,
         IHeaderDictionary responseHeaders,
         IUrlHelper urlHelper)
     {
-        string routeName = "GetAllSensors";
-        var previousPageLink = sensors.HasPrevious ?
-            CreateSensorResourceUri(resourceParameters, routeName, ResourceUriType.PreviousPage, urlHelper) : null;
+        string routeName = "GetAllSystems";
+        var previousPageLink = systems.HasPrevious ?
+            CreateCarSystemResourceUri(resourceParameters, routeName, ResourceUriType.PreviousPage, urlHelper) : null;
 
-        var nextPageLink = sensors.HasNext ?
-            CreateSensorResourceUri(resourceParameters, routeName, ResourceUriType.NextPage, urlHelper) : null;
+        var nextPageLink = systems.HasNext ?
+            CreateCarSystemResourceUri(resourceParameters, routeName, ResourceUriType.NextPage, urlHelper) : null;
 
         var paginationMetadata = new
         {
-            totalCount = sensors.TotalCount,
-            pageSize = sensors.PageSize,
-            currentPage = sensors.CurrentPage,
-            totalPages = sensors.TotalPages,
+            totalCount = systems.TotalCount,
+            pageSize = systems.PageSize,
+            currentPage = systems.CurrentPage,
+            totalPages = systems.TotalPages,
             previousPageLink,
             nextPageLink
         };
@@ -31,8 +31,8 @@ public class SensorPaginationHelper : ISensorPaginationHelper
             JsonHelper.SerializeWithCustomOptions(paginationMetadata));
     }
 
-    public string? CreateSensorResourceUri(
-        SensorsResourceParameters resourceParameters,
+    public string? CreateCarSystemResourceUri(
+        CarSystemsResourceParameters resourceParameters,
         string routeName,
         ResourceUriType type,
         IUrlHelper urlHelper)
@@ -45,7 +45,7 @@ public class SensorPaginationHelper : ISensorPaginationHelper
                     {
                         pageNumber = resourceParameters.PageNumber - 1,
                         pageSize = resourceParameters.PageSize,
-                        sensorName = resourceParameters.SensorName,
+                        carSystemName = resourceParameters.CarSystemName,
                         searchQuery = resourceParameters.SearchQuery,
                     });
             case ResourceUriType.NextPage:
@@ -54,7 +54,7 @@ public class SensorPaginationHelper : ISensorPaginationHelper
                     {
                         pageNumber = resourceParameters.PageNumber + 1,
                         pageSize = resourceParameters.PageSize,
-                        sensorName = resourceParameters.SensorName,
+                        carSystemName = resourceParameters.CarSystemName,
                         // searchQuery = resourceParameters.SearchQuery
                     });
             default:
@@ -63,7 +63,7 @@ public class SensorPaginationHelper : ISensorPaginationHelper
                     {
                         pageNumber = resourceParameters.PageNumber,
                         pageSize = resourceParameters.PageSize,
-                        sensorName = resourceParameters.SensorName,
+                        carSystemName = resourceParameters.CarSystemName,
                         searchQuery = resourceParameters.SearchQuery
                     });
         }

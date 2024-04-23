@@ -5,7 +5,7 @@ using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using IntelligentDiagnostician.BL.Services.MqttServices;
 using Microsoft.Extensions.DependencyInjection;
 using IntelligentDiagnostician.BL.Utils.Facades.CarSystemManagerFacade;
-using IntelligentDiagnostician.BL.Utils.Facades.ReadingFacade;
+using IntelligentDiagnostician.BL.Utils.Facades.ReadingManagerFacade;
 using IntelligentDiagnostician.BL.Utils.Facades.SensorManagerFacade;
 using IntelligentDiagnostician.BL.Utils.Validator.CarSystemValidators;
 using MQTTnet;
@@ -22,7 +22,7 @@ public static class DependencyInjection
         services.AddScoped<IReadingManager, ReadingManager>();
         services.AddScoped<ICarSystemManagerFacade, CarSystemManagerFacade>();
         services.AddScoped<ISensorManagerFacade, SensorManagerFacade>();
-        services.AddScoped<IReadingFacade, ReadingFacade>();
+        services.AddScoped<IReadingManagerFacade, ReadingManagerFacade>();
         services.AddValidatorsFromAssemblyContaining<CarSystemDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<CarSystemCollectionForCreationValidator>();
         
