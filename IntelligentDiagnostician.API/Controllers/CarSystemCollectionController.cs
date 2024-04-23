@@ -3,6 +3,7 @@ using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 using Microsoft.AspNetCore.Mvc;
 using IntelligentDiagnostician.API.Helpers.Facades.CarSystemCollectionControllerFacade;
 using IntelligentDiagnostician.API.Helpers.InputValidator;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IntelligentDiagnostician.API.Controllers;
 
@@ -11,6 +12,10 @@ namespace IntelligentDiagnostician.API.Controllers;
 public class CarSystemCollectionController(ICarSystemCollectionControllerFacade carSystemControllerFacade) : ControllerBase
 {
     [HttpGet("({carSystemIds})", Name = "GetCarSystemCollection")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
     public async Task<ActionResult<IEnumerable<CarSystemDto>>> GetCarSystemCollection(
         [FromRoute] string carSystemIds)
     {
@@ -28,6 +33,10 @@ public class CarSystemCollectionController(ICarSystemCollectionControllerFacade 
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     public async Task<ActionResult<IEnumerable<CarSystemDto>>> CreateCarSystemCollection(
         [FromBody]IEnumerable<CarSystemForCreationDto> carSystemCollection)
     {

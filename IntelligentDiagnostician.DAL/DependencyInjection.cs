@@ -20,12 +20,16 @@ public static class DependencyInjection
             var UpdateAuditFieldsInterceptor = sp.GetRequiredService<UpdateAuditFieldsInterceptor>();
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionStrings"));
             options.AddInterceptors(UpdateAuditFieldsInterceptor);
+            options.EnableSensitiveDataLogging(); // Corrected line
         });
-            
+        
         services.AddScoped<ICarSystemRepository, CarSystemRepository>();
         services.AddScoped<ISensorRepository, SensorRepository>();
+        services.AddScoped<IReadingRepository, ReadingRepository>();
+        services.AddScoped<IUnitOfWork, Repositories.UnitOfWork>();
         services.AddScoped<ISortHelper<CarSystem>, SortHelper<CarSystem>>();
         services.AddScoped<ISortHelper<Sensor>, SortHelper<Sensor>>();
+        services.AddScoped<ISortHelper<Reading>, SortHelper<Reading>>();
         
         return services;
     }

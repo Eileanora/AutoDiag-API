@@ -4,11 +4,11 @@ using IntelligentDiagnostician.BL.Utils.OrderedPropertiesJson;
 namespace IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 
 // [JsonConverter(typeof(MicrosoftOrderedPropertiesConverter<SensorDto>))]
-public class SensorDto : BaseDto.BaseDto
+public class SensorDto
 {
     public int Id { get; set; }
     public string SensorName { get; set; } = string.Empty;
-    public int? CarSystemId { get; set; }
-    public string? CarSystemName { get; set; }
-
+    public float? MinValue { get; set; }
+    public float? MaxValue { get; set; }
+    public float? AvgValue { get; set; }
 }

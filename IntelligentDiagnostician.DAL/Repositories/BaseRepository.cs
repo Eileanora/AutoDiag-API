@@ -23,32 +23,25 @@ internal abstract class BaseRepository<T>
     public async Task<T?> CreateAsync(T entity)
     {
         var newEntry = await DbContext.Set<T>().AddAsync(entity);
-        await DbContext.SaveChangesAsync();
         return newEntry.Entity;
     }
 
-    public async Task<T> UpdateAsync(T entity)
+    public T Update(T entity)
     {
         DbContext.Set<T>().Update(entity);
-        await SaveChangesAsync();
         return entity;
     }
 
-    public Task DeleteAsync(T entity)
+    public void Delete(T entity)
     {
         DbContext.Set<T>().Remove(entity);
-        return SaveChangesAsync();
     }
     
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await DbContext.Set<T>().ToListAsync();
     }
-
-    public async Task SaveChangesAsync()
-    {
-        await DbContext.SaveChangesAsync();
-    }
+    
     
     public static async Task<PagedList<T>> CreateAsync(
         IQueryable<T> source, int pageNumber, int pageSize)

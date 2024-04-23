@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using IntelligentDiagnostician.API.Helpers.PaginationHelper;
+using IntelligentDiagnostician.API.Helpers.PaginationHelper.SensorPaginationHelper;
 using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;

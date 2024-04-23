@@ -14,6 +14,7 @@ internal class SensorRepository(AppDbContext context, ISortHelper<Sensor> sortHe
     public async Task<IEnumerable<Sensor>> GetAllAsync(int systemId)
     {
         return await DbContext.Sensors
+            .AsNoTracking()
             .Where(s => s.CarSystemId == systemId)
             .Include(s => s.CarSystem)
             .ToListAsync();
@@ -61,7 +62,11 @@ internal class SensorRepository(AppDbContext context, ISortHelper<Sensor> sortHe
         return await DbContext.Sensors
             .AnyAsync(s => s.CarSystemId == carSystemId && s.SensorName == sensorName);
     }
-    
+    public async Task<bool> IsIdUniqueAsync(int id)
+    {
+        return await DbContext.Sensors
+            .AnyAsync(s => s.Id == id);
+    }
     public async Task<Sensor?> GetByNameAsync(string sensorName)
     {
         return await DbContext.Sensors

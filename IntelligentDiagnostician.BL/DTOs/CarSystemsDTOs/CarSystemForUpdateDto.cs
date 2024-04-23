@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+﻿namespace IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
 
 public class CarSystemForUpdateDto
 {

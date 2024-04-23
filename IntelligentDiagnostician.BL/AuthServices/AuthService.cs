@@ -5,13 +5,9 @@ using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace IntelligentDiagnostician.BL.AuthServices
 {
@@ -113,8 +109,9 @@ namespace IntelligentDiagnostician.BL.AuthServices
 
             var claims = new ClaimsIdentity(new Claim[]
             {
-        new Claim(ClaimTypes.NameIdentifier, appUser.UserName),
-        new Claim(ClaimTypes.Email, appUser.Email)
+                new Claim(ClaimTypes.Sid, appUser.Id),
+                new Claim(ClaimTypes.NameIdentifier, appUser.UserName),
+                new Claim(ClaimTypes.Email, appUser.Email)
             });
 
             var roles = await _userManager.GetRolesAsync(appUser);

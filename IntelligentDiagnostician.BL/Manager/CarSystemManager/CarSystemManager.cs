@@ -6,13 +6,18 @@ using IntelligentDiagnostician.BL.Utils.Facades.CarSystemManagerFacade;
 using IntelligentDiagnostician.BL.Utils.Converter;
 namespace IntelligentDiagnostician.BL.Manager.CarSystemManager;
 
-public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : ICarSystemManager
+public class CarSystemManager : ICarSystemManager
 {
+    private readonly ICarSystemManagerFacade _carSystemManagerFacade;
+    public CarSystemManager(ICarSystemManagerFacade  carSystemManagerFacade)
+    {
+        _carSystemManagerFacade =  carSystemManagerFacade;
+    }
 
     public async Task<PagedList<CarSystemDto>?> GetAllAsync(
         CarSystemsResourceParameters resourceParameters)
     {
-        var systems = await carSystemManagerFacade
+        var systems = await  _carSystemManagerFacade
             .CarSystemRepository
             .GetAllAsync(resourceParameters);
 
@@ -21,7 +26,7 @@ public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : 
 
     public async Task<CarSystemDto?> GetByIdAsync(int id)
     {
-        var system = await carSystemManagerFacade.CarSystemRepository.GetByIdAsync(id);
+        var system = await  _carSystemManagerFacade.CarSystemRepository.GetByIdAsync(id);
         if(system == null)
             return null;
 
@@ -30,7 +35,7 @@ public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : 
 
     public async Task<CarSystemDto?> CreateAsync(CarSystemForCreationDto systemForCreation)
     {
-        var validationResult = await carSystemManagerFacade.CreationValidator.ValidateAsync(
+        var validationResult = await  _carSystemManagerFacade.CreationValidator.ValidateAsync(
             systemForCreation,
             options => options.IncludeRuleSets("Business"));
         
@@ -41,22 +46,24 @@ public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : 
         }
 
         var systemToCreate = systemForCreation.ToEntity();
-        var createdSystem = await carSystemManagerFacade.CarSystemRepository.CreateAsync(systemToCreate);
+        var createdSystem = await  _carSystemManagerFacade.CarSystemRepository.CreateAsync(systemToCreate);
         if (createdSystem == null)
             return null;
+        await _carSystemManagerFacade.UnitOfWork.SaveAsync();
         return createdSystem.ToDto();
     }
     public async Task<bool> DeleteAsync(int id)
     {
-        var system = await carSystemManagerFacade.CarSystemRepository.GetByIdAsync(id);
+        var system = await  _carSystemManagerFacade.CarSystemRepository.GetByIdAsync(id);
         if (system == null)
             return false;
-        await carSystemManagerFacade.CarSystemRepository.DeleteAsync(system);
+        _carSystemManagerFacade.CarSystemRepository.Delete(system);
+        await _carSystemManagerFacade.UnitOfWork.SaveAsync();
         return true;
     }
     public async Task<bool> CarSystemExistsAsync(int id)
     {
-        return await carSystemManagerFacade.CarSystemRepository.CarSystemExistsAsync(id);
+        return await  _carSystemManagerFacade.CarSystemRepository.CarSystemExistsAsync(id);
     }
     public async Task UpdateAsync(int systemId, CarSystemForUpdateDto systemForUpdate)
     {
@@ -71,12 +78,13 @@ public class CarSystemManager(ICarSystemManagerFacade carSystemManagerFacade) : 
             }
         };
 
-        var validationResult = await carSystemManagerFacade.UpdateValidator.ValidateAsync(context);
+        var validationResult = await  _carSystemManagerFacade.UpdateValidator.ValidateAsync(context);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
         
-        var system = await carSystemManagerFacade.CarSystemRepository.GetByIdAsync(systemId);
+        var system = await  _carSystemManagerFacade.CarSystemRepository.GetByIdAsync(systemId);
         systemForUpdate.UpdateEntity(system);
-        await carSystemManagerFacade.CarSystemRepository.UpdateAsync(system);
+        _carSystemManagerFacade.CarSystemRepository.Update(system);
+        await _carSystemManagerFacade.UnitOfWork.SaveAsync();
     }
 }

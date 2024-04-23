@@ -10,4 +10,5 @@ public interface ISensorsManager
     Task<SensorDto?> CreateAsync(int systemId, SensorForCreationDto sensor);
     Task DeleteAsync(SensorDto sensorToDelete);
     Task UpdateAsync(int sensorId, SensorForUpdateDto sensorToPatch);
+    Task <bool> SensorExistsAsync(int sensorId);
 }

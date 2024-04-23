@@ -7,7 +7,7 @@ public interface ISensorManagerFacade
 {
      ISensorRepository SensorRepository { get; }
      IValidator<SensorForCreationDto> CreationValidator { get; }
-     
      IValidator<SensorForUpdateDto> UpdateValidator { get; }
+     IUnitOfWork UnitOfWork { get; }
     
 }
