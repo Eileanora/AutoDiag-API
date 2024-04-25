@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IntelligentDiagnostician.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class INIT : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -67,6 +67,23 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CarSystems", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TroubleCodes",
+                columns: table => new
+                {
+                    ProblemCode = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    ProblemDescription = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Severity = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TroubleCodes", x => x.ProblemCode);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,6 +222,9 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     SensorName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     CarSystemId = table.Column<int>(type: "int", nullable: true),
+                    MinValue = table.Column<float>(type: "real", nullable: true),
+                    MaxValue = table.Column<float>(type: "real", nullable: true),
+                    AvgValue = table.Column<float>(type: "real", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -227,9 +247,10 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<float>(type: "real", nullable: false),
                     SensorId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Code = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     CarSystemId = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -256,6 +277,12 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         principalTable: "Sensors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Readings_TroubleCodes_Code",
+                        column: x => x.Code,
+                        principalTable: "TroubleCodes",
+                        principalColumn: "ProblemCode",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(
@@ -308,6 +335,13 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 column: "CarSystemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Readings_Code",
+                table: "Readings",
+                column: "Code",
+                unique: true,
+                filter: "[Code] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Readings_SensorId",
                 table: "Readings",
                 column: "SensorId");
@@ -355,6 +389,9 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Sensors");
+
+            migrationBuilder.DropTable(
+                name: "TroubleCodes");
 
             migrationBuilder.DropTable(
                 name: "CarSystems");
