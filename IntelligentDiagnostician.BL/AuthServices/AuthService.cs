@@ -60,6 +60,7 @@ namespace IntelligentDiagnostician.BL.AuthServices
             {
                 Message = "Succeeded",
                 IsAuthenticated = true,
+                Id = User.Id,
                 Email = User.Email,
                 UserName = User.UserName,
                 Token = JwtToken,
@@ -83,6 +84,7 @@ namespace IntelligentDiagnostician.BL.AuthServices
                 IsAuthenticated = true,
                 Email = loginuser.Email,
                 Token = JwtToken,
+                Id = User.Id , 
                 Roles = userRoles.ToList(),
             };
         }
@@ -102,6 +104,33 @@ namespace IntelligentDiagnostician.BL.AuthServices
             var Result = await _userManager.AddToRoleAsync(UserId ,assignrolestouser.RoleName);
 
             return Result.Succeeded ? string.Empty : "Something Went Wrong";
+        }
+        public async Task<AuthModel> ChangePassword(ChangePasswordDto changePassword)
+        {
+            var User = await _userManager.FindByIdAsync(changePassword.UserId);
+
+            if (User == null)
+                return new AuthModel { Message = "Invalid User Id" };
+
+            var result = await _userManager.ChangePasswordAsync(User, changePassword.OldPassword, changePassword.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                var erros = string.Empty;
+
+                foreach (var error in result.Errors)
+                {
+                    erros += $"{error.Description},";
+                }
+                return new AuthModel { Message = erros };
+            }
+
+            return new AuthModel
+            {
+                Message = "Password changed successfully",
+                IsAuthenticated = true
+            };
+
         }
         private async Task<string> GenerateAccessToken(AppUser appUser)
         {

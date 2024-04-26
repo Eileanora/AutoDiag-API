@@ -1,6 +1,7 @@
 ﻿using IntelligentDiagnostician.BL.AuthServices;
 using IntelligentDiagnostician.BL.DTOs.UserDtos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace IntelligentDiagnostician.API.Controllers
 {
@@ -26,6 +27,7 @@ namespace IntelligentDiagnostician.API.Controllers
 
             return Ok( new
             {
+                result.Id,
                 result.Email,
                 result.UserName,
                 result.Token,
@@ -46,6 +48,7 @@ namespace IntelligentDiagnostician.API.Controllers
 
             return Ok( new
             {
+                result.Id,
                 result.Email,
                 result.Token,
                 result.Roles
@@ -65,6 +68,21 @@ namespace IntelligentDiagnostician.API.Controllers
 
             return Ok(assignRolesToUser);
         }
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto changePassword)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _authService.ChangePassword(changePassword);
+
+            if (!result.IsAuthenticated)
+                return BadRequest(result.Message);
+
+            return Ok(result.Message);
+
+        }
+
 
 
     }

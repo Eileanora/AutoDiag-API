@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelligentDiagnostician.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240419125310_Initial")]
-    partial class Initial
+    [Migration("20240423152108_INIT")]
+    partial class INIT
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,6 +173,10 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.Property<int?>("CarSystemId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Code")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar");
+
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -192,12 +196,16 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarSystemId");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasFilter("[Code] IS NOT NULL");
 
                     b.HasIndex("SensorId");
 
@@ -211,6 +219,9 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
+                    b.Property<float?>("AvgValue")
+                        .HasColumnType("real");
+
                     b.Property<int?>("CarSystemId")
                         .HasColumnType("int");
 
@@ -219,6 +230,12 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<float?>("MaxValue")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("MinValue")
+                        .HasColumnType("real");
 
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
@@ -236,6 +253,38 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.HasIndex("CarSystemId");
 
                     b.ToTable("Sensors");
+                });
+
+            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCode", b =>
+                {
+                    b.Property<string>("ProblemCode")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProblemDescription")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("Severity")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar");
+
+                    b.HasKey("ProblemCode");
+
+                    b.ToTable("TroubleCodes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -386,6 +435,11 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .WithMany("Readings")
                         .HasForeignKey("CarSystemId");
 
+                    b.HasOne("IntelligentDiagnostician.DataModels.Models.TroubleCode", "TroubleCode")
+                        .WithOne()
+                        .HasForeignKey("IntelligentDiagnostician.DataModels.Models.Reading", "Code")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("IntelligentDiagnostician.DataModels.Models.Sensor", "Sensor")
                         .WithMany("Readings")
                         .HasForeignKey("SensorId")
@@ -399,6 +453,8 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Sensor");
+
+                    b.Navigation("TroubleCode");
 
                     b.Navigation("User");
                 });

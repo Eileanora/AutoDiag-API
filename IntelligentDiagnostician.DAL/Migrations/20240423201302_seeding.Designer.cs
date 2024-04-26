@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelligentDiagnostician.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240420234112_AllowNullValuesOnTroubleCode")]
-    partial class AllowNullValuesOnTroubleCode
+    [Migration("20240423201302_seeding")]
+    partial class seeding
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,6 +173,10 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.Property<int?>("CarSystemId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Code")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar");
+
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -192,12 +196,16 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarSystemId");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasFilter("[Code] IS NOT NULL");
 
                     b.HasIndex("SensorId");
 
@@ -249,7 +257,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCode", b =>
                 {
-                    b.Property<string>("Code")
+                    b.Property<string>("ProblemCode")
                         .HasMaxLength(10)
                         .HasColumnType("varchar");
 
@@ -259,22 +267,22 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar");
-
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ProblemDescription")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar");
+
                     b.Property<string>("Severity")
                         .HasMaxLength(10)
                         .HasColumnType("varchar");
 
-                    b.HasKey("Code");
+                    b.HasKey("ProblemCode");
 
                     b.ToTable("TroubleCodes");
                 });
@@ -427,6 +435,11 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .WithMany("Readings")
                         .HasForeignKey("CarSystemId");
 
+                    b.HasOne("IntelligentDiagnostician.DataModels.Models.TroubleCode", "TroubleCode")
+                        .WithOne()
+                        .HasForeignKey("IntelligentDiagnostician.DataModels.Models.Reading", "Code")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("IntelligentDiagnostician.DataModels.Models.Sensor", "Sensor")
                         .WithMany("Readings")
                         .HasForeignKey("SensorId")
@@ -440,6 +453,8 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Sensor");
+
+                    b.Navigation("TroubleCode");
 
                     b.Navigation("User");
                 });

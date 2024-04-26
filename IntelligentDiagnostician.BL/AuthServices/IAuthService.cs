@@ -12,8 +12,9 @@ namespace IntelligentDiagnostician.BL.AuthServices
     {
         Task<AuthModel> RegisterAsync(CreateUserDto createuser); 
         Task<AuthModel> LoginAsync(LoginUser loginuser);
-
         Task<string> AssignRolesToUser(AssignRolesToUser assignrolestouser);
+        Task<AuthModel> ChangePassword(ChangePasswordDto changePassword);
+
 
     }
 }
