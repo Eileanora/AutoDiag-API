@@ -8,9 +8,13 @@ public class ErrorConfiguration : IEntityTypeConfiguration<Error>
 {
     public void Configure(EntityTypeBuilder<Error> builder)
     {
-        builder.Property(x => x.Description)
-            .HasColumnType("varchar")
-            .IsRequired();
-
+        builder.HasKey(e => new { e.Id, e.CreatedDate });
+        builder.Property(e => e.ProblemCode)
+            .IsRequired()
+            .HasMaxLength(5);
+        
+        builder.HasOne(e => e.TroubleCode)
+            .WithMany()
+            .HasForeignKey(e => e.ProblemCode);
     }
 }

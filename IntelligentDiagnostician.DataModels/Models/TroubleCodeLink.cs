@@ -1,7 +1,9 @@
 ﻿namespace IntelligentDiagnostician.DataModels.Models;
 
-public class Error : PrimaryKeyBaseEntity
+public class TroubleCodeLink : PrimaryKeyBaseEntity
 {
+    public string Title { get; set; } = string.Empty;
+    public string Link { get; set; } = string.Empty;
     public string ProblemCode { get; set; } = string.Empty;
     public TroubleCode TroubleCode { get; set; }
 }

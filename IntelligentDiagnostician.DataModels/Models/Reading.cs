@@ -5,8 +5,6 @@ public class Reading : PrimaryKeyBaseEntity
     public float Value { get; set;}
     public int SensorId { get; set; }
     public string UserId { get; set; }
-    public string? Code { get; set; }
-    public TroubleCode? TroubleCode { get; set; }
     public Sensor Sensor { get; set; }
     public AppUser User { get; set; }
 }

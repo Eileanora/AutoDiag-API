@@ -20,5 +20,9 @@ public class SensorConfiguration : IEntityTypeConfiguration<Sensor>
             .WithMany(x => x.Sensors)
             .HasForeignKey(x => x.CarSystemId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(x => x.Unit)
+            .HasColumnType("varchar")
+            .HasMaxLength(10);
     }
 }

@@ -19,14 +19,5 @@ public class ReadingConfiguration : IEntityTypeConfiguration<Reading>
         builder.HasOne(x => x.User)
             .WithMany(x => x.Readings)
             .HasForeignKey(x => x.UserId).IsRequired();
-        
-        builder.HasOne(x => x.TroubleCode)
-            .WithOne()
-            .HasForeignKey<Reading>(x => x.Code)
-            .OnDelete(DeleteBehavior.SetNull);
-        
-        builder.Property(x => x.Code)
-            .HasMaxLength(10)
-            .HasColumnType("varchar");
     }
 }

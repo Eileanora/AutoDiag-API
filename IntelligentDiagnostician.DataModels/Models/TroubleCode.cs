@@ -4,5 +4,6 @@ public class TroubleCode : BaseEntity
 {
     public string ProblemCode { get; set; } = string.Empty;
     public string ProblemDescription { get; set; } = string.Empty;
-    public string? Severity { get; set; }
+    public ICollection<TroubleCodeLink>? TroubleCodeLinks { get; set; } = new List<TroubleCodeLink>();
+    public int? Severity { get; set; }
 }

@@ -25,4 +25,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Sensor> Sensors { get; set; }
     public DbSet<TroubleCode> TroubleCodes { get; set; }
     public DbSet<Error> Errors { get; set; }
+    public DbSet<TroubleCodeLink> TroubleCodeLinks { get; set; }
 }

@@ -27,8 +27,6 @@ public static class ReadingConverter
             MinValue = reading.Sensor.MinValue,
             MaxValue = reading.Sensor.MaxValue,
             AvgValue = reading.Sensor.AvgValue,
-            ProblemCode = reading.TroubleCode?.ProblemCode,
-            ProblemDescription = reading.TroubleCode?.ProblemDescription,
             CreatedDate = reading.CreatedDate
         };
     }

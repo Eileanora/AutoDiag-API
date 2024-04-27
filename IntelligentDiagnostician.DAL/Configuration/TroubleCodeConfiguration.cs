@@ -12,17 +12,13 @@ public class TroubleCodeConfiguration : IEntityTypeConfiguration<TroubleCode>
         
         builder.Property(x => x.ProblemCode)
             .IsRequired()
-            .HasMaxLength(10)
+            .HasMaxLength(5)
             .HasColumnType("varchar")
             .ValueGeneratedNever();
         
         builder.Property(x => x.ProblemDescription)
             .IsRequired()
             .HasMaxLength(50)
-            .HasColumnType("varchar");
-        
-        builder.Property(x => x.Severity)
-            .HasMaxLength(10)
             .HasColumnType("varchar");
     }
 }
