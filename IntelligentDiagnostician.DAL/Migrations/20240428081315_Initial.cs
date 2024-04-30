@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IntelligentDiagnostician.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class INIT : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -73,9 +73,9 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 name: "TroubleCodes",
                 columns: table => new
                 {
-                    ProblemCode = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    ProblemCode = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
                     ProblemDescription = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Severity = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
+                    Severity = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -193,29 +193,6 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Errors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "varchar", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Errors", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Errors_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sensors",
                 columns: table => new
                 {
@@ -225,6 +202,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     MinValue = table.Column<float>(type: "real", nullable: true),
                     MaxValue = table.Column<float>(type: "real", nullable: true),
                     AvgValue = table.Column<float>(type: "real", nullable: true),
+                    Unit = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -242,6 +220,61 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Errors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProblemCode = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Errors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Errors_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Errors_TroubleCodes_ProblemCode",
+                        column: x => x.ProblemCode,
+                        principalTable: "TroubleCodes",
+                        principalColumn: "ProblemCode",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TroubleCodeLinks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Link = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
+                    ProblemCode = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TroubleCodeLinks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TroubleCodeLinks_TroubleCodes_ProblemCode",
+                        column: x => x.ProblemCode,
+                        principalTable: "TroubleCodes",
+                        principalColumn: "ProblemCode",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Readings",
                 columns: table => new
                 {
@@ -250,8 +283,6 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     Value = table.Column<float>(type: "real", nullable: false),
                     SensorId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Code = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
-                    CarSystemId = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -267,22 +298,11 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Readings_CarSystems_CarSystemId",
-                        column: x => x.CarSystemId,
-                        principalTable: "CarSystems",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Readings_Sensors_SensorId",
                         column: x => x.SensorId,
                         principalTable: "Sensors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Readings_TroubleCodes_Code",
-                        column: x => x.Code,
-                        principalTable: "TroubleCodes",
-                        principalColumn: "ProblemCode",
-                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(
@@ -325,21 +345,14 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Errors_ProblemCode",
+                table: "Errors",
+                column: "ProblemCode");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Errors_UserId",
                 table: "Errors",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Readings_CarSystemId",
-                table: "Readings",
-                column: "CarSystemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Readings_Code",
-                table: "Readings",
-                column: "Code",
-                unique: true,
-                filter: "[Code] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Readings_SensorId",
@@ -355,6 +368,11 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 name: "IX_Sensors_CarSystemId",
                 table: "Sensors",
                 column: "CarSystemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TroubleCodeLinks_ProblemCode",
+                table: "TroubleCodeLinks",
+                column: "ProblemCode");
         }
 
         /// <inheritdoc />
@@ -380,6 +398,9 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Readings");
+
+            migrationBuilder.DropTable(
+                name: "TroubleCodeLinks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

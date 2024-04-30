@@ -1,22 +1,23 @@
-﻿using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+﻿using FluentValidation;
+using IntelligentDiagnostician.BL.DTOs.ErrorDTOs;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IntelligentDiagnostician.API.Helpers.PaginationHelper.CarSystemPaginationHelper;
+namespace IntelligentDiagnostician.API.Helpers.PaginationHelper.ErrorPaginationHelper;
 
-public class CarSystemPaginationHelper : ICarSystemPaginationHelper
+public class ErrorPaginagtionHelper : IErrorPaginationHelper
 {
-    public void CreateMetaDataHeader(PagedList<CarSystemDto> systems,
-        CarSystemsResourceParameters resourceParameters,
+       public void CreateMetaDataHeader(PagedList<ErrorDto> systems,
+           ErrorsResourceParameters resourceParameters,
         IHeaderDictionary responseHeaders,
         IUrlHelper urlHelper)
     {
         string routeName = "GetAllSystems";
         var previousPageLink = systems.HasPrevious ?
-            CreateCarSystemResourceUri(resourceParameters, routeName, ResourceUriType.PreviousPage, urlHelper) : null;
+            CreateErrorResourceUri(resourceParameters, routeName, ResourceUriType.PreviousPage, urlHelper) : null;
 
         var nextPageLink = systems.HasNext ?
-            CreateCarSystemResourceUri(resourceParameters, routeName, ResourceUriType.NextPage, urlHelper) : null;
+            CreateErrorResourceUri(resourceParameters, routeName, ResourceUriType.NextPage, urlHelper) : null;
 
         var paginationMetadata = new
         {
@@ -31,13 +32,13 @@ public class CarSystemPaginationHelper : ICarSystemPaginationHelper
             JsonHelper.SerializeWithCustomOptions(paginationMetadata));
     }
 
-    public string? CreateCarSystemResourceUri(
-        CarSystemsResourceParameters resourceParameters,
+    public string? CreateErrorResourceUri(
+        ErrorsResourceParameters resourceParameters,
         string routeName,
         ResourceUriType type,
         IUrlHelper urlHelper)
     {
-        var orderBy = resourceParameters.OrderBy == "CarSystemName" ? null : resourceParameters.OrderBy;
+        var orderBy = resourceParameters.OrderBy == "CreatedDate desc" ? null : resourceParameters.OrderBy;
         switch (type)
         {
             case ResourceUriType.PreviousPage:
@@ -46,8 +47,8 @@ public class CarSystemPaginationHelper : ICarSystemPaginationHelper
                     {
                         pageNumber = resourceParameters.PageNumber - 1,
                         pageSize = resourceParameters.PageSize,
-                        carSystemName = resourceParameters.CarSystemName,
-                        searchQuery = resourceParameters.SearchQuery,
+                        severity = resourceParameters.Severity,
+                        problemCode = resourceParameters.ProblemCode,
                         orderBy
                     });
             case ResourceUriType.NextPage:
@@ -56,8 +57,8 @@ public class CarSystemPaginationHelper : ICarSystemPaginationHelper
                     {
                         pageNumber = resourceParameters.PageNumber + 1,
                         pageSize = resourceParameters.PageSize,
-                        carSystemName = resourceParameters.CarSystemName,
-                        searchQuery = resourceParameters.SearchQuery,
+                        severity = resourceParameters.Severity,
+                        problemCode = resourceParameters.ProblemCode,
                         orderBy
                     });
             default:
@@ -66,10 +67,10 @@ public class CarSystemPaginationHelper : ICarSystemPaginationHelper
                     {
                         pageNumber = resourceParameters.PageNumber,
                         pageSize = resourceParameters.PageSize,
-                        carSystemName = resourceParameters.CarSystemName,
-                        searchQuery = resourceParameters.SearchQuery,
+                        severity = resourceParameters.Severity,
+                        problemCode = resourceParameters.ProblemCode,
                         orderBy
                     });
         }
-    }
+    } 
 }

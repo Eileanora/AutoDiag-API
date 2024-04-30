@@ -37,6 +37,7 @@ public class SensorPaginationHelper : ISensorPaginationHelper
         ResourceUriType type,
         IUrlHelper urlHelper)
     {
+        var orderBy = resourceParameters.OrderBy == "SensorName" ? null : resourceParameters.OrderBy;
         switch (type)
         {
             case ResourceUriType.PreviousPage:
@@ -47,6 +48,7 @@ public class SensorPaginationHelper : ISensorPaginationHelper
                         pageSize = resourceParameters.PageSize,
                         sensorName = resourceParameters.SensorName,
                         searchQuery = resourceParameters.SearchQuery,
+                        orderBy
                     });
             case ResourceUriType.NextPage:
                 return urlHelper?.Link(routeName,
@@ -55,7 +57,8 @@ public class SensorPaginationHelper : ISensorPaginationHelper
                         pageNumber = resourceParameters.PageNumber + 1,
                         pageSize = resourceParameters.PageSize,
                         sensorName = resourceParameters.SensorName,
-                        // searchQuery = resourceParameters.SearchQuery
+                        searchQuery = resourceParameters.SearchQuery,
+                        orderBy
                     });
             default:
                 return urlHelper?.Link(routeName,
@@ -64,7 +67,8 @@ public class SensorPaginationHelper : ISensorPaginationHelper
                         pageNumber = resourceParameters.PageNumber,
                         pageSize = resourceParameters.PageSize,
                         sensorName = resourceParameters.SensorName,
-                        searchQuery = resourceParameters.SearchQuery
+                        searchQuery = resourceParameters.SearchQuery,
+                        orderBy
                     });
         }
     }

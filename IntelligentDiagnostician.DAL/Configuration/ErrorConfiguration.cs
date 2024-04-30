@@ -8,7 +8,7 @@ public class ErrorConfiguration : IEntityTypeConfiguration<Error>
 {
     public void Configure(EntityTypeBuilder<Error> builder)
     {
-        builder.HasKey(e => new { e.Id, e.CreatedDate });
+        // builder.HasKey(e => new { e.Id, e.CreatedDate });
         builder.Property(e => e.ProblemCode)
             .IsRequired()
             .HasMaxLength(5);
@@ -16,5 +16,9 @@ public class ErrorConfiguration : IEntityTypeConfiguration<Error>
         builder.HasOne(e => e.TroubleCode)
             .WithMany()
             .HasForeignKey(e => e.ProblemCode);
+        
+        builder.HasOne(x => x.User)
+            .WithMany(x => x.Errors)
+            .HasForeignKey(x => x.UserId).IsRequired();
     }
 }

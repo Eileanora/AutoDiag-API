@@ -9,5 +9,6 @@ public class SensorForCreationDto
     public float? MinValue { get; set; }
     public float? MaxValue { get; set; }
     public float? AvgValue { get; set; }
+    public string? Unit { get; set; }
     public int CarSystemId { get; set; }
 }

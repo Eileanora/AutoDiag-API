@@ -128,13 +128,16 @@ namespace IntelligentDiagnostician.DAL.Migrations
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Error", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
@@ -147,9 +150,15 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("varchar(5)");
 
-                    b.HasKey("Id", "CreatedDate");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProblemCode");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Errors");
                 });
@@ -452,7 +461,15 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("IntelligentDiagnostician.DataModels.Models.AppUser", "User")
+                        .WithMany("Errors")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("TroubleCode");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Reading", b =>
@@ -548,6 +565,8 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.AppUser", b =>
                 {
+                    b.Navigation("Errors");
+
                     b.Navigation("Readings");
                 });
 

@@ -40,6 +40,7 @@ public class ReadingPaginationHelper : IReadingPaginationHelper
         ResourceUriType type,
         IUrlHelper urlHelper)
     {
+        var orderBy = resourceParameters.OrderBy == "CreatedDate desc" ? null : resourceParameters.OrderBy;
         switch (type)
         {
             case ResourceUriType.PreviousPage:
@@ -48,6 +49,7 @@ public class ReadingPaginationHelper : IReadingPaginationHelper
                     {
                         pageNumber = resourceParameters.PageNumber - 1,
                         pageSize = resourceParameters.PageSize,
+                        orderBy
                     });
             case ResourceUriType.NextPage:
                 return urlHelper?.Link(routeName,
@@ -55,6 +57,7 @@ public class ReadingPaginationHelper : IReadingPaginationHelper
                     {
                         pageNumber = resourceParameters.PageNumber + 1,
                         pageSize = resourceParameters.PageSize,
+                        orderBy
                     });
             default:
                 return urlHelper?.Link(routeName,
@@ -62,6 +65,7 @@ public class ReadingPaginationHelper : IReadingPaginationHelper
                     {
                         pageNumber = resourceParameters.PageNumber,
                         pageSize = resourceParameters.PageSize,
+                        orderBy
                     });
         }
     }

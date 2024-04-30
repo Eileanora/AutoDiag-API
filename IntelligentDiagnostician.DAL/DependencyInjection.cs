@@ -30,6 +30,9 @@ public static class DependencyInjection
         services.AddScoped<ISortHelper<CarSystem>, SortHelper<CarSystem>>();
         services.AddScoped<ISortHelper<Sensor>, SortHelper<Sensor>>();
         services.AddScoped<ISortHelper<Reading>, SortHelper<Reading>>();
+        services.AddScoped<IErrorRepository, ErrorRepository>();
+        services.AddScoped<ISortHelper<Error>, SortHelper<Error>>();
+        services.AddScoped<ITroubleCodeRepository, TroubleCodeRepository>();
         
         return services;
     }
