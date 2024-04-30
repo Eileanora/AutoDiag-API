@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.DataModels.Models;
+﻿using IntelligentDiagnostician.DAL.SeedData;
+using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,5 +30,7 @@ public class TroubleCodeLinkConfiguration : IEntityTypeConfiguration<TroubleCode
             .WithMany(x => x.TroubleCodeLinks)
             .HasForeignKey(x => x.ProblemCode)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasData(TroubleCodeLinkSeedData.LoadTroubleCodeLink()); 
     }
 }
