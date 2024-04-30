@@ -14,23 +14,27 @@ public class ReadingManager : IReadingManager
         _readingManagerFacade = readingManagerFacade;
     }
     public async Task CreateAsync(
-        int sensorId, Guid userId, float value)
+        Guid userId, Dictionary<int, float> readings)
     {
-        var readingForCreationDto = new ReadingForCreationDto
+        foreach (var sensorId in readings)
         {
-            SensorId = sensorId,
-            UserId = userId,
-            Value = value
-        };
-        var validationResult = await _readingManagerFacade.CreationValidator.ValidateAsync(
-            readingForCreationDto,
-            options => options.IncludeRuleSets("Business"));
+            var readingForCreationDto = new ReadingForCreationDto
+            {
+                SensorId = sensorId.Key,
+                UserId = userId,
+                Value = sensorId.Value
+            };
+            var validationResult = await _readingManagerFacade.CreationValidator.ValidateAsync(
+                readingForCreationDto,
+                // TODO: DONT CHECK FOR USER ID FOR EVERY ENTITY
+                options => options.IncludeRuleSets("Business"));
 
-        if (!validationResult.IsValid)
-            return;
+            if (!validationResult.IsValid)
+                return;
 
-        var newReading = readingForCreationDto.ToReading();
-        await _readingManagerFacade.ReadingRepository.CreateAsync(newReading);
+            var newReading = readingForCreationDto.ToReading();
+            await _readingManagerFacade.ReadingRepository.CreateAsync(newReading);
+        }
         await _readingManagerFacade.UnitOfWork.SaveAsync();
     }
 

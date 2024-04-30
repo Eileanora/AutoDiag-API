@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.DataModels.Models;
+﻿using IntelligentDiagnostician.DAL.SeedData;
+using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,7 +13,7 @@ public class TroubleCodeConfiguration : IEntityTypeConfiguration<TroubleCode>
         
         builder.Property(x => x.ProblemCode)
             .IsRequired()
-            .HasMaxLength(10)
+            .HasMaxLength(5)
             .HasColumnType("varchar")
             .ValueGeneratedNever();
         
@@ -20,9 +21,7 @@ public class TroubleCodeConfiguration : IEntityTypeConfiguration<TroubleCode>
             .IsRequired()
             .HasMaxLength(50)
             .HasColumnType("varchar");
-        
-        builder.Property(x => x.Severity)
-            .HasMaxLength(10)
-            .HasColumnType("varchar");
+
+        builder.HasData(TroubleCodeSeedData.LoadTroubleCode()); 
     }
 }

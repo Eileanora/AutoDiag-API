@@ -7,6 +7,7 @@ public class Sensor : PrimaryKeyBaseEntity
     public float? MinValue { get; set; }
     public float? MaxValue { get; set; }
     public float? AvgValue { get; set; }
+    public string? Unit { get; set; }
     public CarSystem? CarSystem { get; set; }
     public ICollection<Reading>? Readings { get; set; } = new List<Reading>();
 }

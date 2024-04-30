@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.DataModels.Models;
+﻿using IntelligentDiagnostician.DAL.SeedData;
+using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,5 +21,11 @@ public class SensorConfiguration : IEntityTypeConfiguration<Sensor>
             .WithMany(x => x.Sensors)
             .HasForeignKey(x => x.CarSystemId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(x => x.Unit)
+            .HasColumnType("varchar")
+            .HasMaxLength(10);
+
+        builder.HasData(SensorsSeedData.LoadSensor()); 
     }
 }

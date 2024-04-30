@@ -17,6 +17,7 @@ public static class SensorConvertor
             MinValue = sensor.MinValue,
             AvgValue = sensor.AvgValue,
             MaxValue = sensor.MaxValue,
+            Unit = sensor.Unit
         };
     }
     
@@ -29,6 +30,7 @@ public static class SensorConvertor
             MinValue = sensor.MinValue,
             AvgValue = sensor.AvgValue,
             MaxValue = sensor.MaxValue,
+            Unit = sensor.Unit
         };
     }
     
@@ -41,7 +43,8 @@ public static class SensorConvertor
             CarSystemId = systemId,
             MinValue = sensorDto.MinValue,
             MaxValue = sensorDto.MaxValue,
-            AvgValue = sensorDto.AvgValue
+            AvgValue = sensorDto.AvgValue,
+            Unit = sensorDto.Unit
         };
 
         return sensor;
@@ -54,7 +57,8 @@ public static class SensorConvertor
             SensorName = sensorDto.SensorName,
             MinValue = sensorDto.MinValue,
             MaxValue = sensorDto.MaxValue,
-            AvgValue = sensorDto.AvgValue
+            AvgValue = sensorDto.AvgValue,
+            Unit = sensorDto.Unit
         };
 
         return sensor;
@@ -68,7 +72,8 @@ public static class SensorConvertor
             CarSystemId = carSystemId,
             MinValue = sensorDto.MinValue,
             MaxValue = sensorDto.MaxValue,
-            AvgValue = sensorDto.AvgValue
+            AvgValue = sensorDto.AvgValue,
+            Unit = sensorDto.Unit
         };
     }
     
@@ -93,6 +98,7 @@ public static class SensorConvertor
         sensor.MinValue = sensorForUpdate.MinValue;
         sensor.MaxValue = sensorForUpdate.MaxValue;
         sensor.AvgValue = sensorForUpdate.AvgValue;
+        sensor.Unit = sensorForUpdate.Unit;
         return sensor;
     }
 }

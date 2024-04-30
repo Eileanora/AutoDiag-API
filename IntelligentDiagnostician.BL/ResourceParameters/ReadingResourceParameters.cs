@@ -6,7 +6,5 @@ public class ReadingResourceParameters : BaseResourceParameters
     {
         OrderBy = "CreatedDate desc";
     }
-    // Filters
-    public string? Severity { get; set; }
-    public string? ProblemCode { get; set; }
+
 }

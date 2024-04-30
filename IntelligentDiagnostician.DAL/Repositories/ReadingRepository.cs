@@ -7,13 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IntelligentDiagnostician.DAL.Repositories;
 
-internal class ReadingRepository(AppDbContext context, ISortHelper<Reading> sortHelper)
+internal class ReadingRepository(
+    AppDbContext context,
+    ISortHelper<Reading> sortHelper)
     : BaseRepository<Reading>(context), IReadingRepository
 {
     public new async Task CreateAsync(Reading reading)
     {
         await context.Readings.AddAsync(reading);
-        await context.SaveChangesAsync();
     }
 
     public async Task<PagedList<Reading>> GetAllAsync(
@@ -27,23 +28,8 @@ internal class ReadingRepository(AppDbContext context, ISortHelper<Reading> sort
         collection = collection
             .Where(r => r.SensorId == sensorId
                         && r.UserId == userId)
-            .Include(r => r.Sensor)
-            .Include(r => r.TroubleCode);
+            .Include(r => r.Sensor);
 
-        if (!string.IsNullOrWhiteSpace(resourceParameters.ProblemCode))
-        {
-            var problemCode = resourceParameters.ProblemCode.Trim();
-            collection = collection
-                .Where(r => r.TroubleCode
-                                    .ProblemCode
-                                    .Contains(problemCode));
-        }
-        if (!string.IsNullOrWhiteSpace(resourceParameters.Severity))
-        {
-            var severity = resourceParameters.Severity.Trim();
-            collection = collection
-                .Where(r => r.TroubleCode.Severity == severity);
-        }
         var sortedList =
             sortHelper.ApplySort(collection, resourceParameters.OrderBy);
 

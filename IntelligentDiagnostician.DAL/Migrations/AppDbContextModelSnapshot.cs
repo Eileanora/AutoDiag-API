@@ -125,7 +125,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.ToTable("CarSystems");
                 });
 
-            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Error", b =>
+            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Fault", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -139,24 +139,28 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar");
-
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ProblemCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)");
+
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProblemCode");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("Errors");
+                    b.ToTable("Faults");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Reading", b =>
@@ -166,13 +170,6 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CarSystemId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Code")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -197,12 +194,6 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarSystemId");
-
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasFilter("[Code] IS NOT NULL");
 
                     b.HasIndex("SensorId");
 
@@ -245,6 +236,10 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar");
 
+                    b.Property<string>("Unit")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CarSystemId");
@@ -255,7 +250,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCode", b =>
                 {
                     b.Property<string>("ProblemCode")
-                        .HasMaxLength(10)
+                        .HasMaxLength(5)
                         .HasColumnType("varchar");
 
                     b.Property<Guid?>("CreatedBy")
@@ -275,13 +270,54 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar");
 
-                    b.Property<string>("Severity")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar");
+                    b.Property<int?>("Severity")
+                        .HasColumnType("int");
 
                     b.HasKey("ProblemCode");
 
                     b.ToTable("TroubleCodes");
+                });
+
+            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCodeLink", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProblemCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProblemCode");
+
+                    b.ToTable("TroubleCodeLinks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -417,26 +453,27 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Error", b =>
+            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Fault", b =>
                 {
-                    b.HasOne("IntelligentDiagnostician.DataModels.Models.AppUser", "User")
+                    b.HasOne("IntelligentDiagnostician.DataModels.Models.TroubleCode", "TroubleCode")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ProblemCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IntelligentDiagnostician.DataModels.Models.AppUser", "User")
+                        .WithMany("Errors")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TroubleCode");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Reading", b =>
                 {
-                    b.HasOne("IntelligentDiagnostician.DataModels.Models.CarSystem", null)
-                        .WithMany("Readings")
-                        .HasForeignKey("CarSystemId");
-
-                    b.HasOne("IntelligentDiagnostician.DataModels.Models.TroubleCode", "TroubleCode")
-                        .WithOne()
-                        .HasForeignKey("IntelligentDiagnostician.DataModels.Models.Reading", "Code")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("IntelligentDiagnostician.DataModels.Models.Sensor", "Sensor")
                         .WithMany("Readings")
                         .HasForeignKey("SensorId")
@@ -451,8 +488,6 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.Navigation("Sensor");
 
-                    b.Navigation("TroubleCode");
-
                     b.Navigation("User");
                 });
 
@@ -464,6 +499,17 @@ namespace IntelligentDiagnostician.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("CarSystem");
+                });
+
+            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCodeLink", b =>
+                {
+                    b.HasOne("IntelligentDiagnostician.DataModels.Models.TroubleCode", "TroubleCode")
+                        .WithMany("TroubleCodeLinks")
+                        .HasForeignKey("ProblemCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TroubleCode");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -519,19 +565,24 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.AppUser", b =>
                 {
+                    b.Navigation("Errors");
+
                     b.Navigation("Readings");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.CarSystem", b =>
                 {
-                    b.Navigation("Readings");
-
                     b.Navigation("Sensors");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Sensor", b =>
                 {
                     b.Navigation("Readings");
+                });
+
+            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCode", b =>
+                {
+                    b.Navigation("TroubleCodeLinks");
                 });
 #pragma warning restore 612, 618
         }

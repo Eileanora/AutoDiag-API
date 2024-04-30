@@ -37,7 +37,6 @@ public class SortHelper<T> : ISortHelper<T>
         }
 
         var orderQuery = orderQueryBuilder.ToString().TrimEnd(',', ' ');
-
-        return collection.OrderBy(orderQuery);
+        return string.IsNullOrWhiteSpace(orderQuery) ? collection : collection.OrderBy(orderQuery);
     }
 }
