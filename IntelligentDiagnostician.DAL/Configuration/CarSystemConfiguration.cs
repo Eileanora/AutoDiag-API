@@ -1,4 +1,5 @@
-﻿using IntelligentDiagnostician.DataModels.Models;
+﻿using IntelligentDiagnostician.DAL.SeedData;
+using IntelligentDiagnostician.DataModels.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,5 +13,7 @@ public class CarSystemConfiguration : IEntityTypeConfiguration<CarSystem>
             .IsRequired()
             .HasMaxLength(50)
             .HasColumnType("varchar");
+
+        builder.HasData(CarSystemSeedData.LoadCarSystems()); 
     }
 }
