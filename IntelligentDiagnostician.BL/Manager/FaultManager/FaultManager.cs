@@ -1,17 +1,17 @@
-﻿using IntelligentDiagnostician.BL.DTOs.ErrorDTOs;
+﻿using IntelligentDiagnostician.BL.DTOs.FaultDTOs;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.BL.Utils.Converter;
-using IntelligentDiagnostician.BL.Utils.Facades.ErrorManagerFacade;
+using IntelligentDiagnostician.BL.Utils.Facades.FaultManagerFacade;
 using FluentValidation;
 
-namespace IntelligentDiagnostician.BL.Manager.ErrorManager;
+namespace IntelligentDiagnostician.BL.Manager.FaultManager;
 
-public class ErrorManager : IErrorManager
+public class FaultManager : IFaultManager
 {
-    private readonly IErrorManagerFacade _errorManagerFacade;
-    public ErrorManager(IErrorManagerFacade errorManagerFacade)
+    private readonly IFaultManagerFacade _faultManagerFacade;
+    public FaultManager(IFaultManagerFacade faultManagerFacade)
     {
-        _errorManagerFacade = errorManagerFacade;
+        _faultManagerFacade = faultManagerFacade;
     }
     
     public async Task CreateAsync(
@@ -20,13 +20,13 @@ public class ErrorManager : IErrorManager
     {
         foreach (var error in errors)
         {
-            var errorForCreationDto = new ErrorForCreationDto
+            var errorForCreationDto = new FaultForCreationDto
             {
                 UserId = userId,
                 ProblemCode = error
             };
             
-            var validationResult = await _errorManagerFacade.CreationValidator.ValidateAsync(
+            var validationResult = await _faultManagerFacade.CreationValidator.ValidateAsync(
                 errorForCreationDto,
                 options => options.IncludeRuleSets("Business"));
 
@@ -34,23 +34,23 @@ public class ErrorManager : IErrorManager
                 continue;
             
             var newError = errorForCreationDto.ToError();
-            await _errorManagerFacade.ErrorRepository
+            await _faultManagerFacade.ErrorRepository
                 .CreateAsync(newError);
         }
 
-        await _errorManagerFacade.UnitOfWork.SaveAsync();
+        await _faultManagerFacade.UnitOfWork.SaveAsync();
     }
 
-    public async Task<PagedList<ErrorDto>> GetAllAsync(
-        ErrorsResourceParameters resourceParameters)
+    public async Task<PagedList<FaultDto>> GetAllAsync(
+        FaultsResourceParameters resourceParameters)
     {
-        var currentUserId = _errorManagerFacade
+        var currentUserId = _faultManagerFacade
             .CurrentUserService.GetCurrentUser().UserId;
         
         if (currentUserId == Guid.Empty)
             throw new UnauthorizedAccessException("User is not authorized to access this resource");
         
-        var errors = await  _errorManagerFacade
+        var errors = await  _faultManagerFacade
             .ErrorRepository
             .GetAllAsync(currentUserId.ToString(), resourceParameters);
 

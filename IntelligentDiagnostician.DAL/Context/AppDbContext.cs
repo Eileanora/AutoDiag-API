@@ -18,12 +18,12 @@ public class AppDbContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ErrorConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(FaultConfiguration).Assembly);
     }
     public DbSet<CarSystem> CarSystems {  get; set; }    
     public DbSet<Reading> Readings { get; set; } 
     public DbSet<Sensor> Sensors { get; set; }
     public DbSet<TroubleCode> TroubleCodes { get; set; }
-    public DbSet<Error> Errors { get; set; }
+    public DbSet<Fault> Faults { get; set; }
     public DbSet<TroubleCodeLink> TroubleCodeLinks { get; set; }
 }

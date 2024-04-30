@@ -1,8 +1,8 @@
 ﻿namespace IntelligentDiagnostician.BL.ResourceParameters;
 
-public class ErrorsResourceParameters : BaseResourceParameters
+public class FaultsResourceParameters : BaseResourceParameters
 {
-    public ErrorsResourceParameters()
+    public FaultsResourceParameters()
     {
         OrderBy = "CreatedDate desc";
     }

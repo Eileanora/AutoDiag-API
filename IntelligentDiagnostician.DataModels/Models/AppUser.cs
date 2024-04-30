@@ -9,5 +9,5 @@ public class AppUser :IdentityUser
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public ICollection<Reading>? Readings { get; set; }
-    public ICollection<Error>? Errors { get; set; }
+    public ICollection<Fault>? Errors { get; set; }
 }

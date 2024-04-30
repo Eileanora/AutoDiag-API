@@ -1,8 +1,7 @@
 ﻿using IntelligentDiagnostician.BL.DTOs.TroubleCodeDTOs;
 
-namespace IntelligentDiagnostician.BL.DTOs.ErrorDTOs;
-
-public class ErrorDto
+namespace IntelligentDiagnostician.BL.DTOs.FaultDTOs;
+public class FaultDto
 {
     public int Id { get; set; }
     public string ProblemCode { get; set; } = string.Empty;

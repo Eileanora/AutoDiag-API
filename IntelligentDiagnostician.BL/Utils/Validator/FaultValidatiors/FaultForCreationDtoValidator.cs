@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
-using IntelligentDiagnostician.BL.DTOs.ErrorDTOs;
+using IntelligentDiagnostician.BL.DTOs.FaultDTOs;
 using IntelligentDiagnostician.BL.Repositories;
 
-namespace IntelligentDiagnostician.BL.Utils.Validator.ErrorValidatiors;
+namespace IntelligentDiagnostician.BL.Utils.Validator.FaultValidatiors;
 
-public class ErrorForCreationDtoValidator : AbstractValidator<ErrorForCreationDto>
+public class FaultForCreationDtoValidator : AbstractValidator<FaultForCreationDto>
 {
-    public ErrorForCreationDtoValidator(
+    public FaultForCreationDtoValidator(
         ITroubleCodeRepository troubleCodeRepository)
     {
 

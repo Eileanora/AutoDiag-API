@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IntelligentDiagnostician.DAL.Configuration;
 
-public class ErrorConfiguration : IEntityTypeConfiguration<Error>
+public class FaultConfiguration : IEntityTypeConfiguration<Fault>
 {
-    public void Configure(EntityTypeBuilder<Error> builder)
+    public void Configure(EntityTypeBuilder<Fault> builder)
     {
         // builder.HasKey(e => new { e.Id, e.CreatedDate });
         builder.Property(e => e.ProblemCode)

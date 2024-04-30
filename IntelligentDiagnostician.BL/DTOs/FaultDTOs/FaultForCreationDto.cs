@@ -1,6 +1,6 @@
-﻿namespace IntelligentDiagnostician.BL.DTOs.ErrorDTOs;
+﻿namespace IntelligentDiagnostician.BL.DTOs.FaultDTOs;
 
-public class ErrorForCreationDto
+public class FaultForCreationDto
 {
     public string ProblemCode { get; set; } = string.Empty;
     public Guid UserId { get; set; }

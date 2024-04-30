@@ -1,6 +1,6 @@
 ﻿namespace IntelligentDiagnostician.DataModels.Models;
 
-public class Error : PrimaryKeyBaseEntity
+public class Fault : PrimaryKeyBaseEntity
 {
     public string ProblemCode { get; set; } = string.Empty;
     public string UserId { get; set; }

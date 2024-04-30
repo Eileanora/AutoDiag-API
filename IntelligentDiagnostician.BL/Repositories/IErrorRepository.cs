@@ -5,8 +5,8 @@ namespace IntelligentDiagnostician.BL.Repositories;
 
 public interface IErrorRepository
 {
-    Task CreateAsync(Error error);
-    Task<PagedList<Error>> GetAllAsync(
+    Task CreateAsync(Fault fault);
+    Task<PagedList<Fault>> GetAllAsync(
         string userId,
-        ErrorsResourceParameters resourceParameters);
+        FaultsResourceParameters resourceParameters);
 }

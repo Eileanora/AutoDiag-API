@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
-using IntelligentDiagnostician.BL.DTOs.ErrorDTOs;
+using IntelligentDiagnostician.BL.DTOs.FaultDTOs;
 using IntelligentDiagnostician.BL.ResourceParameters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IntelligentDiagnostician.API.Helpers.PaginationHelper.ErrorPaginationHelper;
+namespace IntelligentDiagnostician.API.Helpers.PaginationHelper.FaultPaginationHelper;
 
-public class ErrorPaginagtionHelper : IErrorPaginationHelper
+public class FaultPaginagtionHelper : IFaultPaginationHelper
 {
-       public void CreateMetaDataHeader(PagedList<ErrorDto> systems,
-           ErrorsResourceParameters resourceParameters,
+       public void CreateMetaDataHeader(PagedList<FaultDto> systems,
+           FaultsResourceParameters resourceParameters,
         IHeaderDictionary responseHeaders,
         IUrlHelper urlHelper)
     {
@@ -33,7 +33,7 @@ public class ErrorPaginagtionHelper : IErrorPaginationHelper
     }
 
     public string? CreateErrorResourceUri(
-        ErrorsResourceParameters resourceParameters,
+        FaultsResourceParameters resourceParameters,
         string routeName,
         ResourceUriType type,
         IUrlHelper urlHelper)

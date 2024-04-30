@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using FluentValidation;
-using IntelligentDiagnostician.BL.Manager.ErrorManager;
+using IntelligentDiagnostician.BL.Manager.FaultManager;
 using IntelligentDiagnostician.BL.Manager.ReadingManager;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,7 +23,7 @@ public class MessageProcessor : IMessageProcessor
             var readingManager = scope.ServiceProvider.GetRequiredService<IReadingManager>();
             await readingManager.CreateAsync(topic, sensorReadings);
 
-            var errorManager = scope.ServiceProvider.GetRequiredService<IErrorManager>();
+            var errorManager = scope.ServiceProvider.GetRequiredService<IFaultManager>();
             await errorManager.CreateAsync(topic, errors);
         }
     }

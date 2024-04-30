@@ -123,39 +123,9 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CarSystems");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CarSystemName = "Engine Performance Sensors",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 55, DateTimeKind.Local).AddTicks(662),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 55, DateTimeKind.Local).AddTicks(709)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CarSystemName = "Environmental Sensors",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 55, DateTimeKind.Local).AddTicks(713),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 55, DateTimeKind.Local).AddTicks(714)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CarSystemName = "Cooling System Sensor ",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 55, DateTimeKind.Local).AddTicks(716),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 55, DateTimeKind.Local).AddTicks(718)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CarSystemName = "Fuel System Sensor",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 55, DateTimeKind.Local).AddTicks(720),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 55, DateTimeKind.Local).AddTicks(721)
-                        });
                 });
 
-            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Error", b =>
+            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Fault", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -190,7 +160,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Errors");
+                    b.ToTable("Faults");
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Reading", b =>
@@ -275,104 +245,6 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.HasIndex("CarSystemId");
 
                     b.ToTable("Sensors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 100,
-                            AvgValue = 2.5f,
-                            CarSystemId = 3,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4262),
-                            MaxValue = 4.5f,
-                            MinValue = 0.5f,
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4304),
-                            SensorName = "Engine Coolant Temperature",
-                            Unit = "volts"
-                        },
-                        new
-                        {
-                            Id = 101,
-                            AvgValue = 2.5f,
-                            CarSystemId = 4,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4308),
-                            MaxValue = 5f,
-                            MinValue = 0f,
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4310),
-                            SensorName = "Fuel Level",
-                            Unit = "volts"
-                        },
-                        new
-                        {
-                            Id = 102,
-                            AvgValue = 90.65f,
-                            CarSystemId = 2,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4313),
-                            MaxValue = 101.3f,
-                            MinValue = 80f,
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4314),
-                            SensorName = "Barometric Pressure",
-                            Unit = "kPa"
-                        },
-                        new
-                        {
-                            Id = 103,
-                            AvgValue = 0f,
-                            CarSystemId = 2,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4317),
-                            MaxValue = 40f,
-                            MinValue = -40f,
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4318),
-                            SensorName = "Air in Tank Temperature",
-                            Unit = "°C"
-                        },
-                        new
-                        {
-                            Id = 104,
-                            AvgValue = 4.5f,
-                            CarSystemId = 1,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4321),
-                            MaxValue = 5f,
-                            MinValue = 4f,
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4323),
-                            SensorName = "MAF (Mass Air Flow)",
-                            Unit = "volts"
-                        },
-                        new
-                        {
-                            Id = 105,
-                            AvgValue = 140f,
-                            CarSystemId = 1,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4327),
-                            MaxValue = 250f,
-                            MinValue = 30f,
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4328),
-                            SensorName = "Intake Manifold Pressure",
-                            Unit = "kPa"
-                        },
-                        new
-                        {
-                            Id = 106,
-                            AvgValue = 75f,
-                            CarSystemId = 1,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4374),
-                            MaxValue = 112f,
-                            MinValue = 37f,
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4375),
-                            SensorName = "Engine Power",
-                            Unit = "kW"
-                        },
-                        new
-                        {
-                            Id = 107,
-                            AvgValue = 45f,
-                            CarSystemId = 1,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4378),
-                            MaxValue = 100f,
-                            MinValue = 10f,
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 56, DateTimeKind.Local).AddTicks(4379),
-                            SensorName = "Engine Load",
-                            Unit = "%"
-                        });
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCode", b =>
@@ -404,120 +276,6 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.HasKey("ProblemCode");
 
                     b.ToTable("TroubleCodes");
-
-                    b.HasData(
-                        new
-                        {
-                            ProblemCode = "P0079",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(852),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(885),
-                            ProblemDescription = "Exhaust Valve Control Circuit Low (Bank 2)",
-                            Severity = 4
-                        },
-                        new
-                        {
-                            ProblemCode = "P2004",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(889),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(891),
-                            ProblemDescription = "Problem with the Intake Manifold Runner Control (IMRC) actuator, which controls the airflow into the engine",
-                            Severity = 6
-                        },
-                        new
-                        {
-                            ProblemCode = "P3000",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(893),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(894),
-                            ProblemDescription = "Problem with the battery control system",
-                            Severity = 8
-                        },
-                        new
-                        {
-                            ProblemCode = "P0078",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(896),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(898),
-                            ProblemDescription = "Exhaust Valve Control Circuit (Bank 2)",
-                            Severity = 3
-                        },
-                        new
-                        {
-                            ProblemCode = "P007E",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(900),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(901),
-                            ProblemDescription = "Problem with the Charge Air Cooler Temperature Sensor Circuit",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            ProblemCode = "P2036",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(904),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(906),
-                            ProblemDescription = "Problem with the Exhaust Gas Temperature Sensor Circuit",
-                            Severity = 4
-                        },
-                        new
-                        {
-                            ProblemCode = "P007F",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(908),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(909),
-                            ProblemDescription = "Typically related to the fuel temperature sensor",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            ProblemCode = "P18E0",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(911),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(912),
-                            ProblemDescription = "Problem with the Fuel Pressure Sensor Circuit",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            ProblemCode = "P1004",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(914),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(916),
-                            ProblemDescription = "Problem with the Intake Valve Control Solenoid Circuit",
-                            Severity = 4
-                        },
-                        new
-                        {
-                            ProblemCode = "P18D0",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(919),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(920),
-                            ProblemDescription = "Problem with the Exhaust Valve Control Solenoid Circuit",
-                            Severity = 4
-                        },
-                        new
-                        {
-                            ProblemCode = "P18F0",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(922),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(924),
-                            ProblemDescription = "Problem with the Turbocharger Boost Control Solenoid Circuit",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            ProblemCode = "C1004",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(926),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(927),
-                            ProblemDescription = "Related to the Driver Knee Bolster Deployment Control",
-                            Severity = 5
-                        },
-                        new
-                        {
-                            ProblemCode = "B0004",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(929),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(930),
-                            ProblemDescription = "Related to the Driver Knee Bolster Deployment Control",
-                            Severity = 4
-                        },
-                        new
-                        {
-                            ProblemCode = "U1004",
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(932),
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(934),
-                            ProblemDescription = "Indicates an intermittent Controller Area Network Bus Transmit Performance",
-                            Severity = 8
-                        });
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCodeLink", b =>
@@ -560,152 +318,6 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.HasIndex("ProblemCode");
 
                     b.ToTable("TroubleCodeLinks");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5898),
-                            Link = "https://www.obd2pros.com/dtc-codes/p0079/",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5934),
-                            ProblemCode = "P0079",
-                            Title = "P0079 Code - What Does It Mean?"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5938),
-                            Link = "https://www.engine-codes.com/p0079.html",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5939),
-                            ProblemCode = "P0079",
-                            Title = "P0079 Code - Meaning, Causes, & Symptoms"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5941),
-                            Link = "https://cartreatments.com/p2004-code-imrc-issue-symptoms-causes-and-fixes/",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5943),
-                            ProblemCode = "P2004",
-                            Title = "P2004 Code - IMRC Issue"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5945),
-                            Link = "https://www.rxmechanic.com/p3000-error-code/",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5946),
-                            ProblemCode = "P3000",
-                            Title = "P3000 Error Code - What Does It Mean?"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5948),
-                            Link = "https://www.troublecodes.net/pcodes/p3000/",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5949),
-                            ProblemCode = "P3000",
-                            Title = "P3000 - Manufacturer Controlled DTC Bank 1"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5953),
-                            Link = "https://www.troublecodes.net/pcodes/p0078/",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5955),
-                            ProblemCode = "P0078",
-                            Title = "P0078 - Exhaust Valve Control Circuit"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5957),
-                            Link = "https://www.obd-codes.com/p007e",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5958),
-                            ProblemCode = "P007E",
-                            Title = "P007E - Charge Air Cooler Temp. Sensor Circuit"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5960),
-                            Link = "https://www.obd-codes.com/p2036",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5961),
-                            ProblemCode = "P2036",
-                            Title = "P2036 - Exhaust Gas Temp. Sensor Circuit"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5963),
-                            Link = "https://partsavatar.ca/p007f-obd-ii-trouble-code-charge-air-cooler-temperature-sensor-bank-1-bank-2-correlation-solution",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5965),
-                            ProblemCode = "P007F",
-                            Title = "P007F - Charge Air Cooler Temp. Sensor Correlation"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5968),
-                            Link = "http://p18e0.engine-trouble-code.com/",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5969),
-                            ProblemCode = "P18E0",
-                            Title = "P18E0 - Reason For P18E0 Code"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5971),
-                            Link = "https://www.youtube.com/watch?v=DFp6SjLItH4",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5972),
-                            ProblemCode = "P1004",
-                            Title = "P1004 - How TO Fix"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5974),
-                            Link = "http://p18d0.engine-trouble-code.com/",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5976),
-                            ProblemCode = "P18D0",
-                            Title = "P18D0 - More Details "
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5978),
-                            Link = "https://dot.report/dtc/P18F0",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5979),
-                            ProblemCode = "P18F0",
-                            Title = "P18F0 - More Details"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5981),
-                            Link = "https://www.autocodes.com/b0004_ford.html",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5982),
-                            ProblemCode = "C1004",
-                            Title = "C1004 - Related to the Driver Knee Bolster Deployment Control"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5985),
-                            Link = "https://www.autocodes.com/b0004_ford.html",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(5986),
-                            ProblemCode = "B0004",
-                            Title = "B0004 - Related to the Driver Knee Bolster Deployment Control"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CreatedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(6032),
-                            Link = "https://www.autocodes.com/u1004.html",
-                            ModifiedDate = new DateTime(2024, 4, 30, 16, 52, 0, 57, DateTimeKind.Local).AddTicks(6034),
-                            ProblemCode = "U1004",
-                            Title = "U1004 - Intermittent Controller Area Network Bus Performance"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -841,7 +453,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Error", b =>
+            modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Fault", b =>
                 {
                     b.HasOne("IntelligentDiagnostician.DataModels.Models.TroubleCode", "TroubleCode")
                         .WithMany()

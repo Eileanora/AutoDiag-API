@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
-using IntelligentDiagnostician.BL.DTOs.ErrorDTOs;
+using IntelligentDiagnostician.BL.DTOs.FaultDTOs;
 using IntelligentDiagnostician.BL.Repositories;
 using IntelligentDiagnostician.BL.Services.CurrentUserService;
 
-namespace IntelligentDiagnostician.BL.Utils.Facades.ErrorManagerFacade;
+namespace IntelligentDiagnostician.BL.Utils.Facades.FaultManagerFacade;
 
-public interface IErrorManagerFacade
+public interface IFaultManagerFacade
 {
     public IErrorRepository ErrorRepository { get; }
-    public IValidator<ErrorForCreationDto> CreationValidator { get; }
+    public IValidator<FaultForCreationDto> CreationValidator { get; }
     public IUnitOfWork UnitOfWork { get; }
     public ICurrentUserService CurrentUserService { get; }
 }

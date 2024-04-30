@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
-using IntelligentDiagnostician.BL.DTOs.ErrorDTOs;
+using IntelligentDiagnostician.BL.DTOs.FaultDTOs;
 using IntelligentDiagnostician.BL.Manager.CarSystemManager;
-using IntelligentDiagnostician.BL.Manager.ErrorManager;
+using IntelligentDiagnostician.BL.Manager.FaultManager;
 using IntelligentDiagnostician.BL.Manager.ReadingManager;
 using IntelligentDiagnostician.BL.Manager.SensorsManager;
 using IntelligentDiagnostician.BL.Services.MqttServices;
 using Microsoft.Extensions.DependencyInjection;
 using IntelligentDiagnostician.BL.Utils.Facades.CarSystemManagerFacade;
-using IntelligentDiagnostician.BL.Utils.Facades.ErrorManagerFacade;
+using IntelligentDiagnostician.BL.Utils.Facades.FaultManagerFacade;
 using IntelligentDiagnostician.BL.Utils.Facades.ReadingManagerFacade;
 using IntelligentDiagnostician.BL.Utils.Facades.SensorManagerFacade;
 using IntelligentDiagnostician.BL.Utils.Validator.CarSystemValidators;
@@ -30,12 +30,12 @@ public static class DependencyInjection
         services.AddScoped<IReadingManagerFacade, ReadingManagerFacade>();
         services.AddScoped<IReadingManager, ReadingManager>();
         
-        services.AddScoped<IErrorManagerFacade, ErrorManagerFacade>();
-        services.AddScoped<IErrorManager, ErrorManager>();
+        services.AddScoped<IFaultManagerFacade, FaultManagerFacade>();
+        services.AddScoped<IFaultManager, FaultManager>();
         
         services.AddValidatorsFromAssemblyContaining<CarSystemDtoValidator>();
         services.AddValidatorsFromAssemblyContaining<CarSystemCollectionForCreationValidator>();
-        services.AddValidatorsFromAssemblyContaining<ErrorForCreationDto>();
+        services.AddValidatorsFromAssemblyContaining<FaultForCreationDto>();
         
         #region MQTT Configuration
 

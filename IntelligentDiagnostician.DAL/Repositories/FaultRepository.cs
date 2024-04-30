@@ -7,21 +7,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IntelligentDiagnostician.DAL.Repositories;
 
-internal class ErrorRepository(
+internal class FaultRepository(
     AppDbContext context,
-    ISortHelper<Error> sortHelper)
-    : BaseRepository<Error>(context), IErrorRepository
+    ISortHelper<Fault> sortHelper)
+    : BaseRepository<Fault>(context), IErrorRepository
 {
-    public new async Task CreateAsync(Error error)
+    public new async Task CreateAsync(Fault fault)
     {
-        await context.Errors.AddAsync(error);
+        await context.Faults.AddAsync(fault);
     }
 
-    public async Task<PagedList<Error>> GetAllAsync(
+    public async Task<PagedList<Fault>> GetAllAsync(
         string userId,
-        ErrorsResourceParameters resourceParameters)
+        FaultsResourceParameters resourceParameters)
     {
-        var collection = DbContext.Errors as IQueryable<Error>;
+        var collection = DbContext.Faults as IQueryable<Fault>;
         // filter by userId
         collection = collection
             .Where(e => e.UserId == userId)
