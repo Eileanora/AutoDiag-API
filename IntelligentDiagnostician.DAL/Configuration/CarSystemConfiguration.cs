@@ -14,6 +14,6 @@ public class CarSystemConfiguration : IEntityTypeConfiguration<CarSystem>
             .HasMaxLength(50)
             .HasColumnType("varchar");
 
-        // builder.HasData(CarSystemSeedData.LoadCarSystems()); 
+        builder.HasData(CarSystemSeedData.LoadCarSystems()); 
     }
 }

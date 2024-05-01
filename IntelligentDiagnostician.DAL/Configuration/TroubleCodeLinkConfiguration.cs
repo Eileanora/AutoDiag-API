@@ -13,12 +13,12 @@ public class TroubleCodeLinkConfiguration : IEntityTypeConfiguration<TroubleCode
         
         builder.Property(x => x.Title)
             .IsRequired()
-            .HasMaxLength(50)
+            .HasMaxLength(100)
             .HasColumnType("varchar");
         
         builder.Property(x => x.Link)
             .IsRequired()
-            .HasMaxLength(150)
+            .HasMaxLength(200)
             .HasColumnType("varchar");
         
         builder.Property(x => x.ProblemCode)

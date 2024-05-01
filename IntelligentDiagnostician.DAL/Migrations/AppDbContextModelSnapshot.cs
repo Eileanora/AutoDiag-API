@@ -122,7 +122,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarSystems");
+                    b.ToTable("CarSystems", (string)null);
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Fault", b =>
@@ -160,7 +160,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Faults");
+                    b.ToTable("Faults", (string)null);
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Reading", b =>
@@ -199,7 +199,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Readings");
+                    b.ToTable("Readings", (string)null);
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.Sensor", b =>
@@ -244,7 +244,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.HasIndex("CarSystemId");
 
-                    b.ToTable("Sensors");
+                    b.ToTable("Sensors", (string)null);
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCode", b =>
@@ -267,7 +267,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.Property<string>("ProblemDescription")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(200)
                         .HasColumnType("varchar");
 
                     b.Property<int?>("Severity")
@@ -275,7 +275,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.HasKey("ProblemCode");
 
-                    b.ToTable("TroubleCodes");
+                    b.ToTable("TroubleCodes", (string)null);
                 });
 
             modelBuilder.Entity("IntelligentDiagnostician.DataModels.Models.TroubleCodeLink", b =>
@@ -294,7 +294,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.Property<string>("Link")
                         .IsRequired()
-                        .HasMaxLength(150)
+                        .HasMaxLength(200)
                         .HasColumnType("varchar");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -310,14 +310,14 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(100)
                         .HasColumnType("varchar");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProblemCode");
 
-                    b.ToTable("TroubleCodeLinks");
+                    b.ToTable("TroubleCodeLinks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
