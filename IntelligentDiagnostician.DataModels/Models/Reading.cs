@@ -1,9 +1,10 @@
 ﻿namespace IntelligentDiagnostician.DataModels.Models;
 public class Reading : PrimaryKeyBaseEntity
 {
-    public int ReadingValue { get; set;}
+    // TODO: TEST AFTER MAKING FLOAT AND MAKE MIGIRATION
+    public float Value { get; set;}
     public int SensorId { get; set; }
+    public string UserId { get; set; }
     public Sensor Sensor { get; set; }
-    public int UserId { get; set; }
-    public User User { get; set; }
+    public AppUser User { get; set; }
 }
