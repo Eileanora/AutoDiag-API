@@ -1,7 +1,9 @@
 ﻿using System.Text;
+using Microsoft.Extensions.Configuration;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
+using MQTTnet.Formatter;
 
 namespace IntelligentDiagnostician.BL.Services.MqttServices;
 
@@ -9,9 +11,11 @@ public class MqttService : IMqttService
 {
     private readonly IMqttClient _mqttClient;
     private readonly IMessageProcessor _messageProcessor;
+    private readonly IConfiguration _configuration; 
 
-    public MqttService(IMqttClient mqttClient, IMessageProcessor messageProcessor)
+    public MqttService(IMqttClient mqttClient, IMessageProcessor messageProcessor , IConfiguration configuration )
     {
+        _configuration = configuration; 
         _mqttClient = mqttClient;
         _messageProcessor = messageProcessor;
     }
@@ -28,7 +32,7 @@ public class MqttService : IMqttService
                 IgnoreCertificateRevocationErrors = true,
                 AllowUntrustedCertificates = true
             })
-            .WithCredentials("ahmedsamir4299", "01060402354aA")
+            .WithCredentials(_configuration["MqttUser"], _configuration["Mqttpassword"])
             .WithCleanSession()
             .Build();
         Console.WriteLine("WENT THROUGH CONNECTING");

@@ -12,17 +12,21 @@ namespace IntelligentDiagnostician.DAL;
 
 public static class DependencyInjection
 {
+
+   
     public static IServiceCollection AddDalServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<UpdateAuditFieldsInterceptor>();
         services.AddDbContext<AppDbContext>((sp, options) =>
         {
             var UpdateAuditFieldsInterceptor = sp.GetRequiredService<UpdateAuditFieldsInterceptor>();
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionStrings"));
-            options.AddInterceptors(UpdateAuditFieldsInterceptor);
+           options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionStrings"));
+           options.AddInterceptors(UpdateAuditFieldsInterceptor);
             options.EnableSensitiveDataLogging(); // Corrected line
         });
-        
+
+     //   var x = configuration.GetConnectionString("DefaultConnectionStrings"); 
+
         services.AddScoped<ICarSystemRepository, CarSystemRepository>();
         services.AddScoped<ISensorRepository, SensorRepository>();
         services.AddScoped<IReadingRepository, ReadingRepository>();

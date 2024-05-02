@@ -153,10 +153,11 @@ namespace IntelligentDiagnostician.BL.AuthServices
             {
                 Issuer = _jwtoptions.Issuer,
                 Audience = _jwtoptions.Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtoptions.SigningKey)),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SigningKey"])),
                     SecurityAlgorithms.HmacSha256),
                 Subject = claims 
             };
+         //   var x = _configuration["SigningKey"]; 
 
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 

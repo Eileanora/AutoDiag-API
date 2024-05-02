@@ -19,7 +19,7 @@ public class TroubleCodeConfiguration : IEntityTypeConfiguration<TroubleCode>
         
         builder.Property(x => x.ProblemDescription)
             .IsRequired()
-            .HasMaxLength(100)
+            .HasMaxLength(500)
             .HasColumnType("varchar");
 
         builder.HasData(TroubleCodeSeedData.LoadTroubleCode()); 
