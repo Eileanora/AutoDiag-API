@@ -152,6 +152,7 @@ namespace IntelligentDiagnostician.BL.AuthServices
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = _jwtoptions.Issuer,
+                Expires = DateTime.UtcNow.AddDays(_jwtoptions.Lifetime),
                 Audience = _jwtoptions.Audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SigningKey"])),
                     SecurityAlgorithms.HmacSha256),

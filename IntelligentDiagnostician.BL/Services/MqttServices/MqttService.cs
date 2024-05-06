@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
-using MQTTnet.Formatter;
+using Newtonsoft.Json;
 
 namespace IntelligentDiagnostician.BL.Services.MqttServices;
 
@@ -51,7 +51,11 @@ public class MqttService : IMqttService
             // Console.WriteLine($"+ QoS = {e.ApplicationMessage.QualityOfServiceLevel}");
             // Console.WriteLine($"+ Retain = {e.ApplicationMessage.Retain}");
             // Console.WriteLine();
-            await _messageProcessor.ProcessMessage(e.ApplicationMessage.Topic, Encoding.UTF8.GetString(e.ApplicationMessage.Payload));
+            var payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Encoding.UTF8.GetString(e.ApplicationMessage.Payload));
+            if (payload is null)
+                return;
+
+            await _messageProcessor.ProcessMessage(e.ApplicationMessage.Topic, payload);
         });
 
         await _mqttClient.ConnectAsync(options);

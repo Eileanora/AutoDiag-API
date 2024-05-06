@@ -8,5 +8,5 @@ namespace IntelligentDiagnostician.BL.Services.MqttServices;
 
 public interface IMessageProcessor
 {
-    Task ProcessMessage(string topic, string payload);
+    Task ProcessMessage(string topic, Dictionary<string, string> payload);
 }
