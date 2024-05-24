@@ -93,7 +93,6 @@ internal static class StartupHelper
                         .AllowAnyMethod();
                 });
         });
-
         #region MQTT Configuration
 
         // builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
@@ -117,14 +116,15 @@ internal static class StartupHelper
     {
         var mqttService = app.Services.GetRequiredService<IMqttService>();
         mqttService.ConnectAsync().GetAwaiter().GetResult();
-        
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-     
-        
+
+        app.UseCors();
+
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
