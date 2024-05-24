@@ -154,11 +154,10 @@ namespace IntelligentDiagnostician.BL.AuthServices
                 Issuer = _jwtoptions.Issuer,
                 Expires = DateTime.UtcNow.AddDays(_jwtoptions.Lifetime),
                 Audience = _jwtoptions.Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SigningKey"])),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtoptions.SigningKey)),
                     SecurityAlgorithms.HmacSha256),
                 Subject = claims 
             };
-         //   var x = _configuration["SigningKey"]; 
 
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 

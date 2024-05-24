@@ -20,7 +20,7 @@ public class SensorController(ISensorControllerFacade sensorControllerFacade) : 
     [HttpGet(Name = "GetAllSensors")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
+  //  [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
     public async Task<ActionResult<SensorDto>> GetSensors(
         int carSystemId, 
         [FromQuery] SensorsResourceParameters resourceParameters)
@@ -44,7 +44,7 @@ public class SensorController(ISensorControllerFacade sensorControllerFacade) : 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
+ //   [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
     public async Task<ActionResult<SensorDto>> GetByIdAsync(int carSystemId, int sensorId)
     {
         if(sensorControllerFacade.CarSystemManager.CarSystemExistsAsync(carSystemId).Result == false)
