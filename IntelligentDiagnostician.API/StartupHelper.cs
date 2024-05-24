@@ -83,6 +83,17 @@ internal static class StartupHelper
         builder.Services.AddSwaggerGen();
         #endregion
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(
+                policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+        });
+        
         #region MQTT Configuration
 
         // builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
@@ -106,13 +117,15 @@ internal static class StartupHelper
     {
         var mqttService = app.Services.GetRequiredService<IMqttService>();
         mqttService.ConnectAsync().GetAwaiter().GetResult();
-        
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        
+
+        app.UseCors();
+
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();

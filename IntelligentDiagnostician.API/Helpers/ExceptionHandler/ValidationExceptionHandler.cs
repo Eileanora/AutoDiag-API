@@ -38,6 +38,8 @@ internal sealed class ValidationExceptionHandler : IExceptionHandler
                 failure => new[] { failure.ErrorMessage }),
             Extensions = { { "TraceId", Activity.Current?.Id ?? httpContext.TraceIdentifier } }        };
 
+        httpContext.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+
         httpContext.Response.StatusCode = problemDetails.Status.Value;
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
         return true;
