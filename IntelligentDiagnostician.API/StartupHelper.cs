@@ -82,6 +82,18 @@ internal static class StartupHelper
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         #endregion
+        
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(
+                policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .WithExposedHeaders("X-Pagination")
+                        .AllowAnyMethod();
+                });
+        });
 
         #region MQTT Configuration
 
@@ -112,7 +124,7 @@ internal static class StartupHelper
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        
+        app.UseCors("AllowAnyOrigin");
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
