@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IntelligentDiagnostician.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,7 +74,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 columns: table => new
                 {
                     ProblemCode = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
-                    ProblemDescription = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    ProblemDescription = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
                     Severity = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -220,7 +220,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Errors",
+                name: "Faults",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -234,15 +234,15 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Errors", x => x.Id);
+                    table.PrimaryKey("PK_Faults", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Errors_AspNetUsers_UserId",
+                        name: "FK_Faults_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Errors_TroubleCodes_ProblemCode",
+                        name: "FK_Faults_TroubleCodes_ProblemCode",
                         column: x => x.ProblemCode,
                         principalTable: "TroubleCodes",
                         principalColumn: "ProblemCode",
@@ -255,8 +255,8 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Link = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
+                    Title = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Link = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
                     ProblemCode = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -345,13 +345,13 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Errors_ProblemCode",
-                table: "Errors",
+                name: "IX_Faults_ProblemCode",
+                table: "Faults",
                 column: "ProblemCode");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Errors_UserId",
-                table: "Errors",
+                name: "IX_Faults_UserId",
+                table: "Faults",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -394,7 +394,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Errors");
+                name: "Faults");
 
             migrationBuilder.DropTable(
                 name: "Readings");

@@ -1,5 +1,6 @@
 ﻿using IntelligentDiagnostician.BL.AuthServices;
 using IntelligentDiagnostician.BL.DTOs.UserDtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
@@ -56,6 +57,8 @@ namespace IntelligentDiagnostician.API.Controllers
         }
 
         [HttpPost("AssignRolesToUser")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "SuperUser")]
+
         public async Task<IActionResult> AssignRolesToUser(AssignRolesToUser assignRolesToUser)
         {
             if (!ModelState.IsValid)
@@ -69,6 +72,8 @@ namespace IntelligentDiagnostician.API.Controllers
             return Ok(assignRolesToUser);
         }
         [HttpPost("ChangePassword")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
+
         public async Task<IActionResult> ChangePassword(ChangePasswordDto changePassword)
         {
             if (!ModelState.IsValid)

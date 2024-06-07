@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelligentDiagnostician.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240430213453_ChangeErrorsToFaults")]
-    partial class ChangeErrorsToFaults
+    [Migration("20240501123015_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,7 +270,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.Property<string>("ProblemDescription")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(500)
                         .HasColumnType("varchar");
 
                     b.Property<int?>("Severity")
@@ -297,7 +297,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.Property<string>("Link")
                         .IsRequired()
-                        .HasMaxLength(150)
+                        .HasMaxLength(200)
                         .HasColumnType("varchar");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -313,7 +313,7 @@ namespace IntelligentDiagnostician.DAL.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(100)
                         .HasColumnType("varchar");
 
                     b.HasKey("Id");

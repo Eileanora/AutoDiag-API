@@ -27,13 +27,10 @@ public class MessageProcessor : IMessageProcessor
             await errorManager.CreateAsync(topic, errors);
         }
     }
-    public (int, float)? ProcessSensorData(string sensorId, string value)
+    public (int, float)? ProcessSensorData(string sensorId, string strDivider, string value)
     {
-        var values = value.Split(",");
-        if (values.Length != 2)
-            return null;
-        if (!int.TryParse(values[0], out var valueInt)   ||
-            !int.TryParse(values[1], out var divider) ||
+        if (!int.TryParse(value, out var valueInt)   ||
+            !int.TryParse(strDivider, out var divider) ||
             !int.TryParse(sensorId, out var sensorIdInt) ||
             divider <= 0)
             return null;
@@ -42,11 +39,8 @@ public class MessageProcessor : IMessageProcessor
         return (sensorIdInt, floatValue);
     }
 
-    public async Task ProcessMessage(string topic, string payload)
+    public async Task ProcessMessage(string topic, Dictionary<string, string> message)
     {
-        var message = JsonSerializer.Deserialize<Dictionary<string, string>>(payload);
-        if (message is null)
-            return;
         if (!Guid.TryParse(topic, out var userId))
             return;
         
@@ -65,15 +59,13 @@ public class MessageProcessor : IMessageProcessor
         {
             var args = key.Split("_");
 
-            if(args.Length != 2)
-                continue;
-            if (args[0] == "s")
+            if (args.Length == 3 && args[0] == "s")
             {
-                var sensorData = ProcessSensorData(args[1], message[key]);
+                var sensorData = ProcessSensorData(args[1], args[2], message[key]);
                 if (sensorData.HasValue)
                     sensorReadings[sensorData.Value.Item1] = sensorData.Value.Item2;
             }
-            else if (args[0] == "t")
+            else if (args.Length == 2 && args[0] == "t")
             {
                 errors.Add(message[key]);
             }

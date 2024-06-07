@@ -1,6 +1,5 @@
 ﻿using IntelligentDiagnostician.BL.Repositories;
 using IntelligentDiagnostician.DAL.Context;
-using IntelligentDiagnostician.DAL.UnitOfWork;
 
 namespace IntelligentDiagnostician.DAL.Repositories;
 

@@ -1,7 +1,9 @@
 ﻿using System.Text;
+using Microsoft.Extensions.Configuration;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
+using Newtonsoft.Json;
 
 namespace IntelligentDiagnostician.BL.Services.MqttServices;
 
@@ -9,9 +11,11 @@ public class MqttService : IMqttService
 {
     private readonly IMqttClient _mqttClient;
     private readonly IMessageProcessor _messageProcessor;
+    private readonly IConfiguration _configuration; 
 
-    public MqttService(IMqttClient mqttClient, IMessageProcessor messageProcessor)
+    public MqttService(IMqttClient mqttClient, IMessageProcessor messageProcessor , IConfiguration configuration )
     {
+        _configuration = configuration; 
         _mqttClient = mqttClient;
         _messageProcessor = messageProcessor;
     }
@@ -28,7 +32,7 @@ public class MqttService : IMqttService
                 IgnoreCertificateRevocationErrors = true,
                 AllowUntrustedCertificates = true
             })
-            .WithCredentials("ahmedsamir4299", "01060402354aA")
+            .WithCredentials(_configuration["MqttUser"], _configuration["Mqttpassword"])
             .WithCleanSession()
             .Build();
         Console.WriteLine("WENT THROUGH CONNECTING");
@@ -47,7 +51,11 @@ public class MqttService : IMqttService
             // Console.WriteLine($"+ QoS = {e.ApplicationMessage.QualityOfServiceLevel}");
             // Console.WriteLine($"+ Retain = {e.ApplicationMessage.Retain}");
             // Console.WriteLine();
-            await _messageProcessor.ProcessMessage(e.ApplicationMessage.Topic, Encoding.UTF8.GetString(e.ApplicationMessage.Payload));
+            var payload = JsonConvert.DeserializeObject<Dictionary<string, string>>(Encoding.UTF8.GetString(e.ApplicationMessage.Payload));
+            if (payload is null)
+                return;
+
+            await _messageProcessor.ProcessMessage(e.ApplicationMessage.Topic, payload);
         });
 
         await _mqttClient.ConnectAsync(options);

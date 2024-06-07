@@ -32,11 +32,11 @@ public class SensorController(ISensorControllerFacade sensorControllerFacade) : 
             .SensorsManager
             .GetAllAsync(carSystemId, resourceParameters);
 
-        sensorControllerFacade.SensorPaginationHelper
+        sensorControllerFacade.PaginationHelper
             .CreateMetaDataHeader(
                 sensors,
                 resourceParameters,
-                Response.Headers, Url);
+                Response.Headers, Url, "GetAllSensors");
         
         return Ok(sensors);
     }

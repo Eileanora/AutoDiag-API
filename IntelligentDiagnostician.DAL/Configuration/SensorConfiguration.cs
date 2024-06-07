@@ -26,6 +26,7 @@ public class SensorConfiguration : IEntityTypeConfiguration<Sensor>
             .HasColumnType("varchar")
             .HasMaxLength(10);
 
+     
         builder.HasData(SensorsSeedData.LoadSensor()); 
     }
 }
