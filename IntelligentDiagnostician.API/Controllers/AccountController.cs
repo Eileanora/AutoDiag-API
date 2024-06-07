@@ -57,7 +57,7 @@ namespace IntelligentDiagnostician.API.Controllers
         }
 
         [HttpPost("AssignRolesToUser")]
-    //    [Authorize(AuthenticationSchemes = "Bearer", Roles = "SuperUser")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "SuperUser")]
 
         public async Task<IActionResult> AssignRolesToUser(AssignRolesToUser assignRolesToUser)
         {

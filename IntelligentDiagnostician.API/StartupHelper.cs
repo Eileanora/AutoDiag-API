@@ -56,7 +56,7 @@ internal static class StartupHelper
                     ValidAudience = jwtOptions.Audience ,   
                     ValidateLifetime = true , 
                     ValidateIssuerSigningKey = true ,   
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SigningKey"]))
                 };
                 // var x = builder.Configuration["SigningKey"]; 
             }); 
@@ -82,17 +82,6 @@ internal static class StartupHelper
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         #endregion
-
-        builder.Services.AddCors(options =>
-        {
-            options.AddDefaultPolicy(
-                policy =>
-                {
-                    policy.AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-        });
 
         #region MQTT Configuration
 
@@ -123,7 +112,6 @@ internal static class StartupHelper
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-     
         
         app.UseHttpsRedirection();
         app.UseAuthorization();
