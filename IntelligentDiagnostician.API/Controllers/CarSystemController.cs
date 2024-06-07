@@ -29,8 +29,13 @@ public class CarSystemController(ICarSystemControllerFacade carSystemControllerF
         var systems = await carSystemControllerFacade.CarSystemManager
             .GetAllAsync(resourceParameters);
             
-        carSystemControllerFacade.CarSystemPaginationHelper
-            .CreateMetaDataHeader(systems, resourceParameters, Response.Headers, Url);
+        carSystemControllerFacade.PaginationHelper
+            .CreateMetaDataHeader(
+                systems,
+                resourceParameters,
+                Response.Headers,
+                Url,
+                "GetAllSystems");
         
         return Ok(systems);
     }

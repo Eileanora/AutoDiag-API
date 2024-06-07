@@ -1,18 +1,20 @@
-﻿using IntelligentDiagnostician.API.Helpers.PaginationHelper.FaultPaginationHelper;
+﻿using IntelligentDiagnostician.API.Helpers.PaginationHelper;
+using IntelligentDiagnostician.BL.DTOs.FaultDTOs;
 using IntelligentDiagnostician.BL.Manager.FaultManager;
+using IntelligentDiagnostician.BL.ResourceParameters;
 
 namespace IntelligentDiagnostician.API.Helpers.Facades.FaultControllerFacade;
 
 public class FaultControllerFacade : IFaultControllerFacade
 {
     public IFaultManager FaultManager { get; set; }
-    public IFaultPaginationHelper FaultPaginationHelper { get; set; }
-    
+    public IPaginationHelper<FaultDto, FaultsResourceParameters> PaginationHelper { get; set; }
+
     public FaultControllerFacade(
         IFaultManager faultManager,
-        IFaultPaginationHelper faultPaginationHelper)
+        IPaginationHelper<FaultDto, FaultsResourceParameters> faultPaginationHelper)
     {
         FaultManager = faultManager;
-        FaultPaginationHelper = faultPaginationHelper;
+        PaginationHelper = faultPaginationHelper;
     }
 }
