@@ -19,7 +19,8 @@ namespace IntelligentDiagnostician.DAL.SeedData
             new TroubleCode { ProblemCode = "P18F0", ProblemDescription = "Problem with the Turbocharger Boost Control Solenoid Circuit", Severity = 5 },
             new TroubleCode { ProblemCode = "C1004", ProblemDescription = "Related to the Driver Knee Bolster Deployment Control", Severity = 5 },
             new TroubleCode { ProblemCode = "B0004", ProblemDescription = "Related to the Driver Knee Bolster Deployment Control", Severity = 4 },
-            new TroubleCode { ProblemCode = "U1004", ProblemDescription = "Indicates an intermittent Controller Area Network Bus Transmit Performance", Severity = 8}
+            new TroubleCode { ProblemCode = "U1004", ProblemDescription = "Indicates an intermittent Controller Area Network Bus Transmit Performance", Severity = 8},
+            new TroubleCode { ProblemCode = "p0000", ProblemDescription = "No Truble Code", Severity = 0}
         };
     }
    

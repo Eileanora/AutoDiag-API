@@ -18,15 +18,14 @@ namespace IntelligentDiagnostician.API;
 
 internal static class StartupHelper
 {
-    
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         #region Formatters options
         builder.Services.AddControllers(options =>
-            {
-                options.InputFormatters.Insert(0, JsonPatchInputFormatter.GetJsonPatchInputFormatter());
-                // options.ReturnHttpNotAcceptable = true;
-            })
+        {
+            options.InputFormatters.Insert(0, JsonPatchInputFormatter.GetJsonPatchInputFormatter());
+            // options.ReturnHttpNotAcceptable = true;
+        })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions
@@ -34,9 +33,9 @@ internal static class StartupHelper
                                      JsonNumberHandling.AllowReadingFromString;
             });
         #endregion
-        
-        #region Jwt Options  And Identity
-        
+
+        #region Jwt Options And Identity
+
         builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
         var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
@@ -50,16 +49,16 @@ internal static class StartupHelper
 
                 Options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,  
-                    ValidIssuer = jwtOptions.Issuer , 
-                    ValidateAudience = true,    
-                    ValidAudience = jwtOptions.Audience ,   
-                    ValidateLifetime = true , 
-                    ValidateIssuerSigningKey = true ,   
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtOptions.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = jwtOptions.Audience,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
                 };
                 // var x = builder.Configuration["SigningKey"]; 
-            }); 
+            });
         #endregion
 
         #region Register layers services
@@ -67,7 +66,7 @@ internal static class StartupHelper
         builder.Services.AddBlServices();
         builder.Services.AddApiServices();
         #endregion
-        
+
         #region API Versioning
         builder.Services.AddApiVersioning(setupAction =>
         {
@@ -83,24 +82,25 @@ internal static class StartupHelper
         builder.Services.AddSwaggerGen();
         #endregion
 
+        #region CORS Configuration
         builder.Services.AddCors(options =>
         {
-            options.AddDefaultPolicy(
-                policy =>
-                {
-                    policy.AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
+            options.AddPolicy("AllowAnyOrigin",
+                policyBuilder => policyBuilder
+                    .AllowAnyOrigin()
+                    .WithExposedHeaders("X-Pagination")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()); 
+                   
         });
-        #region MQTT Configuration
+        #endregion
 
+        #region MQTT Configuration
         // builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
         // builder.Services.AddSingleton<IMqttService, MqttService>();
         // builder.Services.AddSingleton<IMessageProcessor, MessageProcessor>();
         // var mqttService = app.Services.GetRequiredService<IMqttService>();
         // mqttService.ConnectAsync().GetAwaiter().GetResult();
-
         #endregion
 
         // builder.Services.AddSwaggerGen(c =>
@@ -123,9 +123,10 @@ internal static class StartupHelper
             app.UseSwaggerUI();
         }
 
-        app.UseCors();
+        app.UseCors("AllowAnyOrigin"); 
 
         app.UseHttpsRedirection();
+        app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
         app.UseExceptionHandler();
