@@ -32,7 +32,7 @@ public class MqttService : IMqttService
                 IgnoreCertificateRevocationErrors = true,
                 AllowUntrustedCertificates = true
             })
-            .WithCredentials("ahmedsamir4299", "01060402354aA")
+            .WithCredentials(_configuration["MqttUser"], _configuration["Mqttpassword"])
             .WithCleanSession()
             .Build();
         Console.WriteLine("WENT THROUGH CONNECTING");

@@ -29,8 +29,8 @@ public class FaultController : ControllerBase
         var errors = await _faultControllerFacade.FaultManager
             .GetAllAsync(resourceParameters);
         
-        _faultControllerFacade.FaultPaginationHelper
-            .CreateMetaDataHeader(errors, resourceParameters, Response.Headers, Url);
+        _faultControllerFacade.PaginationHelper
+            .CreateMetaDataHeader(errors, resourceParameters, Response.Headers, Url, "GetAllErrors");
         
         return Ok(errors);
     }

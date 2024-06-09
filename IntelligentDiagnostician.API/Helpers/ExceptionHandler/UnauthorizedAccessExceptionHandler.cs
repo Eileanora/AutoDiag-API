@@ -26,7 +26,6 @@ namespace IntelligentDiagnostician.API.Helpers.ExceptionHandler
                 unauthorizedAccessException.Message);
 
             httpContext.Response.Headers.Append("Access-Control-Allow-Origin", "*");
-
             httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await httpContext.Response.WriteAsync("Unauthorized access", cancellationToken);
             return true;

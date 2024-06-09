@@ -49,13 +49,13 @@ internal static class StartupHelper
 
                 Options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidIssuer = jwtOptions.Issuer,
-                    ValidateAudience = true,
-                    ValidAudience = jwtOptions.Audience,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
+                    ValidateIssuer = true,  
+                    ValidIssuer = jwtOptions.Issuer , 
+                    ValidateAudience = true,    
+                    ValidAudience = jwtOptions.Audience ,   
+                    ValidateLifetime = true , 
+                    ValidateIssuerSigningKey = true ,   
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SigningKey"]))
                 };
                 // var x = builder.Configuration["SigningKey"]; 
             });
@@ -81,19 +81,20 @@ internal static class StartupHelper
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         #endregion
-
-        #region CORS Configuration
+        
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowAnyOrigin",
-                policyBuilder => policyBuilder
-                    .AllowAnyOrigin()
-                    .WithExposedHeaders("X-Pagination")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()); 
-                   
+            options.AddDefaultPolicy(
+                policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .WithExposedHeaders("X-Pagination")
+                        .AllowAnyMethod();
+                });
         });
-        #endregion
+
+        #region MQTT Configuration
 
         #region MQTT Configuration
         // builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
@@ -116,15 +117,13 @@ internal static class StartupHelper
     {
         var mqttService = app.Services.GetRequiredService<IMqttService>();
         mqttService.ConnectAsync().GetAwaiter().GetResult();
-
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-        app.UseCors("AllowAnyOrigin"); 
-
+        app.UseCors("AllowAnyOrigin");
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();

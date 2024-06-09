@@ -5,11 +5,13 @@ using IntelligentDiagnostician.API.Helpers.Facades.CarSystemControllerFacade;
 using IntelligentDiagnostician.API.Helpers.Facades.FaultControllerFacade;
 using IntelligentDiagnostician.API.Helpers.Facades.ReadingControllerFacade;
 using IntelligentDiagnostician.API.Helpers.Facades.SensorControllerFacade;
-using IntelligentDiagnostician.API.Helpers.PaginationHelper.ReadingPaginationHelper;
-using IntelligentDiagnostician.API.Helpers.PaginationHelper.SensorPaginationHelper;
-using IntelligentDiagnostician.API.Helpers.PaginationHelper.CarSystemPaginationHelper;
-using IntelligentDiagnostician.API.Helpers.PaginationHelper.FaultPaginationHelper;
+using IntelligentDiagnostician.API.Helpers.PaginationHelper;
 using IntelligentDiagnostician.BL.AuthServices;
+using IntelligentDiagnostician.BL.DTOs.CarSystemsDTOs;
+using IntelligentDiagnostician.BL.DTOs.FaultDTOs;
+using IntelligentDiagnostician.BL.DTOs.ReadingDTOs;
+using IntelligentDiagnostician.BL.DTOs.SensorDTOs;
+using IntelligentDiagnostician.BL.ResourceParameters;
 using IntelligentDiagnostician.BL.Services.CurrentUserService;
 
 namespace IntelligentDiagnostician.API;
@@ -18,10 +20,14 @@ public static class DependencyInjection
 {
     public static void AddApiServices(this IServiceCollection services)
     {
-        services.AddScoped<ICarSystemPaginationHelper, CarSystemPaginationHelper>();
-        services.AddScoped<ISensorPaginationHelper, SensorPaginationHelper>();
-        services.AddScoped<IReadingPaginationHelper, ReadingPaginationHelper>();
-        services.AddScoped<IFaultPaginationHelper, FaultPaginagtionHelper>();
+        services.AddScoped<IPaginationHelper<CarSystemDto, CarSystemsResourceParameters>,
+            PaginationHelper<CarSystemDto, CarSystemsResourceParameters>>();
+        services.AddScoped<IPaginationHelper<SensorDto, SensorsResourceParameters>,
+            PaginationHelper<SensorDto, SensorsResourceParameters>>();
+        services.AddScoped<IPaginationHelper<ReadingDto, ReadingResourceParameters>,
+            PaginationHelper<ReadingDto, ReadingResourceParameters>>();
+        services.AddScoped<IPaginationHelper<FaultDto, FaultsResourceParameters>,
+            PaginationHelper<FaultDto, FaultsResourceParameters>>();
         
         services.AddScoped<ICarSystemControllerFacade, CarSystemControllerControllerFacade>();
         services.AddScoped<ICarSystemCollectionControllerFacade, CarSystemCollectionControllerFacade>();

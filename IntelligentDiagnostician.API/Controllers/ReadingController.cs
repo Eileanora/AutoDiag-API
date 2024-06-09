@@ -35,11 +35,11 @@ public class ReadingController : ControllerBase
             .ReadingManager
             .GetAllAsync(sensorId, readingResourceParameters);
         
-        _readingControllerFacade.ReadingPaginationHelper
+        _readingControllerFacade.PaginationHelper
             .CreateMetaDataHeader(
             readings,
             readingResourceParameters,
-            Response.Headers, Url);
+            Response.Headers, Url, "GetAllReadings");
         return Ok(readings);
     }
 }
