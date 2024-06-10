@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using AutoDiag.BL.DTOs.UserDtos;
 using AutoDiag.BL.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace AutoDiag.BL.AuthServices
 {
@@ -154,8 +155,8 @@ namespace AutoDiag.BL.AuthServices
                 Issuer = _jwtoptions.Issuer,
                 Expires = DateTime.UtcNow.AddDays(_jwtoptions.Lifetime),
                 Audience = _jwtoptions.Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SigningKey"])),
-                    SecurityAlgorithms.HmacSha256),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtoptions.SigningKey)),
+                SecurityAlgorithms.HmacSha256),
                 Subject = claims 
             };
          //   var x = _configuration["SigningKey"]; 

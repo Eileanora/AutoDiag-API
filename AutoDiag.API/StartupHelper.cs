@@ -53,8 +53,8 @@ internal static class StartupHelper
                     ValidateAudience = true,    
                     ValidAudience = jwtOptions.Audience ,   
                     ValidateLifetime = true , 
-                    ValidateIssuerSigningKey = true ,   
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SigningKey"]))
+                    ValidateIssuerSigningKey = true ,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey))
                 };
                 // var x = builder.Configuration["SigningKey"]; 
             });
@@ -80,19 +80,18 @@ internal static class StartupHelper
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         #endregion
-        
+
         builder.Services.AddCors(options =>
         {
-            options.AddDefaultPolicy(
-                policy =>
-                {
-                    policy.AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .WithExposedHeaders("X-Pagination")
-                        .AllowAnyMethod();
-                });
+            options.AddPolicy("AllowAnyOrigin",
+                policyBuilder => policyBuilder
+                    .AllowAnyOrigin()
+                    .WithExposedHeaders("X-Pagination")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+
         });
-        
+
 
         #region MQTT Configuration
         // builder.Services.AddSingleton<IMqttClient>(sp => new MqttFactory().CreateMqttClient());
