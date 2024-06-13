@@ -18,24 +18,29 @@ public class FaultManager : IFaultManager
         Guid userId,
         List<string> errors)
     {
-        foreach (var error in errors)
+        
+        var userIdValidationResult = await _faultManagerFacade.UserIdValidator.ValidateAsync(userId);
+        if (userIdValidationResult.IsValid)
         {
-            var errorForCreationDto = new FaultForCreationDto
+            foreach (var error in errors)
             {
-                UserId = userId,
-                ProblemCode = error
-            };
+                var errorForCreationDto = new FaultForCreationDto
+                {
+                    UserId = userId,
+                    ProblemCode = error
+                };
             
-            var validationResult = await _faultManagerFacade.CreationValidator.ValidateAsync(
-                errorForCreationDto,
-                options => options.IncludeRuleSets("Business"));
+                var validationResult = await _faultManagerFacade.CreationValidator.ValidateAsync(
+                    errorForCreationDto,
+                    options => options.IncludeRuleSets("Business"));
 
-            if (!validationResult.IsValid)
-                continue;
+                if (!validationResult.IsValid)
+                    continue;
             
-            var newError = errorForCreationDto.ToError();
-            await _faultManagerFacade.ErrorRepository
-                .CreateAsync(newError);
+                var newError = errorForCreationDto.ToError();
+                await _faultManagerFacade.ErrorRepository
+                    .CreateAsync(newError);
+            }
         }
 
         await _faultManagerFacade.UnitOfWork.SaveAsync();

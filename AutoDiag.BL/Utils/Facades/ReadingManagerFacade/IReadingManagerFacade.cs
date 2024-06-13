@@ -11,4 +11,5 @@ public interface IReadingManagerFacade
     public IUnitOfWork UnitOfWork { get; }
     public IValidator<ReadingForCreationDto> CreationValidator { get; }
     public ICurrentUserService CurrentUserService { get; }
+    public IValidator<Guid> UserIdValidator { get; }
 }
