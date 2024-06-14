@@ -51,6 +51,7 @@ namespace AutoDiag.API.Controllers
             {
                 result.Id,
                 result.Email,
+                result.UserName,
                 result.Token,
                 result.Roles
             });

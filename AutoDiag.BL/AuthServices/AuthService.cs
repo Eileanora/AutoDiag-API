@@ -84,6 +84,7 @@ namespace AutoDiag.BL.AuthServices
                 Message = "Succeeded",
                 IsAuthenticated = true,
                 Email = loginuser.Email,
+                UserName = User.UserName,
                 Token = JwtToken,
                 Id = User.Id , 
                 Roles = userRoles.ToList(),
