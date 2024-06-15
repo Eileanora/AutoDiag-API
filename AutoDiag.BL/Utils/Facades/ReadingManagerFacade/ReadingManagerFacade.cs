@@ -11,16 +11,19 @@ public class ReadingManagerFacade : IReadingManagerFacade
     public IUnitOfWork UnitOfWork { get; }
     public IValidator<ReadingForCreationDto> CreationValidator { get; }
     public ICurrentUserService CurrentUserService { get; }
-    
+    public IValidator<Guid> UserIdValidator { get; }
+
     public ReadingManagerFacade(
         IReadingRepository readingRepository,
         IValidator<ReadingForCreationDto> creationValidator,
         IUnitOfWork unitOfWork,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        IValidator<Guid> userIdValidator)
     {
         ReadingRepository = readingRepository;
         UnitOfWork = unitOfWork;
         CreationValidator = creationValidator;
         CurrentUserService = currentUserService;
+        UserIdValidator = userIdValidator;
     }
 }

@@ -11,4 +11,5 @@ public interface IFaultManagerFacade
     public IValidator<FaultForCreationDto> CreationValidator { get; }
     public IUnitOfWork UnitOfWork { get; }
     public ICurrentUserService CurrentUserService { get; }
+    public IValidator<Guid> UserIdValidator { get; }
 }
