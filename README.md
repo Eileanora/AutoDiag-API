@@ -1,11 +1,11 @@
-# Intelligent Diagnostician
+# AutoDiag
 
 ## Introduction
 
 This project was done as a graduation project for the Faculty of Engineering, Suez Canal University.
-IntelligentDiagnostician-API is the backend part of a project that aims to make automotive vehicle diagnostics easier and more efficient.
+AutoDiag-API is the backend part of a project that aims to make automotive vehicle diagnostics easier and more efficient.
 
-## Why Intelligent Diagnostician?
+## Why AutoDiag?
 
 Automotive systems maintenance methods improved over the years, it originally depended on 
 manual inspections and periodic maintenance. With technology revolution, it improved in 
