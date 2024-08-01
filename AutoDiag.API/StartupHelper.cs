@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
-using AutoDiag.API.Helpers;
+using AutoDiag.API.Helpers.JsonHelpers;
 using AutoDiag.BL;
 using AutoDiag.BL.Helpers;
 using AutoDiag.BL.Services.MqttServices;

@@ -1,8 +1,8 @@
 ﻿using AutoDiag.BL.DTOs.ReadingDTOs;
 using AutoDiag.BL.ResourceParameters;
-using AutoDiag.BL.Utils.Facades.ReadingManagerFacade;
+using AutoDiag.BL.Helpers.Facades.ReadingManagerFacade;
 using FluentValidation;
-using AutoDiag.BL.Utils.Converter;
+using AutoDiag.BL.Helpers.Converter;
 
 namespace AutoDiag.BL.Manager.ReadingManager;
 

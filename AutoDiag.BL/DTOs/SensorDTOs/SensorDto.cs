@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using AutoDiag.BL.Utils.OrderedPropertiesJson;
+using AutoDiag.BL.Helpers.OrderedPropertiesJson;
 
 namespace AutoDiag.BL.DTOs.SensorDTOs;
 

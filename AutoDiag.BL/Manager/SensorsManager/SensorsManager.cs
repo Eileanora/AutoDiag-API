@@ -1,9 +1,9 @@
 ﻿using AutoDiag.BL.DTOs.SensorDTOs;
 using AutoDiag.BL.ResourceParameters;
-using AutoDiag.BL.Utils.Facades.SensorManagerFacade;
+using AutoDiag.BL.Helpers.Facades.SensorManagerFacade;
 using FluentValidation;
 using FluentValidation.Internal;
-using AutoDiag.BL.Utils.Converter;
+using AutoDiag.BL.Helpers.Converter;
 
 
 namespace AutoDiag.BL.Manager.SensorsManager;

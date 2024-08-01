@@ -6,7 +6,7 @@ using AutoDiag.API.Helpers.Facades.FaultControllerFacade;
 using AutoDiag.API.Helpers.Facades.ReadingControllerFacade;
 using AutoDiag.API.Helpers.Facades.SensorControllerFacade;
 using AutoDiag.API.Helpers.PaginationHelper;
-using AutoDiag.BL.AuthServices;
+using AutoDiag.BL.Services.AuthServices;
 using AutoDiag.BL.DTOs.CarSystemsDTOs;
 using AutoDiag.BL.DTOs.FaultDTOs;
 using AutoDiag.BL.DTOs.ReadingDTOs;

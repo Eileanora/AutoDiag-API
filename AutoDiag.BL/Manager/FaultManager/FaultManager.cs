@@ -1,7 +1,7 @@
 ﻿using AutoDiag.BL.DTOs.FaultDTOs;
 using AutoDiag.BL.ResourceParameters;
-using AutoDiag.BL.Utils.Facades.FaultManagerFacade;
-using AutoDiag.BL.Utils.Converter;
+using AutoDiag.BL.Helpers.Facades.FaultManagerFacade;
+using AutoDiag.BL.Helpers.Converter;
 using FluentValidation;
 
 namespace AutoDiag.BL.Manager.FaultManager;
