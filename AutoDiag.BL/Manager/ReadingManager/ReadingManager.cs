@@ -1,8 +1,8 @@
 ﻿using AutoDiag.BL.DTOs.ReadingDTOs;
 using AutoDiag.BL.ResourceParameters;
-using AutoDiag.BL.Utils.Facades.ReadingManagerFacade;
+using AutoDiag.BL.Helpers.Facades.ReadingManagerFacade;
 using FluentValidation;
-using AutoDiag.BL.Utils.Converter;
+using AutoDiag.BL.Helpers.Converter;
 
 namespace AutoDiag.BL.Manager.ReadingManager;
 
@@ -16,25 +16,29 @@ public class ReadingManager : IReadingManager
     public async Task CreateAsync(
         Guid userId, Dictionary<int, float> readings)
     {
-        foreach (var sensorId in readings)
+        var userIdValidationResult = await _readingManagerFacade.UserIdValidator.ValidateAsync(userId);
+        if (userIdValidationResult.IsValid)
         {
-            var readingForCreationDto = new ReadingForCreationDto
+            foreach (var sensorId in readings)
             {
-                SensorId = sensorId.Key,
-                UserId = userId,
-                Value = sensorId.Value
-            };
-            var validationResult = await _readingManagerFacade.CreationValidator.ValidateAsync(
-                readingForCreationDto,
-                // TODO: DONT CHECK FOR USER ID FOR EVERY ENTITY
-                options => options.IncludeRuleSets("Business"));
+                var readingForCreationDto = new ReadingForCreationDto
+                {
+                    SensorId = sensorId.Key,
+                    UserId = userId,
+                    Value = sensorId.Value
+                };
+                var validationResult = await _readingManagerFacade.CreationValidator.ValidateAsync(
+                    readingForCreationDto,
+                    options => options.IncludeRuleSets("Business"));
 
-            if (!validationResult.IsValid)
-                return;
+                if (!validationResult.IsValid)
+                    return;
 
-            var newReading = readingForCreationDto.ToReading();
-            await _readingManagerFacade.ReadingRepository.CreateAsync(newReading);
-        }
+                var newReading = readingForCreationDto.ToReading();
+                await _readingManagerFacade.ReadingRepository.CreateAsync(newReading);
+            }
+        }        
+
         await _readingManagerFacade.UnitOfWork.SaveAsync();
     }
 

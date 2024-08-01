@@ -2,7 +2,7 @@ using Asp.Versioning;
 using AutoDiag.API.Helpers.Facades.SensorControllerFacade;
 using AutoDiag.API.Helpers.InputValidator;
 using AutoDiag.BL.DTOs.SensorDTOs;
-using AutoDiag.BL.Utils.Converter;
+using AutoDiag.BL.Helpers.Converter;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;

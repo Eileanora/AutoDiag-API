@@ -1,4 +1,4 @@
-﻿using AutoDiag.BL.AuthServices;
+﻿using AutoDiag.BL.Services.AuthServices;
 using AutoDiag.BL.DTOs.UserDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

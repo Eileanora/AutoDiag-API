@@ -1,9 +1,9 @@
 ﻿using AutoDiag.BL.DTOs.CarSystemsDTOs;
 using AutoDiag.BL.ResourceParameters;
-using AutoDiag.BL.Utils.Facades.CarSystemManagerFacade;
+using AutoDiag.BL.Helpers.Facades.CarSystemManagerFacade;
 using FluentValidation;
 using FluentValidation.Internal;
-using AutoDiag.BL.Utils.Converter;
+using AutoDiag.BL.Helpers.Converter;
 namespace AutoDiag.BL.Manager.CarSystemManager;
 
 public class CarSystemManager : ICarSystemManager

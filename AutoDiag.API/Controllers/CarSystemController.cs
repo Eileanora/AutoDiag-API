@@ -6,7 +6,7 @@ using AutoDiag.BL.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
-using AutoDiag.BL.Utils.Converter;
+using AutoDiag.BL.Helpers.Converter;
 using Microsoft.AspNetCore.Authorization;
 
 

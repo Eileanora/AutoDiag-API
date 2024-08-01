@@ -23,13 +23,23 @@ internal class ReadingRepository(
         ReadingResourceParameters resourceParameters)
     {
         var collection = DbContext.Readings as IQueryable<Reading>;
+        
         // filter by userId
-
         collection = collection
             .Where(r => r.SensorId == sensorId
                         && r.UserId == userId)
             .Include(r => r.Sensor);
-
+        
+        if (!string.IsNullOrWhiteSpace(resourceParameters.CreatedDate))
+        {
+            if (DateOnly.TryParse(resourceParameters.CreatedDate, out var createdDate))
+            {
+                collection = collection.Where(item => item.CreatedDate.Year == createdDate.Year 
+                                                      && item.CreatedDate.Month == createdDate.Month 
+                                                      && item.CreatedDate.Day == createdDate.Day);
+            }
+        }
+        
         var sortedList =
             sortHelper.ApplySort(collection, resourceParameters.OrderBy);
 
